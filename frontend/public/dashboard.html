@@ -1,0 +1,1745 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MargemPRO - Dashboard</title>
+<style>
+:root {
+  --primary: #1e40af;
+  --primary-light: #3b82f6;
+  --secondary: #0ea5e9;
+  --success: #10b981;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+  --dark: #0f172a;
+  --sidebar-w: 260px;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Segoe UI', system-ui, sans-serif; background: #f1f5f9; color: #1e293b; display: flex; min-height: 100vh; }
+
+/* SIDEBAR */
+.sidebar {
+  width: var(--sidebar-w); background: var(--dark);
+  display: flex; flex-direction: column;
+  position: fixed; top: 0; left: 0; height: 100vh;
+  z-index: 100; transition: transform 0.3s;
+}
+.sidebar-header {
+  padding: 24px 20px; border-bottom: 1px solid rgba(255,255,255,0.08);
+  display: flex; align-items: center; gap: 12px;
+}
+.sidebar-logo { font-size: 28px; }
+.sidebar-title { color: white; font-size: 18px; font-weight: 800; }
+.sidebar-sub { color: #64748b; font-size: 11px; }
+.sidebar-nav { flex: 1; padding: 16px 0; overflow-y: auto; }
+.nav-section { padding: 8px 20px; font-size: 10px; font-weight: 700; color: #475569; text-transform: uppercase; letter-spacing: 1px; margin-top: 8px; }
+.nav-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 11px 20px; color: #94a3b8; font-size: 14px;
+  cursor: pointer; transition: all 0.2s; text-decoration: none;
+  border-left: 3px solid transparent;
+}
+.nav-item:hover { background: rgba(255,255,255,0.06); color: #e2e8f0; }
+.nav-item.active { background: rgba(30,64,175,0.3); color: #60a5fa; border-left-color: #3b82f6; }
+.nav-item .icon { font-size: 18px; width: 22px; text-align: center; }
+.sidebar-footer {
+  padding: 16px 20px; border-top: 1px solid rgba(255,255,255,0.08);
+}
+.user-info { display: flex; align-items: center; gap: 10px; }
+.user-avatar {
+  width: 38px; height: 38px; border-radius: 10px;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; color: white; font-weight: 700;
+}
+.user-name { color: #e2e8f0; font-size: 13px; font-weight: 600; }
+.user-role { color: #64748b; font-size: 11px; }
+.btn-logout {
+  margin-top: 12px; width: 100%; padding: 9px;
+  background: rgba(239,68,68,0.15); color: #f87171;
+  border: 1px solid rgba(239,68,68,0.3); border-radius: 8px;
+  cursor: pointer; font-size: 13px; transition: all 0.2s;
+}
+.btn-logout:hover { background: rgba(239,68,68,0.25); }
+
+/* MAIN */
+.main { margin-left: var(--sidebar-w); flex: 1; min-height: 100vh; }
+.topbar {
+  background: white; padding: 0 28px; height: 64px;
+  display: flex; align-items: center; justify-content: space-between;
+  border-bottom: 1px solid #e2e8f0; position: sticky; top: 0; z-index: 50;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+}
+.page-title { font-size: 20px; font-weight: 700; color: #1e293b; }
+.page-subtitle { font-size: 12px; color: #64748b; }
+.topbar-right { display: flex; align-items: center; gap: 12px; }
+.badge-pill {
+  padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 700;
+}
+.badge-admin { background: #dbeafe; color: #1e40af; }
+.badge-rh { background: #d1fae5; color: #065f46; }
+.badge-banco { background: #fef3c7; color: #92400e; }
+.badge-func { background: #e0e7ff; color: #4338ca; }
+
+/* CONTENT */
+.content { padding: 28px; }
+
+/* CARDS */
+.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-bottom: 28px; }
+.stat-card {
+  background: white; border-radius: 16px; padding: 24px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  border: 1px solid #f1f5f9; position: relative; overflow: hidden;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.stat-card:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
+.stat-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+}
+.stat-card.blue::before { background: linear-gradient(90deg, #1e40af, #0ea5e9); }
+.stat-card.green::before { background: linear-gradient(90deg, #059669, #10b981); }
+.stat-card.yellow::before { background: linear-gradient(90deg, #d97706, #f59e0b); }
+.stat-card.red::before { background: linear-gradient(90deg, #dc2626, #ef4444); }
+.stat-card.purple::before { background: linear-gradient(90deg, #7c3aed, #a78bfa); }
+.stat-icon {
+  width: 48px; height: 48px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; margin-bottom: 16px;
+}
+.stat-icon.blue { background: #dbeafe; }
+.stat-icon.green { background: #d1fae5; }
+.stat-icon.yellow { background: #fef3c7; }
+.stat-icon.red { background: #fee2e2; }
+.stat-icon.purple { background: #ede9fe; }
+.stat-value { font-size: 28px; font-weight: 800; color: #1e293b; margin-bottom: 4px; }
+.stat-label { font-size: 13px; color: #64748b; }
+.stat-change { font-size: 11px; margin-top: 8px; }
+.stat-change.up { color: #10b981; }
+.stat-change.down { color: #ef4444; }
+
+/* PANELS */
+.panels-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 20px; margin-bottom: 28px; }
+.panel {
+  background: white; border-radius: 16px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06); border: 1px solid #f1f5f9;
+}
+.panel-header {
+  padding: 20px 24px 0; display: flex; align-items: center; justify-content: space-between;
+}
+.panel-title { font-size: 15px; font-weight: 700; color: #1e293b; }
+.panel-body { padding: 16px 24px 24px; }
+
+/* TABLE */
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; }
+th {
+  text-align: left; padding: 10px 14px;
+  font-size: 11px; font-weight: 700; color: #64748b;
+  text-transform: uppercase; letter-spacing: 0.5px;
+  border-bottom: 1px solid #f1f5f9; background: #f8fafc;
+}
+td { padding: 12px 14px; font-size: 13px; color: #374151; border-bottom: 1px solid #f8fafc; }
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: #f8fafc; }
+
+/* STATUS BADGES */
+.status {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 700;
+}
+.status::before { content: ''; width: 6px; height: 6px; border-radius: 50%; }
+.status.aprovada { background: #d1fae5; color: #065f46; }
+.status.aprovada::before { background: #10b981; }
+.status.reservada { background: #dbeafe; color: #1e40af; }
+.status.reservada::before { background: #3b82f6; }
+.status.pendente { background: #fef3c7; color: #92400e; }
+.status.pendente::before { background: #f59e0b; }
+.status.cancelada { background: #fee2e2; color: #991b1b; }
+.status.cancelada::before { background: #ef4444; }
+
+/* BUTTONS */
+.btn {
+  padding: 9px 18px; border-radius: 8px; font-size: 13px; font-weight: 600;
+  cursor: pointer; border: none; transition: all 0.2s; display: inline-flex; align-items: center; gap: 6px;
+}
+.btn-primary { background: var(--primary); color: white; }
+.btn-primary:hover { background: #1d4ed8; }
+.btn-success { background: #10b981; color: white; }
+.btn-success:hover { background: #059669; }
+.btn-danger { background: #ef4444; color: white; }
+.btn-danger:hover { background: #dc2626; }
+.btn-outline { background: transparent; border: 2px solid var(--primary); color: var(--primary); }
+.btn-outline:hover { background: var(--primary); color: white; }
+.btn-sm { padding: 5px 12px; font-size: 12px; }
+.btn-icon { width: 34px; height: 34px; padding: 0; display: inline-flex; align-items: center; justify-content: center; border-radius: 8px; }
+
+/* FORMS */
+.form-card {
+  background: white; border-radius: 16px; padding: 28px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06); border: 1px solid #f1f5f9; margin-bottom: 24px;
+}
+.form-title { font-size: 16px; font-weight: 700; color: #1e293b; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid #f1f5f9; display: flex; align-items: center; gap: 8px; }
+.form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 18px; }
+.form-grid-2 { grid-template-columns: repeat(2, 1fr); }
+.form-grid-3 { grid-template-columns: repeat(3, 1fr); }
+.form-group { display: flex; flex-direction: column; gap: 6px; }
+.form-group label { font-size: 12px; font-weight: 700; color: #374151; text-transform: uppercase; letter-spacing: 0.5px; }
+.form-group input, .form-group select, .form-group textarea {
+  padding: 10px 14px; border: 1.5px solid #e5e7eb; border-radius: 8px;
+  font-size: 14px; color: #1e293b; background: #f9fafb;
+  transition: all 0.2s; outline: none;
+}
+.form-group input:focus, .form-group select:focus { border-color: var(--primary); background: white; box-shadow: 0 0 0 3px rgba(30,64,175,0.08); }
+.form-group textarea { resize: vertical; min-height: 80px; }
+.form-actions { display: flex; gap: 12px; justify-content: flex-end; padding-top: 16px; border-top: 1px solid #f1f5f9; margin-top: 20px; }
+
+/* MODAL */
+.modal-overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,0.5); backdrop-filter: blur(4px);
+  z-index: 1000; align-items: center; justify-content: center;
+}
+.modal-overlay.open { display: flex; }
+.modal {
+  background: white; border-radius: 20px;
+  width: 600px; max-width: 95vw; max-height: 90vh;
+  overflow-y: auto; box-shadow: 0 25px 60px rgba(0,0,0,0.3);
+}
+.modal-header {
+  padding: 24px 28px; border-bottom: 1px solid #f1f5f9;
+  display: flex; align-items: center; justify-content: space-between;
+  position: sticky; top: 0; background: white; z-index: 1;
+}
+.modal-title { font-size: 16px; font-weight: 700; color: #1e293b; }
+.modal-close {
+  width: 32px; height: 32px; border-radius: 8px;
+  background: #f1f5f9; border: none; cursor: pointer;
+  font-size: 16px; display: flex; align-items: center; justify-content: center;
+  transition: background 0.2s;
+}
+.modal-close:hover { background: #e2e8f0; }
+.modal-body { padding: 24px 28px; }
+.modal-footer { padding: 16px 28px; border-top: 1px solid #f1f5f9; display: flex; gap: 10px; justify-content: flex-end; }
+
+/* ALERT */
+.alert {
+  padding: 12px 16px; border-radius: 10px; font-size: 13px;
+  margin-bottom: 16px; display: flex; align-items: flex-start; gap: 10px;
+}
+.alert-success { background: #d1fae5; color: #065f46; border: 1px solid #a7f3d0; }
+.alert-error { background: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
+.alert-info { background: #dbeafe; color: #1e40af; border: 1px solid #bfdbfe; }
+.alert-warning { background: #fef3c7; color: #92400e; border: 1px solid #fde68a; }
+
+/* MARGEM BARS */
+.margem-bar-container { margin-bottom: 16px; }
+.margem-bar-label { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 5px; }
+.margem-bar-label .label { font-weight: 600; color: #374151; }
+.margem-bar-label .values { color: #64748b; }
+.margem-bar { height: 10px; background: #f1f5f9; border-radius: 10px; overflow: hidden; }
+.margem-bar-fill { height: 100%; border-radius: 10px; transition: width 0.6s ease; }
+.margem-bar-fill.emp { background: linear-gradient(90deg, #1e40af, #3b82f6); }
+.margem-bar-fill.cart { background: linear-gradient(90deg, #7c3aed, #a78bfa); }
+.margem-bar-fill.benef { background: linear-gradient(90deg, #059669, #10b981); }
+
+/* TABS */
+.tabs { display: flex; gap: 2px; border-bottom: 2px solid #f1f5f9; margin-bottom: 24px; }
+.tab-btn {
+  padding: 10px 20px; font-size: 14px; font-weight: 600;
+  color: #64748b; cursor: pointer; border-bottom: 2px solid transparent;
+  transition: all 0.2s; margin-bottom: -2px; background: none; border-top: none; border-left: none; border-right: none;
+}
+.tab-btn.active { color: var(--primary); border-bottom-color: var(--primary); }
+.tab-btn:hover { color: var(--primary); }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* SEARCH/FILTER BAR */
+.filter-bar { display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; align-items: center; }
+.search-input {
+  flex: 1; min-width: 200px; padding: 9px 14px 9px 36px;
+  border: 1.5px solid #e5e7eb; border-radius: 8px; font-size: 14px;
+  background: white url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E") 10px center no-repeat;
+  outline: none; transition: border-color 0.2s;
+}
+.search-input:focus { border-color: var(--primary); }
+.filter-select {
+  padding: 9px 14px; border: 1.5px solid #e5e7eb; border-radius: 8px;
+  font-size: 14px; background: white; outline: none; cursor: pointer;
+}
+
+/* CODIGO AVERBACAO */
+.cod-averbacao {
+  font-family: 'Courier New', monospace;
+  font-weight: 800; font-size: 14px; color: #1e40af;
+  background: #dbeafe; padding: 4px 10px; border-radius: 6px;
+  letter-spacing: 1px;
+}
+
+/* LOADING */
+.loading {
+  display: flex; align-items: center; justify-content: center;
+  padding: 48px; color: #94a3b8; font-size: 14px; gap: 10px;
+}
+.spinner {
+  width: 20px; height: 20px; border: 2px solid #e2e8f0;
+  border-top-color: var(--primary); border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* EMPTY STATE */
+.empty-state { text-align: center; padding: 48px; color: #94a3b8; }
+.empty-state .icon { font-size: 48px; margin-bottom: 12px; }
+.empty-state h3 { font-size: 16px; font-weight: 600; color: #64748b; margin-bottom: 6px; }
+.empty-state p { font-size: 13px; }
+
+/* TOAST */
+#toast-container { position: fixed; bottom: 24px; right: 24px; z-index: 9999; display: flex; flex-direction: column; gap: 8px; }
+.toast {
+  padding: 14px 18px; border-radius: 12px; font-size: 14px; font-weight: 500;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  animation: toastIn 0.3s ease; min-width: 280px; display: flex; align-items: center; gap: 10px;
+}
+@keyframes toastIn { from { opacity: 0; transform: translateX(40px); } to { opacity: 1; transform: translateX(0); } }
+.toast.success { background: #1e293b; color: #4ade80; }
+.toast.error { background: #1e293b; color: #f87171; }
+.toast.info { background: #1e293b; color: #60a5fa; }
+
+/* RESPONSIVE */
+@media(max-width: 768px) {
+  .sidebar { transform: translateX(-100%); }
+  .sidebar.open { transform: translateX(0); }
+  .main { margin-left: 0; }
+  .panels-grid { grid-template-columns: 1fr; }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* PAGE SECTIONS */
+.page-section { display: none; }
+.page-section.active { display: block; }
+</style>
+</head>
+<body>
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="sidebar-logo">💳</div>
+    <div>
+      <div class="sidebar-title">MargemPRO</div>
+      <div class="sidebar-sub">Gestão Consignável</div>
+    </div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-section">Principal</div>
+    <a class="nav-item active" onclick="navTo('dashboard')" href="#"><span class="icon">📊</span> Dashboard</a>
+    <a class="nav-item" onclick="navTo('averbacoes')" href="#"><span class="icon">📋</span> Averbações</a>
+    <a class="nav-item" onclick="navTo('nova-averbacao')" href="#"><span class="icon">➕</span> Nova Averbação</a>
+
+    <div class="nav-section" id="nav-admin-section">Administração</div>
+    <a class="nav-item" id="nav-funcionarios" onclick="navTo('funcionarios')" href="#"><span class="icon">👥</span> Funcionários</a>
+    <a class="nav-item" id="nav-convenios" onclick="navTo('convenios')" href="#"><span class="icon">🏛️</span> Convênios</a>
+    <a class="nav-item" id="nav-bancos" onclick="navTo('bancos')" href="#"><span class="icon">🏦</span> Bancos</a>
+    <a class="nav-item" id="nav-usuarios" onclick="navTo('usuarios')" href="#"><span class="icon">👤</span> Usuários</a>
+
+    <div class="nav-section">Compliance</div>
+    <a class="nav-item" id="nav-auditoria" onclick="navTo('auditoria')" href="#"><span class="icon">🔍</span> Auditoria</a>
+    <a class="nav-item" onclick="navTo('consulta-margem')" href="#"><span class="icon">💰</span> Consultar Margem</a>
+    <a class="nav-item" onclick="navTo('calculadora')" href="#"><span class="icon">🧮</span> Calculadora</a>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="user-info">
+      <div class="user-avatar" id="userAvatarSidebar">A</div>
+      <div>
+        <div class="user-name" id="userNameSidebar">Carregando...</div>
+        <div class="user-role" id="userRoleSidebar">-</div>
+      </div>
+    </div>
+    <button class="btn-logout" onclick="logout()">↩ Sair do Sistema</button>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<div class="main">
+  <div class="topbar">
+    <div>
+      <div class="page-title" id="pageTitle">Dashboard</div>
+      <div class="page-subtitle" id="pageSubtitle">Visão geral do sistema</div>
+    </div>
+    <div class="topbar-right">
+      <span class="badge-pill" id="userBadge">Admin</span>
+      <span id="userNameTop" style="font-size:13px;font-weight:600;color:#374151;">-</span>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- ===================== DASHBOARD ===================== -->
+    <div class="page-section active" id="section-dashboard">
+      <div class="stats-grid" id="statsGrid">
+        <div class="loading"><div class="spinner"></div> Carregando...</div>
+      </div>
+      <div class="panels-grid">
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title">📋 Últimas Averbações</div>
+            <button class="btn btn-outline btn-sm" onclick="navTo('averbacoes')">Ver todas</button>
+          </div>
+          <div class="panel-body">
+            <div class="table-wrap">
+              <table id="tabelaUltimasAverb">
+                <thead><tr><th>Código</th><th>Funcionário</th><th>Banco</th><th>Tipo</th><th>Parcela</th><th>Status</th></tr></thead>
+                <tbody><tr><td colspan="6"><div class="loading"><div class="spinner"></div></div></td></tr></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title">📈 Volume por Tipo</div>
+          </div>
+          <div class="panel-body" id="chartPorTipo">
+            <div class="loading"><div class="spinner"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== AVERBAÇÕES ===================== -->
+    <div class="page-section" id="section-averbacoes">
+      <div class="filter-bar">
+        <input class="search-input" type="text" placeholder="Buscar por código, funcionário..." id="searchAverb" oninput="filtrarAverbacoes()">
+        <select class="filter-select" id="filterStatus" onchange="filtrarAverbacoes()">
+          <option value="">Todos os status</option>
+          <option value="RESERVADA">Reservada</option>
+          <option value="APROVADA">Aprovada</option>
+          <option value="PENDENTE">Pendente</option>
+          <option value="CANCELADA">Cancelada</option>
+        </select>
+        <select class="filter-select" id="filterTipo" onchange="filtrarAverbacoes()">
+          <option value="">Todos os tipos</option>
+          <option value="EMPRESTIMO">Empréstimo</option>
+          <option value="CARTAO">Cartão</option>
+          <option value="BENEFICIO">Benefício</option>
+          <option value="REFINANCIAMENTO">Refinanciamento</option>
+        </select>
+        <button class="btn btn-primary" onclick="navTo('nova-averbacao')">➕ Nova Averbação</button>
+      </div>
+      <div class="panel">
+        <div class="panel-body" style="padding: 0;">
+          <div class="table-wrap">
+            <table id="tabelaAverbacoes">
+              <thead>
+                <tr>
+                  <th>Código</th><th>Funcionário</th><th>Convênio</th><th>Banco</th>
+                  <th>Tipo</th><th>Parcela</th><th>Prazo</th><th>Competência</th>
+                  <th>Status</th><th>Ações</th>
+                </tr>
+              </thead>
+              <tbody><tr><td colspan="10"><div class="loading"><div class="spinner"></div></div></td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div id="paginacaoAverb" style="display:flex;justify-content:center;gap:8px;margin-top:16px;"></div>
+    </div>
+
+    <!-- ===================== NOVA AVERBAÇÃO ===================== -->
+    <div class="page-section" id="section-nova-averbacao">
+      <div class="form-card">
+        <div class="form-title">🏦 Solicitar Nova Averbação</div>
+        <div id="alertNovaAverb"></div>
+        <div class="form-grid form-grid-2">
+          <div class="form-group">
+            <label>CPF do Funcionário</label>
+            <div style="display:flex;gap:8px;">
+              <input type="text" id="cpfBusca" placeholder="000.000.000-00" maxlength="14" oninput="formatarCPFInput(this)">
+              <button class="btn btn-primary" onclick="buscarFuncionarioCPF()">🔍</button>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Banco</label>
+            <select id="bancoSel">
+              <option value="">Selecione o banco...</option>
+            </select>
+          </div>
+        </div>
+        <div id="cardFuncionario" style="display:none;margin:16px 0;">
+          <div style="background:#f0f9ff;border:1px solid #bae6fd;border-radius:12px;padding:20px;">
+            <div style="font-size:13px;font-weight:700;color:#0369a1;margin-bottom:12px;">👤 Funcionário Encontrado</div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;" id="dadosFuncionario"></div>
+            <div style="margin-top:16px;">
+              <div style="font-size:13px;font-weight:700;color:#374151;margin-bottom:10px;">📊 Margem Disponível</div>
+              <div id="margensDisplay"></div>
+            </div>
+          </div>
+        </div>
+        <div class="form-grid form-grid-3" id="camposAverbacao" style="display:none;margin-top:16px;">
+          <div class="form-group">
+            <label>Tipo</label>
+            <select id="tipoAverb" onchange="atualizarMargemDisplay()">
+              <option value="EMPRESTIMO">💰 Empréstimo</option>
+              <option value="CARTAO">💳 Cartão de Crédito</option>
+              <option value="BENEFICIO">🎯 Benefício</option>
+              <option value="REFINANCIAMENTO">🔄 Refinanciamento</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Valor da Parcela (R$)</label>
+            <input type="number" id="valorParcela" placeholder="0,00" step="0.01" min="0.01" oninput="verificarMargem()">
+          </div>
+          <div class="form-group">
+            <label>Prazo (meses)</label>
+            <input type="number" id="prazoMeses" value="36" min="1" max="96">
+          </div>
+          <div class="form-group">
+            <label>Taxa de Juros Mensal (%)</label>
+            <input type="number" id="taxaJuros" placeholder="0.00" step="0.01" value="0">
+          </div>
+          <div class="form-group">
+            <label>Nº Contrato Banco</label>
+            <input type="text" id="numContrato" placeholder="Número do contrato">
+          </div>
+          <div class="form-group">
+            <label>Competência Início</label>
+            <input type="month" id="competenciaInicio">
+          </div>
+        </div>
+        <div id="alertMargem"></div>
+        <div class="form-actions" id="actionsNovaAverb" style="display:none;">
+          <button class="btn btn-outline" onclick="limparFormAverbacao()">✖ Limpar</button>
+          <button class="btn btn-success" onclick="confirmarAverbacao()">✅ Confirmar Averbação</button>
+        </div>
+      </div>
+      <div id="resultadoAverbacao" style="display:none;"></div>
+    </div>
+
+    <!-- ===================== FUNCIONÁRIOS ===================== -->
+    <div class="page-section" id="section-funcionarios">
+      <div class="filter-bar">
+        <input class="search-input" type="text" placeholder="Buscar por nome ou matrícula..." id="searchFunc" oninput="filtrarFuncionarios()">
+        <select class="filter-select" id="filterSituacao" onchange="filtrarFuncionarios()">
+          <option value="">Todas as situações</option>
+          <option value="ATIVO">Ativo</option>
+          <option value="INATIVO">Inativo</option>
+          <option value="AFASTADO">Afastado</option>
+          <option value="APOSENTADO">Aposentado</option>
+        </select>
+        <button class="btn btn-primary" onclick="abrirModalNovoFuncionario()">➕ Novo Funcionário</button>
+      </div>
+      <div class="panel">
+        <div class="panel-body" style="padding:0;">
+          <div class="table-wrap">
+            <table id="tabelaFuncionarios">
+              <thead>
+                <tr><th>Matrícula</th><th>Nome</th><th>CPF</th><th>Cargo</th><th>Lotação</th><th>Salário Líquido</th><th>Situação</th><th>Ações</th></tr>
+              </thead>
+              <tbody><tr><td colspan="8"><div class="loading"><div class="spinner"></div></div></td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== CONVÊNIOS ===================== -->
+    <div class="page-section" id="section-convenios">
+      <div style="display:flex;justify-content:flex-end;margin-bottom:16px;">
+        <button class="btn btn-primary" onclick="abrirModalNovoConvenio()">➕ Novo Convênio</button>
+      </div>
+      <div id="listaConvenios" class="stats-grid"></div>
+    </div>
+
+    <!-- ===================== BANCOS ===================== -->
+    <div class="page-section" id="section-bancos">
+      <div style="display:flex;justify-content:flex-end;margin-bottom:16px;">
+        <button class="btn btn-primary" onclick="abrirModalNovoBanco()">➕ Novo Banco</button>
+      </div>
+      <div id="listaBancos" class="stats-grid"></div>
+    </div>
+
+    <!-- ===================== USUÁRIOS ===================== -->
+    <div class="page-section" id="section-usuarios">
+      <div style="display:flex;justify-content:flex-end;margin-bottom:16px;">
+        <button class="btn btn-primary" onclick="abrirModalNovoUsuario()">➕ Novo Usuário</button>
+      </div>
+      <div class="panel">
+        <div class="panel-body" style="padding:0;">
+          <div class="table-wrap">
+            <table id="tabelaUsuarios">
+              <thead><tr><th>Nome</th><th>Email</th><th>Perfil</th><th>Convênio/Banco</th><th>Último Login</th><th>Status</th><th>Ações</th></tr></thead>
+              <tbody><tr><td colspan="7"><div class="loading"><div class="spinner"></div></div></td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== AUDITORIA ===================== -->
+    <div class="page-section" id="section-auditoria">
+      <div class="stats-grid" id="statsAuditoria"></div>
+      <div class="filter-bar" style="margin-top:8px;">
+        <select class="filter-select" id="filterModulo" onchange="carregarLogs()">
+          <option value="">Todos os módulos</option>
+          <option value="AUTH">Autenticação</option>
+          <option value="AVERBACOES">Averbações</option>
+          <option value="FUNCIONARIOS">Funcionários</option>
+          <option value="CONVENIOS">Convênios</option>
+          <option value="BANCOS">Bancos</option>
+          <option value="USUARIOS">Usuários</option>
+        </select>
+        <select class="filter-select" id="filterResultado" onchange="carregarLogs()">
+          <option value="">Todos os resultados</option>
+          <option value="SUCESSO">Sucesso</option>
+          <option value="FALHA">Falha</option>
+        </select>
+        <input type="date" class="filter-select" id="filterDataLog" onchange="carregarLogs()">
+      </div>
+      <div class="panel">
+        <div class="panel-body" style="padding:0;">
+          <div class="table-wrap">
+            <table id="tabelaLogs">
+              <thead>
+                <tr><th>Data/Hora</th><th>Usuário</th><th>Perfil</th><th>Módulo</th><th>Ação</th><th>Entidade</th><th>IP</th><th>Resultado</th></tr>
+              </thead>
+              <tbody><tr><td colspan="8"><div class="loading"><div class="spinner"></div></div></td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== CONSULTA MARGEM ===================== -->
+    <div class="page-section" id="section-consulta-margem">
+      <div class="form-card">
+        <div class="form-title">💰 Portal de Transparência - Consulta de Margem</div>
+        <div class="form-grid form-grid-2">
+          <div class="form-group">
+            <label>CPF do Funcionário</label>
+            <input type="text" id="cpfConsulta" placeholder="000.000.000-00" maxlength="14" oninput="formatarCPFInput(this)">
+          </div>
+          <div class="form-group" style="justify-content:flex-end;">
+            <label>&nbsp;</label>
+            <button class="btn btn-primary" onclick="consultarMargem()">🔍 Consultar Margem</button>
+          </div>
+        </div>
+      </div>
+      <div id="resultadoConsultaMargem"></div>
+    </div>
+
+    <!-- ===================== CALCULADORA ===================== -->
+    <div class="page-section" id="section-calculadora">
+      <div class="form-card">
+        <div class="form-title">🧮 Calculadora de Margem Consignável</div>
+        <div class="form-grid form-grid-3">
+          <div class="form-group">
+            <label>Salário Bruto (R$)</label>
+            <input type="number" id="calcBruto" placeholder="0,00" oninput="calcularMargem()">
+          </div>
+          <div class="form-group">
+            <label>Salário Líquido (R$)</label>
+            <input type="number" id="calcLiquido" placeholder="0,00" oninput="calcularMargem()">
+          </div>
+          <div class="form-group">
+            <label>% Empréstimo</label>
+            <input type="number" id="calcPctEmp" value="35" oninput="calcularMargem()">
+          </div>
+          <div class="form-group">
+            <label>% Cartão</label>
+            <input type="number" id="calcPctCart" value="5" oninput="calcularMargem()">
+          </div>
+          <div class="form-group">
+            <label>% Benefício</label>
+            <input type="number" id="calcPctBenef" value="5" oninput="calcularMargem()">
+          </div>
+        </div>
+      </div>
+      <div id="resultadoCalc"></div>
+    </div>
+
+  </div><!-- /content -->
+</div><!-- /main -->
+
+<!-- MODALS -->
+<div class="modal-overlay" id="modalFuncionario">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">👥 Novo Funcionário</div>
+      <button class="modal-close" onclick="fecharModal('modalFuncionario')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div id="alertModalFunc"></div>
+      <div class="form-grid">
+        <div class="form-group"><label>Matrícula *</label><input type="text" id="fMatricula" placeholder="MAT001"></div>
+        <div class="form-group"><label>Nome Completo *</label><input type="text" id="fNome" placeholder="Nome do funcionário"></div>
+        <div class="form-group"><label>CPF *</label><input type="text" id="fCpf" placeholder="000.000.000-00" maxlength="14" oninput="formatarCPFInput(this)"></div>
+        <div class="form-group"><label>Data de Nascimento</label><input type="date" id="fNascimento"></div>
+        <div class="form-group"><label>Convênio *</label><select id="fConvenio"></select></div>
+        <div class="form-group"><label>Cargo</label><input type="text" id="fCargo" placeholder="Ex: Analista"></div>
+        <div class="form-group"><label>Lotação/Setor</label><input type="text" id="fLotacao" placeholder="Ex: Secretaria de Finanças"></div>
+        <div class="form-group"><label>Data Admissão</label><input type="date" id="fAdmissao"></div>
+        <div class="form-group"><label>Salário Bruto (R$) *</label><input type="number" id="fBruto" placeholder="0,00" step="0.01"></div>
+        <div class="form-group"><label>Salário Líquido (R$) *</label><input type="number" id="fLiquido" placeholder="0,00" step="0.01"></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="fecharModal('modalFuncionario')">Cancelar</button>
+      <button class="btn btn-primary" onclick="salvarFuncionario()">💾 Salvar</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modalConvenio">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">🏛️ Novo Convênio</div>
+      <button class="modal-close" onclick="fecharModal('modalConvenio')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div id="alertModalConv"></div>
+      <div class="form-grid">
+        <div class="form-group"><label>Nome do Convênio *</label><input type="text" id="cNome" placeholder="Ex: Prefeitura de São Paulo"></div>
+        <div class="form-group"><label>CNPJ *</label><input type="text" id="cCnpj" placeholder="00.000.000/0001-00"></div>
+        <div class="form-group"><label>Tipo *</label>
+          <select id="cTipo">
+            <option value="PUBLICO">Público</option>
+            <option value="PRIVADO">Privado</option>
+            <option value="MILITAR">Militar</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Sistema de Folha</label>
+          <select id="cSistema">
+            <option value="MANUAL">Manual</option>
+            <option value="TOTVS">TOTVS</option>
+            <option value="SAP">SAP</option>
+            <option value="SENIOR">Senior</option>
+            <option value="GOVBR">Gov.BR</option>
+          </select>
+        </div>
+        <div class="form-group"><label>% Empréstimo</label><input type="number" id="cPctEmp" value="35" step="0.1"></div>
+        <div class="form-group"><label>% Cartão</label><input type="number" id="cPctCart" value="5" step="0.1"></div>
+        <div class="form-group"><label>% Benefício</label><input type="number" id="cPctBenef" value="5" step="0.1"></div>
+        <div class="form-group"><label>Responsável</label><input type="text" id="cResponsavel" placeholder="Nome do responsável"></div>
+        <div class="form-group"><label>Telefone</label><input type="text" id="cTelefone" placeholder="(00) 0000-0000"></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="fecharModal('modalConvenio')">Cancelar</button>
+      <button class="btn btn-primary" onclick="salvarConvenio()">💾 Salvar</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modalBanco">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">🏦 Novo Banco</div>
+      <button class="modal-close" onclick="fecharModal('modalBanco')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div id="alertModalBanco"></div>
+      <div class="form-grid">
+        <div class="form-group"><label>Nome do Banco *</label><input type="text" id="bNome" placeholder="Ex: Banco do Brasil"></div>
+        <div class="form-group"><label>Código BACEN *</label><input type="text" id="bCodigo" placeholder="001"></div>
+        <div class="form-group"><label>CNPJ *</label><input type="text" id="bCnpj" placeholder="00.000.000/0001-00"></div>
+        <div class="form-group"><label>Taxa de Averbação (R$)</label><input type="number" id="bTaxa" value="15.00" step="0.01"></div>
+        <div class="form-group"><label>Contato Responsável</label><input type="text" id="bContato"></div>
+        <div class="form-group"><label>Email Operacional</label><input type="email" id="bEmail"></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="fecharModal('modalBanco')">Cancelar</button>
+      <button class="btn btn-primary" onclick="salvarBanco()">💾 Salvar</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modalUsuario">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">👤 Novo Usuário</div>
+      <button class="modal-close" onclick="fecharModal('modalUsuario')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div id="alertModalUser"></div>
+      <div class="form-grid">
+        <div class="form-group"><label>Nome *</label><input type="text" id="uNome" placeholder="Nome completo"></div>
+        <div class="form-group"><label>Email *</label><input type="email" id="uEmail"></div>
+        <div class="form-group"><label>Senha *</label><input type="password" id="uSenha" placeholder="Mín. 8 caracteres"></div>
+        <div class="form-group"><label>Perfil *</label>
+          <select id="uPerfil" onchange="toggleConvenioBanco()">
+            <option value="ADMIN">Administrador</option>
+            <option value="RH">RH</option>
+            <option value="BANCO">Banco</option>
+            <option value="FUNCIONARIO">Funcionário</option>
+          </select>
+        </div>
+        <div class="form-group" id="grpConvenio"><label>Convênio</label><select id="uConvenio"><option value="">Selecione...</option></select></div>
+        <div class="form-group" id="grpBanco"><label>Banco</label><select id="uBanco"><option value="">Selecione...</option></select></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="fecharModal('modalUsuario')">Cancelar</button>
+      <button class="btn btn-primary" onclick="salvarUsuario()">💾 Salvar</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modalDetalheAverb">
+  <div class="modal" style="width:700px;">
+    <div class="modal-header">
+      <div class="modal-title">📋 Detalhe da Averbação</div>
+      <button class="modal-close" onclick="fecharModal('modalDetalheAverb')">✕</button>
+    </div>
+    <div class="modal-body" id="bodyDetalheAverb"></div>
+    <div class="modal-footer" id="footerDetalheAverb"></div>
+  </div>
+</div>
+
+<div id="toast-container"></div>
+
+<script>
+const API = '/api';
+let usuario = null;
+let dadosAtuaisFuncionario = null;
+let dadosAtuaisMargem = null;
+let averbacoesPagina = 1;
+let funcionariosPagina = 1;
+
+// ===================== AUTH =====================
+function getToken() { return localStorage.getItem('token'); }
+function headers() { return { 'Content-Type': 'application/json', 'Authorization': `Bearer ${getToken()}` }; }
+
+async function apiFetch(url, options = {}) {
+  const resp = await fetch(API + url, { ...options, headers: { ...headers(), ...(options.headers || {}) } });
+  if (resp.status === 401) { logout(); return null; }
+  return resp;
+}
+
+function logout() {
+  localStorage.clear();
+  window.location.href = '/';
+}
+
+// ===================== TOAST =====================
+function toast(msg, type = 'info') {
+  const icons = { success: '✅', error: '❌', info: 'ℹ️' };
+  const el = document.createElement('div');
+  el.className = `toast ${type}`;
+  el.innerHTML = `<span>${icons[type]||'ℹ️'}</span> ${msg}`;
+  document.getElementById('toast-container').appendChild(el);
+  setTimeout(() => el.remove(), 4000);
+}
+
+// ===================== NAVEGAÇÃO =====================
+const pageTitles = {
+  dashboard: ['Dashboard', 'Visão geral do sistema'],
+  averbacoes: ['Averbações', 'Contratos e reservas de margem'],
+  'nova-averbacao': ['Nova Averbação', 'Solicitar reserva de margem'],
+  funcionarios: ['Funcionários', 'Cadastro de servidores e empregados'],
+  convenios: ['Convênios', 'Prefeituras, empresas e órgãos'],
+  bancos: ['Bancos', 'Instituições financeiras parceiras'],
+  usuarios: ['Usuários do Sistema', 'Controle de acesso'],
+  auditoria: ['Auditoria LGPD', 'Logs e rastreabilidade'],
+  'consulta-margem': ['Consulta de Margem', 'Portal de transparência'],
+  calculadora: ['Calculadora', 'Motor de cálculo de margem consignável']
+};
+
+function navTo(page) {
+  document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  const sec = document.getElementById(`section-${page}`);
+  if (sec) sec.classList.add('active');
+  const nav = document.querySelector(`[onclick="navTo('${page}')"]`);
+  if (nav) nav.classList.add('active');
+  const [title, sub] = pageTitles[page] || [page, ''];
+  document.getElementById('pageTitle').textContent = title;
+  document.getElementById('pageSubtitle').textContent = sub;
+  loadPageData(page);
+}
+
+function loadPageData(page) {
+  switch(page) {
+    case 'dashboard': carregarDashboard(); break;
+    case 'averbacoes': carregarAverbacoes(); break;
+    case 'nova-averbacao': iniciarNovaAverbacao(); break;
+    case 'funcionarios': carregarFuncionarios(); break;
+    case 'convenios': carregarConvenios(); break;
+    case 'bancos': carregarBancos(); break;
+    case 'usuarios': carregarUsuarios(); break;
+    case 'auditoria': carregarAuditoria(); break;
+  }
+}
+
+// ===================== INIT =====================
+window.addEventListener('DOMContentLoaded', async () => {
+  const token = getToken();
+  if (!token) { window.location.href = '/'; return; }
+  const u = JSON.parse(localStorage.getItem('usuario') || '{}');
+  usuario = u;
+  document.getElementById('userNameSidebar').textContent = u.nome || 'Usuário';
+  document.getElementById('userAvatarSidebar').textContent = (u.nome || 'U')[0].toUpperCase();
+  document.getElementById('userNameTop').textContent = u.nome || '';
+  const perfis = { SUPER_ADMIN: ['badge-admin','👑 Super Admin'], ADMIN: ['badge-admin','Administrador'], RH: ['badge-rh','RH'], BANCO: ['badge-banco','Banco'], FUNCIONARIO: ['badge-func','Funcionário'] };
+  const [cls, txt] = perfis[u.perfil] || ['badge-admin', u.perfil];
+  const badge = document.getElementById('userBadge');
+  badge.className = `badge-pill ${cls}`;
+  badge.textContent = txt;
+  document.getElementById('userRoleSidebar').textContent = txt;
+
+  // Ocultar menus não autorizados
+  if (!['SUPER_ADMIN','ADMIN'].includes(u.perfil)) {
+    ['nav-convenios','nav-bancos','nav-usuarios','nav-auditoria'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.style.display = 'none';
+    });
+  }
+
+  // Competência padrão
+  const hoje = new Date();
+  const comp = `${hoje.getFullYear()}-${String(hoje.getMonth()+1).padStart(2,'0')}`;
+  const el = document.getElementById('competenciaInicio');
+  if (el) el.value = comp;
+
+  carregarDashboard();
+});
+
+// ===================== DASHBOARD =====================
+async function carregarDashboard() {
+  try {
+    const [rResumo, rGrafico] = await Promise.all([
+      apiFetch('/dashboard/resumo'),
+      apiFetch('/dashboard/grafico-mensal')
+    ]);
+    if (!rResumo) return;
+    const resumo = await rResumo.json();
+    const grafico = await rGrafico.json();
+    renderStats(resumo);
+    renderUltimasAverb(resumo.ultimas || []);
+    renderChartTipo(resumo.por_tipo || []);
+  } catch(e) { console.error(e); }
+}
+
+function renderStats(resumo) {
+  const av = resumo.averbacoes_mes || {};
+  const fmt = v => new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'}).format(v||0);
+  const html = `
+    <div class="stat-card blue">
+      <div class="stat-icon blue">👥</div>
+      <div class="stat-value">${(resumo.totais?.funcionarios||0).toLocaleString('pt-BR')}</div>
+      <div class="stat-label">Funcionários Ativos</div>
+    </div>
+    <div class="stat-card green">
+      <div class="stat-icon green">✅</div>
+      <div class="stat-value">${av.aprovadas||0}</div>
+      <div class="stat-label">Averbações Aprovadas (Mês)</div>
+      <div class="stat-change up">↑ ${av.reservadas||0} Reservadas</div>
+    </div>
+    <div class="stat-card yellow">
+      <div class="stat-icon yellow">💰</div>
+      <div class="stat-value">${fmt(av.volume_parcelas)}</div>
+      <div class="stat-label">Volume em Parcelas (Mês)</div>
+    </div>
+    <div class="stat-card purple">
+      <div class="stat-icon purple">💵</div>
+      <div class="stat-value">${fmt(av.receita_averbacao)}</div>
+      <div class="stat-label">Receita de Averbação (Mês)</div>
+    </div>
+    <div class="stat-card red">
+      <div class="stat-icon red">🏦</div>
+      <div class="stat-value">${resumo.totais?.bancos||0}</div>
+      <div class="stat-label">Bancos Parceiros</div>
+    </div>
+    <div class="stat-card blue">
+      <div class="stat-icon blue">🏛️</div>
+      <div class="stat-value">${resumo.totais?.convenios||0}</div>
+      <div class="stat-label">Convênios Ativos</div>
+    </div>
+  `;
+  document.getElementById('statsGrid').innerHTML = html;
+}
+
+function renderUltimasAverb(items) {
+  const tbody = document.querySelector('#tabelaUltimasAverb tbody');
+  if (!items.length) { tbody.innerHTML = '<tr><td colspan="6"><div class="empty-state"><div class="icon">📋</div><p>Nenhuma averbação ainda</p></div></td></tr>'; return; }
+  tbody.innerHTML = items.map(a => `
+    <tr>
+      <td><span class="cod-averbacao">${a.codigo_averbacao}</span></td>
+      <td>${a.funcionario_nome||'-'}</td>
+      <td>${a.banco_nome||'-'}</td>
+      <td><span class="status ${(a.tipo||'').toLowerCase()}" style="background:#f1f5f9;color:#374151;">${tipoLabel(a.tipo)}</span></td>
+      <td><strong>${fmtMoeda(a.valor_parcela)}</strong></td>
+      <td><span class="status ${(a.status||'').toLowerCase()}">${a.status}</span></td>
+    </tr>
+  `).join('');
+}
+
+function renderChartTipo(items) {
+  const el = document.getElementById('chartPorTipo');
+  if (!items.length) { el.innerHTML = '<div class="empty-state"><div class="icon">📊</div><p>Sem dados</p></div>'; return; }
+  const total = items.reduce((s, i) => s + (i.volume||0), 0);
+  const colors = { EMPRESTIMO: '#1e40af', CARTAO: '#7c3aed', BENEFICIO: '#059669', REFINANCIAMENTO: '#d97706' };
+  el.innerHTML = items.map(i => {
+    const pct = total > 0 ? Math.round((i.volume/total)*100) : 0;
+    return `
+      <div class="margem-bar-container">
+        <div class="margem-bar-label">
+          <span class="label">${tipoLabel(i.tipo)}</span>
+          <span class="values">${i.total} contratos · ${fmtMoeda(i.volume)}</span>
+        </div>
+        <div class="margem-bar">
+          <div class="margem-bar-fill" style="width:${pct}%;background:${colors[i.tipo]||'#64748b'}"></div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+// ===================== AVERBAÇÕES =====================
+async function carregarAverbacoes(page = 1) {
+  averbacoesPagina = page;
+  const status = document.getElementById('filterStatus')?.value || '';
+  const tipo = document.getElementById('filterTipo')?.value || '';
+  let url = `/averbacoes?page=${page}&limit=15`;
+  if (status) url += `&status=${status}`;
+  if (tipo) url += `&tipo=${tipo}`;
+  const resp = await apiFetch(url);
+  if (!resp) return;
+  const data = await resp.json();
+  renderTabelaAverbacoes(data.data || []);
+  renderPaginacao('paginacaoAverb', data.total, data.limit, data.page, carregarAverbacoes);
+}
+
+function filtrarAverbacoes() { carregarAverbacoes(1); }
+
+function renderTabelaAverbacoes(items) {
+  const tbody = document.querySelector('#tabelaAverbacoes tbody');
+  if (!items.length) { tbody.innerHTML = '<tr><td colspan="10"><div class="empty-state"><div class="icon">📋</div><h3>Nenhuma averbação encontrada</h3></div></td></tr>'; return; }
+  tbody.innerHTML = items.map(a => `
+    <tr>
+      <td><span class="cod-averbacao">${a.codigo_averbacao}</span></td>
+      <td>${a.funcionario_nome||'-'}<br><small style="color:#94a3b8;">${a.matricula||''}</small></td>
+      <td style="font-size:12px;">${a.convenio_nome||'-'}</td>
+      <td>${a.banco_nome||'-'}</td>
+      <td>${tipoLabel(a.tipo)}</td>
+      <td><strong>${fmtMoeda(a.valor_parcela)}</strong><br><small style="color:#94a3b8;">${a.prazo_meses}x</small></td>
+      <td style="font-size:12px;">${a.prazo_meses} meses</td>
+      <td style="font-size:12px;">${a.competencia_inicio}</td>
+      <td><span class="status ${(a.status||'').toLowerCase()}">${a.status}</span></td>
+      <td>
+        <button class="btn btn-sm btn-outline btn-icon" onclick="verDetalheAverbacao('${a.id}')" title="Ver detalhes">👁</button>
+        ${a.status==='RESERVADA' && ['SUPER_ADMIN','ADMIN','RH'].includes(usuario?.perfil) ? `<button class="btn btn-sm btn-success btn-icon" onclick="aprovarAverbacao('${a.id}')" title="Aprovar">✅</button>` : ''}
+        ${['RESERVADA','APROVADA'].includes(a.status) ? `<button class="btn btn-sm btn-danger btn-icon" onclick="cancelarAverbacao('${a.id}')" title="Cancelar">✕</button>` : ''}
+      </td>
+    </tr>
+  `).join('');
+}
+
+async function verDetalheAverbacao(id) {
+  const resp = await apiFetch(`/averbacoes/${id}`);
+  if (!resp) return;
+  const a = await resp.json();
+  document.getElementById('bodyDetalheAverb').innerHTML = `
+    <div class="alert alert-info">
+      <span>🔑</span>
+      <div>
+        <strong>Código de Averbação:</strong>
+        <span class="cod-averbacao" style="font-size:18px;">${a.codigo_averbacao}</span>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:12px;">
+      <div><small style="color:#64748b;font-weight:700;">FUNCIONÁRIO</small><br>${a.funcionario_nome}</div>
+      <div><small style="color:#64748b;font-weight:700;">MATRÍCULA</small><br>${a.matricula}</div>
+      <div><small style="color:#64748b;font-weight:700;">CONVÊNIO</small><br>${a.convenio_nome}</div>
+      <div><small style="color:#64748b;font-weight:700;">BANCO</small><br>${a.banco_nome} (${a.codigo_bacen})</div>
+      <div><small style="color:#64748b;font-weight:700;">TIPO</small><br>${tipoLabel(a.tipo)}</div>
+      <div><small style="color:#64748b;font-weight:700;">STATUS</small><br><span class="status ${(a.status||'').toLowerCase()}">${a.status}</span></div>
+      <div><small style="color:#64748b;font-weight:700;">PARCELA</small><br><strong style="font-size:18px;">${fmtMoeda(a.valor_parcela)}</strong></div>
+      <div><small style="color:#64748b;font-weight:700;">PRAZO</small><br>${a.prazo_meses} meses</div>
+      <div><small style="color:#64748b;font-weight:700;">VALOR TOTAL</small><br>${fmtMoeda(a.valor_total)}</div>
+      <div><small style="color:#64748b;font-weight:700;">TAXA JUROS</small><br>${a.taxa_juros||0}% a.m.</div>
+      <div><small style="color:#64748b;font-weight:700;">COMPETÊNCIA INÍCIO</small><br>${a.competencia_inicio}</div>
+      <div><small style="color:#64748b;font-weight:700;">COMPETÊNCIA FIM</small><br>${a.competencia_fim||'-'}</div>
+      <div><small style="color:#64748b;font-weight:700;">Nº CONTRATO BANCO</small><br>${a.numero_contrato_banco||'-'}</div>
+      <div><small style="color:#64748b;font-weight:700;">TAXA AVERBAÇÃO COBRADA</small><br>${fmtMoeda(a.taxa_averbacao_cobrada)}</div>
+      <div><small style="color:#64748b;font-weight:700;">SOLICITADO EM</small><br>${fmtData(a.criado_em)}</div>
+      ${a.data_aprovacao ? `<div><small style="color:#64748b;font-weight:700;">APROVADO EM</small><br>${fmtData(a.data_aprovacao)}</div>` : ''}
+    </div>
+  `;
+  const footer = document.getElementById('footerDetalheAverb');
+  let btns = `<button class="btn btn-outline" onclick="fecharModal('modalDetalheAverb')">Fechar</button>`;
+  if (a.status === 'RESERVADA' && ['SUPER_ADMIN','ADMIN','RH'].includes(usuario?.perfil)) {
+    btns += `<button class="btn btn-success" onclick="aprovarAverbacao('${a.id}');fecharModal('modalDetalheAverb')">✅ Aprovar</button>`;
+  }
+  if (['RESERVADA','APROVADA'].includes(a.status)) {
+    btns += `<button class="btn btn-danger" onclick="cancelarAverbacao('${a.id}');fecharModal('modalDetalheAverb')">✕ Cancelar</button>`;
+  }
+  footer.innerHTML = btns;
+  abrirModal('modalDetalheAverb');
+}
+
+async function aprovarAverbacao(id) {
+  if (!confirm('Aprovar esta averbação? Ela será lançada na folha de pagamento.')) return;
+  const resp = await apiFetch(`/averbacoes/${id}/aprovar`, { method: 'PATCH' });
+  if (!resp) return;
+  const data = await resp.json();
+  if (resp.ok) { toast('Averbação aprovada com sucesso!', 'success'); carregarAverbacoes(averbacoesPagina); }
+  else toast(data.erro || 'Erro ao aprovar', 'error');
+}
+
+async function cancelarAverbacao(id) {
+  const motivo = prompt('Motivo do cancelamento (obrigatório):');
+  if (!motivo) return;
+  const resp = await apiFetch(`/averbacoes/${id}/cancelar`, { method: 'PATCH', body: JSON.stringify({ motivo }) });
+  if (!resp) return;
+  const data = await resp.json();
+  if (resp.ok) { toast('Averbação cancelada. Margem devolvida.', 'success'); carregarAverbacoes(averbacoesPagina); }
+  else toast(data.erro || 'Erro ao cancelar', 'error');
+}
+
+// ===================== NOVA AVERBAÇÃO =====================
+async function iniciarNovaAverbacao() {
+  const resp = await apiFetch('/bancos');
+  if (!resp) return;
+  const bancos = await resp.json();
+  const sel = document.getElementById('bancoSel');
+  sel.innerHTML = '<option value="">Selecione o banco...</option>' +
+    bancos.filter(b => b.ativo).map(b => `<option value="${b.id}">${b.nome}</option>`).join('');
+
+  if (usuario?.perfil === 'BANCO' && usuario?.banco_id) {
+    sel.value = usuario.banco_id;
+    sel.disabled = true;
+  }
+}
+
+async function buscarFuncionarioCPF() {
+  const cpf = document.getElementById('cpfBusca').value.replace(/\D/g,'');
+  if (cpf.length !== 11) { toast('CPF inválido', 'error'); return; }
+  const resp = await apiFetch(`/funcionarios?page=1&limit=1`);
+  // Busca por CPF via endpoint específico (busca na listagem)
+  const resp2 = await apiFetch(`/funcionarios?busca=${cpf}&limit=1`);
+  if (!resp2) return;
+  const data = await resp2.json();
+  const func = data.data?.[0];
+  if (!func) { toast('Funcionário não encontrado', 'error'); document.getElementById('cardFuncionario').style.display = 'none'; return; }
+
+  // Buscar margem do funcionário
+  const rMargem = await apiFetch(`/funcionarios/${func.id}/margem`);
+  if (!rMargem) return;
+  const dadosMargem = await rMargem.json();
+  dadosAtuaisFuncionario = func;
+  dadosAtuaisMargem = dadosMargem;
+
+  document.getElementById('cardFuncionario').style.display = 'block';
+  document.getElementById('camposAverbacao').style.display = 'grid';
+  document.getElementById('actionsNovaAverb').style.display = 'flex';
+
+  const m = dadosMargem.margem;
+  document.getElementById('dadosFuncionario').innerHTML = `
+    <div><small style="color:#0369a1;font-weight:700;">NOME</small><br><strong>${func.nome}</strong></div>
+    <div><small style="color:#0369a1;font-weight:700;">MATRÍCULA</small><br>${func.matricula}</div>
+    <div><small style="color:#0369a1;font-weight:700;">CPF</small><br>${func.cpf}</div>
+    <div><small style="color:#0369a1;font-weight:700;">SALÁRIO LÍQUIDO</small><br><strong style="color:#059669;">${fmtMoeda(m?.salario_liquido||func.salario_liquido)}</strong></div>
+    <div><small style="color:#0369a1;font-weight:700;">SITUAÇÃO</small><br>${func.situacao}</div>
+    <div><small style="color:#0369a1;font-weight:700;">CONVÊNIO</small><br>${func.convenio_nome||'-'}</div>
+  `;
+
+  if (m) {
+    const pctEmp = m.margem_total_emprestimo > 0 ? (m.margem_usada_emprestimo / m.margem_total_emprestimo * 100) : 0;
+    const pctCart = m.margem_total_cartao > 0 ? (m.margem_usada_cartao / m.margem_total_cartao * 100) : 0;
+    const pctBenef = m.margem_total_beneficio > 0 ? (m.margem_usada_beneficio / m.margem_total_beneficio * 100) : 0;
+    document.getElementById('margensDisplay').innerHTML = `
+      <div class="margem-bar-container">
+        <div class="margem-bar-label">
+          <span class="label">💰 Empréstimo (35%)</span>
+          <span class="values">Disponível: <strong style="color:#10b981;">${fmtMoeda(m.margem_disponivel_emprestimo)}</strong> / Total: ${fmtMoeda(m.margem_total_emprestimo)}</span>
+        </div>
+        <div class="margem-bar"><div class="margem-bar-fill emp" style="width:${pctEmp}%"></div></div>
+      </div>
+      <div class="margem-bar-container">
+        <div class="margem-bar-label">
+          <span class="label">💳 Cartão (5%)</span>
+          <span class="values">Disponível: <strong style="color:#10b981;">${fmtMoeda(m.margem_disponivel_cartao)}</strong> / Total: ${fmtMoeda(m.margem_total_cartao)}</span>
+        </div>
+        <div class="margem-bar"><div class="margem-bar-fill cart" style="width:${pctCart}%"></div></div>
+      </div>
+      <div class="margem-bar-container">
+        <div class="margem-bar-label">
+          <span class="label">🎯 Benefício (5%)</span>
+          <span class="values">Disponível: <strong style="color:#10b981;">${fmtMoeda(m.margem_disponivel_beneficio)}</strong> / Total: ${fmtMoeda(m.margem_total_beneficio)}</span>
+        </div>
+        <div class="margem-bar"><div class="margem-bar-fill benef" style="width:${pctBenef}%"></div></div>
+      </div>
+    `;
+  } else {
+    document.getElementById('margensDisplay').innerHTML = '<div class="alert alert-warning">⚠️ Sem dados de margem para a competência atual</div>';
+  }
+}
+
+function verificarMargem() {
+  if (!dadosAtuaisMargem?.margem) return;
+  const m = dadosAtuaisMargem.margem;
+  const tipo = document.getElementById('tipoAverb').value;
+  const valor = parseFloat(document.getElementById('valorParcela').value || 0);
+  const tipoMap = { EMPRESTIMO: 'margem_disponivel_emprestimo', REFINANCIAMENTO: 'margem_disponivel_emprestimo', CARTAO: 'margem_disponivel_cartao', BENEFICIO: 'margem_disponivel_beneficio' };
+  const disponivel = m[tipoMap[tipo]] || 0;
+  const alertDiv = document.getElementById('alertMargem');
+  if (valor <= 0) { alertDiv.innerHTML = ''; return; }
+  if (valor > disponivel) {
+    alertDiv.innerHTML = `<div class="alert alert-error">❌ Parcela ${fmtMoeda(valor)} excede margem disponível ${fmtMoeda(disponivel)}</div>`;
+  } else {
+    alertDiv.innerHTML = `<div class="alert alert-success">✅ Margem OK! Restará ${fmtMoeda(disponivel - valor)} após esta averbação</div>`;
+  }
+}
+
+function atualizarMargemDisplay() { verificarMargem(); }
+
+function limparFormAverbacao() {
+  document.getElementById('cpfBusca').value = '';
+  document.getElementById('cardFuncionario').style.display = 'none';
+  document.getElementById('camposAverbacao').style.display = 'none';
+  document.getElementById('actionsNovaAverb').style.display = 'none';
+  document.getElementById('alertMargem').innerHTML = '';
+  document.getElementById('alertNovaAverb').innerHTML = '';
+  document.getElementById('resultadoAverbacao').style.display = 'none';
+  dadosAtuaisFuncionario = null;
+  dadosAtuaisMargem = null;
+}
+
+async function confirmarAverbacao() {
+  if (!dadosAtuaisFuncionario) { toast('Busque um funcionário primeiro', 'error'); return; }
+  const bancoId = document.getElementById('bancoSel').value;
+  const tipo = document.getElementById('tipoAverb').value;
+  const valorParcela = parseFloat(document.getElementById('valorParcela').value);
+  const prazoMeses = parseInt(document.getElementById('prazoMeses').value);
+  const taxaJuros = parseFloat(document.getElementById('taxaJuros').value || 0);
+  const numContrato = document.getElementById('numContrato').value;
+  const competenciaInicio = document.getElementById('competenciaInicio').value;
+
+  if (!bancoId || !tipo || !valorParcela || !prazoMeses) {
+    document.getElementById('alertNovaAverb').innerHTML = '<div class="alert alert-error">❌ Preencha todos os campos obrigatórios</div>';
+    return;
+  }
+
+  const resp = await apiFetch('/averbacoes', {
+    method: 'POST',
+    body: JSON.stringify({
+      funcionario_id: dadosAtuaisFuncionario.id,
+      banco_id: bancoId,
+      tipo, valor_parcela: valorParcela, prazo_meses: prazoMeses,
+      taxa_juros: taxaJuros, numero_contrato_banco: numContrato,
+      competencia_inicio: competenciaInicio
+    })
+  });
+  if (!resp) return;
+  const data = await resp.json();
+  if (!resp.ok) {
+    document.getElementById('alertNovaAverb').innerHTML = `<div class="alert alert-error">❌ ${data.erro || 'Erro ao criar averbação'}: ${data.detalhe||''}</div>`;
+    return;
+  }
+
+  document.getElementById('resultadoAverbacao').style.display = 'block';
+  document.getElementById('resultadoAverbacao').innerHTML = `
+    <div class="form-card" style="border:2px solid #10b981;">
+      <div style="text-align:center;padding:20px 0;">
+        <div style="font-size:48px;margin-bottom:12px;">🎉</div>
+        <h2 style="color:#059669;margin-bottom:8px;">Averbação Realizada com Sucesso!</h2>
+        <p style="color:#64748b;">Guarde este código para consultas futuras</p>
+        <div style="margin:20px 0;padding:20px;background:#f0fdf4;border-radius:12px;border:2px dashed #10b981;">
+          <div style="font-size:12px;color:#64748b;font-weight:700;letter-spacing:1px;">CÓDIGO DE AVERBAÇÃO</div>
+          <div style="font-family:monospace;font-size:28px;font-weight:800;color:#1e40af;letter-spacing:3px;margin-top:8px;">${data.codigo_averbacao}</div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:500px;margin:0 auto;">
+          <div style="text-align:center;background:#f8fafc;border-radius:10px;padding:14px;">
+            <div style="font-size:11px;color:#64748b;font-weight:700;">PARCELA</div>
+            <div style="font-size:18px;font-weight:800;color:#1e293b;">${fmtMoeda(data.valor_parcela)}</div>
+          </div>
+          <div style="text-align:center;background:#f8fafc;border-radius:10px;padding:14px;">
+            <div style="font-size:11px;color:#64748b;font-weight:700;">PRAZO</div>
+            <div style="font-size:18px;font-weight:800;color:#1e293b;">${data.prazo_meses}x</div>
+          </div>
+          <div style="text-align:center;background:#f8fafc;border-radius:10px;padding:14px;">
+            <div style="font-size:11px;color:#64748b;font-weight:700;">MARGEM RESTANTE</div>
+            <div style="font-size:18px;font-weight:800;color:#10b981;">${fmtMoeda(data.margem_restante)}</div>
+          </div>
+        </div>
+        <div style="margin-top:20px;">
+          <button class="btn btn-outline" onclick="limparFormAverbacao()" style="margin-right:10px;">Nova Averbação</button>
+          <button class="btn btn-primary" onclick="navTo('averbacoes')">Ver Todas Averbações</button>
+        </div>
+      </div>
+    </div>
+  `;
+  toast(`Averbação ${data.codigo_averbacao} criada!`, 'success');
+  document.getElementById('alertNovaAverb').innerHTML = '';
+  document.getElementById('camposAverbacao').style.display = 'none';
+  document.getElementById('actionsNovaAverb').style.display = 'none';
+  document.getElementById('cardFuncionario').style.display = 'none';
+}
+
+// ===================== FUNCIONÁRIOS =====================
+async function carregarFuncionarios(page = 1) {
+  funcionariosPagina = page;
+  const busca = document.getElementById('searchFunc')?.value || '';
+  const situacao = document.getElementById('filterSituacao')?.value || '';
+  let url = `/funcionarios?page=${page}&limit=15`;
+  if (busca) url += `&busca=${encodeURIComponent(busca)}`;
+  if (situacao) url += `&situacao=${situacao}`;
+  const resp = await apiFetch(url);
+  if (!resp) return;
+  const data = await resp.json();
+  const tbody = document.querySelector('#tabelaFuncionarios tbody');
+  if (!data.data?.length) { tbody.innerHTML = '<tr><td colspan="8"><div class="empty-state"><div class="icon">👥</div><h3>Nenhum funcionário encontrado</h3></div></td></tr>'; return; }
+  tbody.innerHTML = data.data.map(f => `
+    <tr>
+      <td><strong>${f.matricula}</strong></td>
+      <td>${f.nome}</td>
+      <td style="font-family:monospace;">${f.cpf}</td>
+      <td>${f.cargo||'-'}</td>
+      <td>${f.lotacao||'-'}</td>
+      <td><strong style="color:#059669;">${fmtMoeda(f.salario_liquido)}</strong></td>
+      <td><span class="status ${(f.situacao||'').toLowerCase()}" style="background:${f.situacao==='ATIVO'?'#d1fae5':'#fee2e2'};color:${f.situacao==='ATIVO'?'#065f46':'#991b1b'};">${f.situacao}</span></td>
+      <td>
+        <button class="btn btn-sm btn-outline" onclick="verMargemFuncionario('${f.id}','${f.nome}')">💰 Margem</button>
+      </td>
+    </tr>
+  `).join('');
+  renderPaginacao('', data.total, data.limit, data.page, carregarFuncionarios);
+}
+
+function filtrarFuncionarios() { carregarFuncionarios(1); }
+
+async function verMargemFuncionario(id, nome) {
+  const resp = await apiFetch(`/funcionarios/${id}/margem`);
+  if (!resp) return;
+  const data = await resp.json();
+  const m = data.margem;
+  if (!m) { toast('Sem dados de margem para este funcionário', 'info'); return; }
+  const html = `
+    <div>
+      <h3 style="margin-bottom:16px;">${nome}</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;">
+        <div style="background:#f8fafc;border-radius:10px;padding:14px;"><small>Salário Bruto</small><br><strong>${fmtMoeda(m.salario_bruto)}</strong></div>
+        <div style="background:#f8fafc;border-radius:10px;padding:14px;"><small>Salário Líquido</small><br><strong style="color:#059669;">${fmtMoeda(m.salario_liquido)}</strong></div>
+      </div>
+      ${renderMargemBars(m)}
+      ${data.averbacoes_ativas?.length ? `
+        <h4 style="margin:16px 0 10px;">Contratos Ativos</h4>
+        <table><thead><tr><th>Código</th><th>Banco</th><th>Tipo</th><th>Parcela</th><th>Status</th></tr></thead>
+        <tbody>${data.averbacoes_ativas.map(a => `
+          <tr><td><span class="cod-averbacao" style="font-size:11px;">${a.codigo_averbacao}</span></td>
+          <td>${a.banco_nome}</td><td>${tipoLabel(a.tipo)}</td>
+          <td>${fmtMoeda(a.valor_parcela)}</td>
+          <td><span class="status ${(a.status||'').toLowerCase()}">${a.status}</span></td></tr>
+        `).join('')}</tbody></table>
+      ` : '<div class="alert alert-info" style="margin-top:16px;">📋 Nenhum contrato ativo</div>'}
+    </div>
+  `;
+  document.getElementById('bodyDetalheAverb').innerHTML = html;
+  document.getElementById('footerDetalheAverb').innerHTML = '<button class="btn btn-outline" onclick="fecharModal(\'modalDetalheAverb\')">Fechar</button>';
+  document.querySelector('#modalDetalheAverb .modal-title').textContent = '💰 Margem do Funcionário';
+  abrirModal('modalDetalheAverb');
+}
+
+function renderMargemBars(m) {
+  const pctEmp = m.margem_total_emprestimo > 0 ? Math.round(m.margem_usada_emprestimo / m.margem_total_emprestimo * 100) : 0;
+  const pctCart = m.margem_total_cartao > 0 ? Math.round(m.margem_usada_cartao / m.margem_total_cartao * 100) : 0;
+  const pctBenef = m.margem_total_beneficio > 0 ? Math.round(m.margem_usada_beneficio / m.margem_total_beneficio * 100) : 0;
+  return `
+    <div class="margem-bar-container">
+      <div class="margem-bar-label">
+        <span class="label">💰 Empréstimo</span>
+        <span class="values">${fmtMoeda(m.margem_usada_emprestimo)} usados · ${fmtMoeda(m.margem_disponivel_emprestimo)} disponíveis</span>
+      </div>
+      <div class="margem-bar"><div class="margem-bar-fill emp" style="width:${pctEmp}%"></div></div>
+    </div>
+    <div class="margem-bar-container">
+      <div class="margem-bar-label">
+        <span class="label">💳 Cartão</span>
+        <span class="values">${fmtMoeda(m.margem_usada_cartao)} usados · ${fmtMoeda(m.margem_disponivel_cartao)} disponíveis</span>
+      </div>
+      <div class="margem-bar"><div class="margem-bar-fill cart" style="width:${pctCart}%"></div></div>
+    </div>
+    <div class="margem-bar-container">
+      <div class="margem-bar-label">
+        <span class="label">🎯 Benefício</span>
+        <span class="values">${fmtMoeda(m.margem_usada_beneficio)} usados · ${fmtMoeda(m.margem_disponivel_beneficio)} disponíveis</span>
+      </div>
+      <div class="margem-bar"><div class="margem-bar-fill benef" style="width:${pctBenef}%"></div></div>
+    </div>
+  `;
+}
+
+// ===================== CONVÊNIOS =====================
+async function carregarConvenios() {
+  const resp = await apiFetch('/convenios');
+  if (!resp) return;
+  const items = await resp.json();
+  const el = document.getElementById('listaConvenios');
+  el.innerHTML = items.map(c => `
+    <div class="stat-card ${c.tipo==='PUBLICO'?'blue':c.tipo==='MILITAR'?'red':'green'}">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;">
+        <div style="font-size:28px;">${c.tipo==='PUBLICO'?'🏛️':c.tipo==='MILITAR'?'⭐':'🏢'}</div>
+        <span class="status ${c.ativo?'aprovada':'cancelada'}">${c.ativo?'Ativo':'Inativo'}</span>
+      </div>
+      <div style="font-size:15px;font-weight:700;margin-bottom:4px;">${c.nome}</div>
+      <div style="font-size:12px;color:#64748b;">CNPJ: ${c.cnpj}</div>
+      <div style="font-size:12px;color:#64748b;margin-top:4px;">Sistema: ${c.sistema_folha}</div>
+      <div style="margin-top:12px;display:flex;gap:8px;">
+        <span style="background:#dbeafe;color:#1e40af;padding:3px 8px;border-radius:6px;font-size:11px;">Emp: ${c.percentual_emprestimo}%</span>
+        <span style="background:#ede9fe;color:#4338ca;padding:3px 8px;border-radius:6px;font-size:11px;">Cart: ${c.percentual_cartao}%</span>
+      </div>
+      <div style="margin-top:8px;font-size:12px;color:#64748b;">👥 ${c.total_funcionarios||0} funcionários ativos</div>
+    </div>
+  `).join('');
+}
+
+// ===================== BANCOS =====================
+async function carregarBancos() {
+  const resp = await apiFetch('/bancos');
+  if (!resp) return;
+  const items = await resp.json();
+  document.getElementById('listaBancos').innerHTML = items.map(b => `
+    <div class="stat-card yellow">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;">
+        <div style="font-size:28px;">🏦</div>
+        <span class="status ${b.ativo?'aprovada':'cancelada'}">${b.ativo?'Ativo':'Inativo'}</span>
+      </div>
+      <div style="font-size:15px;font-weight:700;">${b.nome}</div>
+      <div style="font-size:12px;color:#64748b;">Cód. BACEN: ${b.codigo_bacen}</div>
+      <div style="font-size:12px;color:#64748b;">CNPJ: ${b.cnpj}</div>
+      <div style="margin-top:12px;background:#fef3c7;border-radius:8px;padding:10px;text-align:center;">
+        <div style="font-size:10px;color:#92400e;font-weight:700;">TAXA AVERBAÇÃO</div>
+        <div style="font-size:20px;font-weight:800;color:#92400e;">${fmtMoeda(b.taxa_averbacao)}</div>
+      </div>
+      ${b.contato_responsavel ? `<div style="margin-top:8px;font-size:12px;color:#64748b;">📞 ${b.contato_responsavel}</div>` : ''}
+    </div>
+  `).join('');
+}
+
+// ===================== USUÁRIOS =====================
+async function carregarUsuarios() {
+  const resp = await apiFetch('/usuarios');
+  if (!resp) return;
+  const items = await resp.json();
+  const tbody = document.querySelector('#tabelaUsuarios tbody');
+  const perfis = { SUPER_ADMIN:'👑 Super Admin', ADMIN:'🔧 Admin', RH:'🏛️ RH', BANCO:'🏦 Banco', FUNCIONARIO:'👤 Funcionário' };
+  tbody.innerHTML = items.map(u => `
+    <tr>
+      <td>${u.nome}</td>
+      <td>${u.email}</td>
+      <td>${perfis[u.perfil]||u.perfil}</td>
+      <td>${u.convenio_nome||u.banco_nome||'-'}</td>
+      <td style="font-size:12px;">${u.ultimo_login ? fmtData(u.ultimo_login) : 'Nunca'}</td>
+      <td><span class="status ${u.ativo?'aprovada':'cancelada'}">${u.ativo?'Ativo':'Inativo'}</span></td>
+      <td>
+        ${u.ativo && u.perfil !== 'SUPER_ADMIN' ? `<button class="btn btn-sm btn-danger" onclick="desativarUsuario('${u.id}','${u.nome}')">Desativar</button>` : ''}
+      </td>
+    </tr>
+  `).join('');
+}
+
+async function desativarUsuario(id, nome) {
+  if (!confirm(`Desativar usuário "${nome}"?`)) return;
+  const resp = await apiFetch(`/usuarios/${id}`, { method: 'DELETE' });
+  if (!resp) return;
+  if (resp.ok) { toast('Usuário desativado', 'success'); carregarUsuarios(); }
+}
+
+// ===================== AUDITORIA =====================
+async function carregarAuditoria() {
+  const [rStats, rLogs] = await Promise.all([
+    apiFetch('/auditoria/estatisticas'),
+    apiFetch('/auditoria/logs?limit=20')
+  ]);
+  if (!rStats) return;
+  const stats = await rStats.json();
+  const logsData = await rLogs.json();
+  renderStatsAuditoria(stats);
+  renderLogs(logsData.data || []);
+}
+
+async function carregarLogs() {
+  const modulo = document.getElementById('filterModulo')?.value || '';
+  const resultado = document.getElementById('filterResultado')?.value || '';
+  const data = document.getElementById('filterDataLog')?.value || '';
+  let url = '/auditoria/logs?limit=30';
+  if (modulo) url += `&modulo=${modulo}`;
+  if (resultado) url += `&resultado=${resultado}`;
+  if (data) url += `&data_inicio=${data}&data_fim=${data}`;
+  const resp = await apiFetch(url);
+  if (!resp) return;
+  const logsData = await resp.json();
+  renderLogs(logsData.data || []);
+}
+
+function renderStatsAuditoria(stats) {
+  const el = document.getElementById('statsAuditoria');
+  const total = (stats.por_modulo||[]).reduce((s,i) => s+i.total, 0);
+  const falhas = (stats.por_modulo||[]).reduce((s,i) => s+i.falha, 0);
+  el.innerHTML = `
+    <div class="stat-card blue"><div class="stat-icon blue">📊</div><div class="stat-value">${total.toLocaleString('pt-BR')}</div><div class="stat-label">Total de Eventos</div></div>
+    <div class="stat-card red"><div class="stat-icon red">🚨</div><div class="stat-value">${falhas}</div><div class="stat-label">Tentativas Falhas</div></div>
+    <div class="stat-card green"><div class="stat-icon green">🔑</div><div class="stat-value">${stats.acessos_hoje?.total||0}</div><div class="stat-label">Logins Hoje</div></div>
+  `;
+}
+
+function renderLogs(logs) {
+  const tbody = document.querySelector('#tabelaLogs tbody');
+  if (!logs.length) { tbody.innerHTML = '<tr><td colspan="8"><div class="empty-state"><div class="icon">🔍</div><p>Nenhum log encontrado</p></div></td></tr>'; return; }
+  const cores = { SUCESSO: '#d1fae5', FALHA: '#fee2e2' };
+  tbody.innerHTML = logs.map(l => `
+    <tr>
+      <td style="font-size:11px;white-space:nowrap;">${fmtData(l.criado_em)}</td>
+      <td style="font-size:12px;">${l.usuario_email||'Sistema'}</td>
+      <td style="font-size:11px;">${l.perfil||'-'}</td>
+      <td style="font-size:11px;"><span style="background:#f1f5f9;padding:2px 6px;border-radius:4px;">${l.modulo}</span></td>
+      <td style="font-size:12px;">${l.acao}</td>
+      <td style="font-size:11px;">${l.entidade_tipo||'-'} ${l.entidade_id ? l.entidade_id.substring(0,8)+'...' : ''}</td>
+      <td style="font-size:11px;font-family:monospace;">${l.ip||'-'}</td>
+      <td><span class="status" style="background:${cores[l.resultado]||'#f1f5f9'};color:${l.resultado==='SUCESSO'?'#065f46':l.resultado==='FALHA'?'#991b1b':'#374151'};">${l.resultado}</span></td>
+    </tr>
+  `).join('');
+}
+
+// ===================== CONSULTA MARGEM =====================
+async function consultarMargem() {
+  const cpf = document.getElementById('cpfConsulta').value.replace(/\D/g,'');
+  if (cpf.length !== 11) { toast('CPF inválido', 'error'); return; }
+  const resp = await apiFetch(`/funcionarios?busca=${cpf}&limit=1`);
+  if (!resp) return;
+  const data = await resp.json();
+  const func = data.data?.[0];
+  const el = document.getElementById('resultadoConsultaMargem');
+  if (!func) { el.innerHTML = '<div class="alert alert-error">❌ Funcionário não encontrado</div>'; return; }
+
+  const rMargem = await apiFetch(`/funcionarios/${func.id}/margem`);
+  if (!rMargem) return;
+  const dadosMargem = await rMargem.json();
+  const m = dadosMargem.margem;
+
+  el.innerHTML = `
+    <div class="form-card" style="border-left:4px solid #1e40af;">
+      <div style="display:flex;align-items:center;gap:16px;margin-bottom:20px;">
+        <div style="width:56px;height:56px;background:linear-gradient(135deg,#1e40af,#0ea5e9);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;color:white;">👤</div>
+        <div>
+          <div style="font-size:18px;font-weight:700;">${func.nome}</div>
+          <div style="font-size:13px;color:#64748b;">Matrícula: ${func.matricula} · CPF: ${func.cpf} · ${func.convenio_nome||''}</div>
+        </div>
+      </div>
+      ${m ? `
+        <div style="background:#f8fafc;border-radius:12px;padding:16px;margin-bottom:16px;">
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;text-align:center;">
+            <div><div style="font-size:10px;color:#64748b;font-weight:700;">SALÁRIO BRUTO</div><div style="font-size:16px;font-weight:800;">${fmtMoeda(m.salario_bruto)}</div></div>
+            <div><div style="font-size:10px;color:#64748b;font-weight:700;">SALÁRIO LÍQUIDO</div><div style="font-size:16px;font-weight:800;color:#059669;">${fmtMoeda(m.salario_liquido)}</div></div>
+            <div><div style="font-size:10px;color:#64748b;font-weight:700;">COMPETÊNCIA</div><div style="font-size:16px;font-weight:800;">${m.competencia}</div></div>
+          </div>
+        </div>
+        ${renderMargemBars(m)}
+        <div style="text-align:center;margin-top:16px;padding:12px;background:#f0fdf4;border-radius:10px;">
+          <div style="font-size:12px;color:#64748b;">MARGEM TOTAL DISPONÍVEL</div>
+          <div style="font-size:24px;font-weight:800;color:#10b981;">${fmtMoeda((m.margem_disponivel_emprestimo||0)+(m.margem_disponivel_cartao||0)+(m.margem_disponivel_beneficio||0))}</div>
+        </div>
+        ${dadosMargem.averbacoes_ativas?.length ? `
+          <h4 style="margin:16px 0 10px;">📋 Contratos Ativos (${dadosMargem.averbacoes_ativas.length})</h4>
+          <div class="table-wrap"><table>
+            <thead><tr><th>Código</th><th>Banco</th><th>Tipo</th><th>Parcela</th><th>Prazo</th><th>Status</th></tr></thead>
+            <tbody>${dadosMargem.averbacoes_ativas.map(a => `
+              <tr><td><span class="cod-averbacao" style="font-size:11px;">${a.codigo_averbacao}</span></td>
+              <td>${a.banco_nome}</td><td>${tipoLabel(a.tipo)}</td>
+              <td>${fmtMoeda(a.valor_parcela)}</td><td>${a.prazo_meses}x</td>
+              <td><span class="status ${(a.status||'').toLowerCase()}">${a.status}</span></td></tr>
+            `).join('')}</tbody>
+          </table></div>
+        ` : '<div class="alert alert-info" style="margin-top:12px;">Nenhum contrato ativo</div>'}
+      ` : '<div class="alert alert-warning">⚠️ Sem dados de margem para competência atual</div>'}
+    </div>
+  `;
+}
+
+// ===================== CALCULADORA =====================
+function calcularMargem() {
+  const bruto = parseFloat(document.getElementById('calcBruto').value || 0);
+  const liquido = parseFloat(document.getElementById('calcLiquido').value || 0);
+  const pEmp = parseFloat(document.getElementById('calcPctEmp').value || 35);
+  const pCart = parseFloat(document.getElementById('calcPctCart').value || 5);
+  const pBenef = parseFloat(document.getElementById('calcPctBenef').value || 5);
+  const el = document.getElementById('resultadoCalc');
+  if (bruto <= 0 && liquido <= 0) { el.innerHTML = ''; return; }
+  const base = liquido > 0 ? liquido : bruto;
+  const emp = base * pEmp / 100;
+  const cart = base * pCart / 100;
+  const benef = base * pBenef / 100;
+  const total = emp + cart + benef;
+  el.innerHTML = `
+    <div class="form-card">
+      <div class="form-title">📊 Resultado do Cálculo</div>
+      <div class="stats-grid">
+        <div class="stat-card blue"><div class="stat-icon blue">💰</div><div class="stat-value">${fmtMoeda(emp)}</div><div class="stat-label">Margem Empréstimo (${pEmp}%)</div></div>
+        <div class="stat-card purple"><div class="stat-icon purple">💳</div><div class="stat-value">${fmtMoeda(cart)}</div><div class="stat-label">Margem Cartão (${pCart}%)</div></div>
+        <div class="stat-card green"><div class="stat-icon green">🎯</div><div class="stat-value">${fmtMoeda(benef)}</div><div class="stat-label">Margem Benefício (${pBenef}%)</div></div>
+        <div class="stat-card yellow"><div class="stat-icon yellow">📊</div><div class="stat-value">${fmtMoeda(total)}</div><div class="stat-label">Margem Total (${pEmp+pCart+pBenef}%)</div></div>
+      </div>
+      <div class="alert alert-info">ℹ️ Base de cálculo: <strong>${fmtMoeda(base)}</strong> (salário ${liquido > 0 ? 'líquido' : 'bruto'})</div>
+    </div>
+  `;
+}
+
+// ===================== MODAIS =====================
+function abrirModal(id) { document.getElementById(id).classList.add('open'); }
+function fecharModal(id) { document.getElementById(id).classList.remove('open'); }
+
+async function abrirModalNovoFuncionario() {
+  const resp = await apiFetch('/convenios');
+  const convenios = await resp.json();
+  document.getElementById('fConvenio').innerHTML = '<option value="">Selecione...</option>' +
+    convenios.filter(c => c.ativo).map(c => `<option value="${c.id}">${c.nome}</option>`).join('');
+  if (usuario?.convenio_id) document.getElementById('fConvenio').value = usuario.convenio_id;
+  document.getElementById('alertModalFunc').innerHTML = '';
+  abrirModal('modalFuncionario');
+}
+
+async function salvarFuncionario() {
+  const body = {
+    matricula: document.getElementById('fMatricula').value,
+    nome: document.getElementById('fNome').value,
+    cpf: document.getElementById('fCpf').value,
+    data_nascimento: document.getElementById('fNascimento').value,
+    convenio_id: document.getElementById('fConvenio').value,
+    cargo: document.getElementById('fCargo').value,
+    lotacao: document.getElementById('fLotacao').value,
+    salario_bruto: parseFloat(document.getElementById('fBruto').value),
+    salario_liquido: parseFloat(document.getElementById('fLiquido').value),
+    data_admissao: document.getElementById('fAdmissao').value
+  };
+  const resp = await apiFetch('/funcionarios', { method: 'POST', body: JSON.stringify(body) });
+  if (!resp) return;
+  const data = await resp.json();
+  if (!resp.ok) { document.getElementById('alertModalFunc').innerHTML = `<div class="alert alert-error">❌ ${data.erro}</div>`; return; }
+  toast('Funcionário cadastrado!', 'success');
+  fecharModal('modalFuncionario');
+  carregarFuncionarios();
+}
+
+function abrirModalNovoConvenio() {
+  document.getElementById('alertModalConv').innerHTML = '';
+  abrirModal('modalConvenio');
+}
+
+async function salvarConvenio() {
+  const body = {
+    nome: document.getElementById('cNome').value,
+    cnpj: document.getElementById('cCnpj').value,
+    tipo: document.getElementById('cTipo').value,
+    sistema_folha: document.getElementById('cSistema').value,
+    percentual_emprestimo: parseFloat(document.getElementById('cPctEmp').value),
+    percentual_cartao: parseFloat(document.getElementById('cPctCart').value),
+    percentual_beneficio: parseFloat(document.getElementById('cPctBenef').value),
+    responsavel: document.getElementById('cResponsavel').value,
+    telefone: document.getElementById('cTelefone').value
+  };
+  const resp = await apiFetch('/convenios', { method: 'POST', body: JSON.stringify(body) });
+  if (!resp) return;
+  const data = await resp.json();
+  if (!resp.ok) { document.getElementById('alertModalConv').innerHTML = `<div class="alert alert-error">❌ ${data.erro}</div>`; return; }
+  toast('Convênio cadastrado!', 'success');
+  fecharModal('modalConvenio');
+  carregarConvenios();
+}
+
+function abrirModalNovoBanco() {
+  document.getElementById('alertModalBanco').innerHTML = '';
+  abrirModal('modalBanco');
+}
+
+async function salvarBanco() {
+  const body = {
+    nome: document.getElementById('bNome').value,
+    codigo_bacen: document.getElementById('bCodigo').value,
+    cnpj: document.getElementById('bCnpj').value,
+    taxa_averbacao: parseFloat(document.getElementById('bTaxa').value),
+    contato_responsavel: document.getElementById('bContato').value,
+    email_operacional: document.getElementById('bEmail').value
+  };
+  const resp = await apiFetch('/bancos', { method: 'POST', body: JSON.stringify(body) });
+  if (!resp) return;
+  const data = await resp.json();
+  if (!resp.ok) { document.getElementById('alertModalBanco').innerHTML = `<div class="alert alert-error">❌ ${data.erro}</div>`; return; }
+  toast('Banco cadastrado!', 'success');
+  fecharModal('modalBanco');
+  carregarBancos();
+}
+
+async function abrirModalNovoUsuario() {
+  const [rConv, rBanc] = await Promise.all([apiFetch('/convenios'), apiFetch('/bancos')]);
+  const convenios = await rConv.json();
+  const bancos = await rBanc.json();
+  document.getElementById('uConvenio').innerHTML = '<option value="">Selecione...</option>' +
+    convenios.map(c => `<option value="${c.id}">${c.nome}</option>`).join('');
+  document.getElementById('uBanco').innerHTML = '<option value="">Selecione...</option>' +
+    bancos.map(b => `<option value="${b.id}">${b.nome}</option>`).join('');
+  document.getElementById('alertModalUser').innerHTML = '';
+  toggleConvenioBanco();
+  abrirModal('modalUsuario');
+}
+
+function toggleConvenioBanco() {
+  const perfil = document.getElementById('uPerfil').value;
+  document.getElementById('grpConvenio').style.display = ['RH','FUNCIONARIO'].includes(perfil) ? 'flex' : 'none';
+  document.getElementById('grpBanco').style.display = perfil === 'BANCO' ? 'flex' : 'none';
+}
+
+async function salvarUsuario() {
+  const body = {
+    nome: document.getElementById('uNome').value,
+    email: document.getElementById('uEmail').value,
+    senha: document.getElementById('uSenha').value,
+    perfil: document.getElementById('uPerfil').value,
+    convenio_id: document.getElementById('uConvenio').value || null,
+    banco_id: document.getElementById('uBanco').value || null
+  };
+  const resp = await apiFetch('/usuarios', { method: 'POST', body: JSON.stringify(body) });
+  if (!resp) return;
+  const data = await resp.json();
+  if (!resp.ok) { document.getElementById('alertModalUser').innerHTML = `<div class="alert alert-error">❌ ${data.erro}</div>`; return; }
+  toast('Usuário criado!', 'success');
+  fecharModal('modalUsuario');
+  carregarUsuarios();
+}
+
+// ===================== PAGINAÇÃO =====================
+function renderPaginacao(containerId, total, limit, page, callback) {
+  if (!containerId) return;
+  const el = document.getElementById(containerId);
+  if (!el) return;
+  const totalPages = Math.ceil(total / limit);
+  if (totalPages <= 1) { el.innerHTML = ''; return; }
+  let btns = '';
+  for (let i = 1; i <= totalPages; i++) {
+    btns += `<button class="btn btn-sm ${i===page?'btn-primary':'btn-outline'}" onclick="(${callback.name||''})(${i})">${i}</button>`;
+  }
+  el.innerHTML = btns;
+}
+
+// ===================== UTILS =====================
+function fmtMoeda(v) {
+  return new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'}).format(v||0);
+}
+function fmtData(d) {
+  if (!d) return '-';
+  return new Date(d).toLocaleString('pt-BR',{dateStyle:'short',timeStyle:'short'});
+}
+function tipoLabel(tipo) {
+  return { EMPRESTIMO:'💰 Empréstimo', CARTAO:'💳 Cartão', BENEFICIO:'🎯 Benefício', REFINANCIAMENTO:'🔄 Refin.' }[tipo] || tipo;
+}
+function formatarCPFInput(el) {
+  let v = el.value.replace(/\D/g,'');
+  if (v.length > 11) v = v.substring(0,11);
+  if (v.length > 9) v = v.replace(/(\d{3})(\d{3})(\d{3})(\d{1,2})/,'$1.$2.$3-$4');
+  else if (v.length > 6) v = v.replace(/(\d{3})(\d{3})(\d{0,3})/,'$1.$2.$3');
+  else if (v.length > 3) v = v.replace(/(\d{3})(\d{0,3})/,'$1.$2');
+  el.value = v;
+}
+</script>
+</body>
+</html>
