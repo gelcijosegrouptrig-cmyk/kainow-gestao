@@ -343,10 +343,16 @@ tr:hover td { background: #f8fafc; }
     <a class="nav-item" id="nav-bancos" onclick="navTo('bancos')" href="#"><span class="icon">🏦</span> Bancos</a>
     <a class="nav-item" id="nav-usuarios" onclick="navTo('usuarios')" href="#"><span class="icon">👤</span> Usuários</a>
 
-    <div class="nav-section">Compliance</div>
+    <div class="nav-section">Compliance &amp; Segurança</div>
     <a class="nav-item" id="nav-auditoria" onclick="navTo('auditoria')" href="#"><span class="icon">🔍</span> Auditoria</a>
+    <a class="nav-item" id="nav-iso27001" onclick="navTo('iso27001')" href="#"><span class="icon">🛡️</span> ISO 27001</a>
     <a class="nav-item" onclick="navTo('consulta-margem')" href="#"><span class="icon">💰</span> Consultar Margem</a>
     <a class="nav-item" onclick="navTo('calculadora')" href="#"><span class="icon">🧮</span> Calculadora</a>
+
+    <div class="nav-section">Módulos Avançados</div>
+    <a class="nav-item" id="nav-certificados" onclick="navTo('certificados')" href="#"><span class="icon">🔐</span> Cert. Digital</a>
+    <a class="nav-item" id="nav-importacoes" onclick="navTo('importacoes')" href="#"><span class="icon">📂</span> Importar Folha</a>
+    <a class="nav-item" id="nav-faturamento" onclick="navTo('faturamento')" href="#"><span class="icon">💵</span> Faturamento</a>
   </nav>
   <div class="sidebar-footer">
     <div class="user-info">
@@ -657,6 +663,160 @@ tr:hover td { background: #f8fafc; }
       <div id="resultadoCalc"></div>
     </div>
 
+    <!-- ===================== ISO 27001 ===================== -->
+    <div class="page-section" id="section-iso27001">
+      <div class="stats-grid" id="statsISO"></div>
+      <div style="display:grid;grid-template-columns:1.3fr 1fr;gap:20px;margin-bottom:24px;">
+        <div class="panel">
+          <div class="panel-header"><div class="panel-title">🛡️ Controles ISO 27001 - Status de Conformidade</div></div>
+          <div class="panel-body" style="padding:0;"><div id="listaControlesISO" style="padding:8px;"></div></div>
+        </div>
+        <div class="panel">
+          <div class="panel-header"><div class="panel-title">⚠️ Incidentes de Segurança (últimas 24h)</div></div>
+          <div class="panel-body" style="padding:0;">
+            <div id="listaIncidentes" class="table-wrap">
+              <table><thead><tr><th>Ação</th><th>IP</th><th>Data</th></tr></thead>
+              <tbody><tr><td colspan="3"><div class="loading"><div class="spinner"></div></div></td></tr></tbody></table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">📊 Eventos por Categoria (últimos 30 dias)</div>
+          <button class="btn btn-outline btn-sm" onclick="gerarRelatorioISO()">📄 Gerar Relatório</button>
+        </div>
+        <div class="panel-body" style="padding:0;"><div id="tabelaEventosISO" class="table-wrap">
+          <table><thead><tr><th>Ação</th><th>Total</th></tr></thead>
+          <tbody><tr><td colspan="2"><div class="loading"><div class="spinner"></div></div></td></tr></tbody></table>
+        </div></div>
+      </div>
+    </div>
+
+    <!-- ===================== CERTIFICADOS DIGITAIS ===================== -->
+    <div class="page-section" id="section-certificados">
+      <div class="form-card">
+        <div class="form-title">🔐 Certificação Digital — e-CPF / e-CNPJ (ICP-Brasil)</div>
+        <p style="color:#64748b;font-size:13px;margin-bottom:20px;">Emita certificados digitais para dar validade jurídica às averbações. Compatível com ICP-Brasil (A1/A3).</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
+          <div>
+            <div class="form-title" style="font-size:14px;">📋 Emitir Novo Certificado</div>
+            <div class="form-group" style="margin-top:12px;"><label>Tipo de Titular</label>
+              <select id="certTipoTitular" onchange="toggleCertTipo()">
+                <option value="PF">Pessoa Física (e-CPF)</option>
+                <option value="PJ">Pessoa Jurídica (e-CNPJ)</option>
+              </select>
+            </div>
+            <div class="form-group" id="certGrpPF"><label>CPF do Titular</label>
+              <input type="text" id="certCpf" placeholder="000.000.000-00" maxlength="14" oninput="formatarCPFInput(this)">
+            </div>
+            <div class="form-group" id="certGrpPJ" style="display:none;"><label>CNPJ da Empresa</label>
+              <input type="text" id="certCnpj" placeholder="00.000.000/0001-00" maxlength="18">
+            </div>
+            <div class="form-group"><label>Nome Completo / Razão Social</label>
+              <input type="text" id="certNome" placeholder="Nome do titular">
+            </div>
+            <div class="form-group"><label>Tipo de Certificado</label>
+              <select id="certTipo">
+                <option value="A1">A1 — Software (sem token físico)</option>
+                <option value="A3">A3 — Token/Cartão (hardware)</option>
+              </select>
+            </div>
+            <div class="form-group"><label>Validade (dias)</label>
+              <input type="number" id="certValidade" value="365" min="30" max="1095">
+            </div>
+            <div id="alertCert"></div>
+            <button class="btn btn-primary" style="margin-top:8px;" onclick="emitirCertificado()">🔐 Emitir Certificado</button>
+          </div>
+          <div>
+            <div class="form-title" style="font-size:14px;">📜 Certificados Ativos</div>
+            <div id="listaCertificados" style="margin-top:12px;">
+              <div class="loading"><div class="spinner"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== IMPORTAÇÕES FOLHA ===================== -->
+    <div class="page-section" id="section-importacoes">
+      <div class="form-card">
+        <div class="form-title">📂 Importação de Folha de Pagamento</div>
+        <p style="color:#64748b;font-size:13px;margin-bottom:20px;">Importe arquivos de folha de pagamento nos formatos TOTVS, SAP, Senior, Datasul ou CNAB (Siape/Siapecad).</p>
+        <div style="display:grid;grid-template-columns:1.2fr 1fr;gap:24px;">
+          <div>
+            <div class="form-group"><label>Sistema de Origem</label>
+              <select id="impSistema">
+                <option value="TOTVS">TOTVS (Protheus / RM)</option>
+                <option value="SAP">SAP HCM</option>
+                <option value="SENIOR">Senior</option>
+                <option value="DATASUL">Datasul / TOTVS Datasul</option>
+                <option value="SIAPE">SIAPE / SIAPECAD (Federal)</option>
+                <option value="CNAB">CNAB 240/150 Genérico</option>
+              </select>
+            </div>
+            <div class="form-group"><label>Convênio</label>
+              <select id="impConvenio"></select>
+            </div>
+            <div class="form-group"><label>Competência (AAAA-MM)</label>
+              <input type="month" id="impCompetencia">
+            </div>
+            <div class="form-group"><label>Arquivo (.txt, .csv, .xlsx, .ret)</label>
+              <input type="file" id="impArquivo" accept=".txt,.csv,.xlsx,.xls,.ret,.rem" style="padding:8px;border:2px dashed #cbd5e1;border-radius:8px;background:#f8fafc;width:100%;">
+            </div>
+            <div id="alertImp"></div>
+            <button class="btn btn-primary" style="margin-top:8px;" onclick="importarFolha()">📤 Importar Arquivo</button>
+          </div>
+          <div>
+            <div class="form-title" style="font-size:14px;">📋 Últimas Importações</div>
+            <div id="listaImportacoes" style="margin-top:12px;">
+              <div class="loading"><div class="spinner"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="resultadoImportacao"></div>
+    </div>
+
+    <!-- ===================== FATURAMENTO ===================== -->
+    <div class="page-section" id="section-faturamento">
+      <div class="stats-grid" id="statsFaturamento"></div>
+      <div style="display:grid;grid-template-columns:1.3fr 1fr;gap:20px;margin-bottom:24px;">
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title">💵 Receita por Banco</div>
+            <button class="btn btn-outline btn-sm" onclick="gerarRelatorioFaturamento()">📄 Relatório</button>
+          </div>
+          <div class="panel-body" style="padding:0;">
+            <div id="tabelaFaturamentoBanco" class="table-wrap">
+              <table><thead><tr><th>Banco</th><th>Qtd</th><th>Receita</th></tr></thead>
+              <tbody><tr><td colspan="3"><div class="loading"><div class="spinner"></div></div></td></tr></tbody></table>
+            </div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-header"><div class="panel-title">📈 Histórico Mensal (6 meses)</div></div>
+          <div class="panel-body" id="historicoFaturamento">
+            <div class="loading"><div class="spinner"></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">📋 Averbações Faturadas no Período</div>
+          <div style="display:flex;gap:8px;align-items:center;">
+            <input type="month" id="filtroMesFat" onchange="carregarFaturamento()" style="padding:6px 10px;border:1px solid #e2e8f0;border-radius:6px;font-size:12px;">
+          </div>
+        </div>
+        <div class="panel-body" style="padding:0;">
+          <div id="tabelaFaturamentoDetalhes" class="table-wrap">
+            <table><thead><tr><th>Código Averb.</th><th>Funcionário</th><th>Banco</th><th>Tipo</th><th>Parcela</th><th>Taxa</th><th>Data</th></tr></thead>
+            <tbody><tr><td colspan="7"><div class="loading"><div class="spinner"></div></div></td></tr></tbody></table>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div><!-- /content -->
 </div><!-- /main -->
 
@@ -842,7 +1002,11 @@ const pageTitles = {
   usuarios: ['Usuários do Sistema', 'Controle de acesso'],
   auditoria: ['Auditoria LGPD', 'Logs e rastreabilidade'],
   'consulta-margem': ['Consulta de Margem', 'Portal de transparência'],
-  calculadora: ['Calculadora', 'Motor de cálculo de margem consignável']
+  calculadora: ['Calculadora', 'Motor de cálculo de margem consignável'],
+  iso27001: ['ISO 27001 — Segurança da Informação', 'Dashboard de conformidade e incidentes'],
+  certificados: ['Certificação Digital', 'e-CPF / e-CNPJ — ICP-Brasil'],
+  importacoes: ['Importação de Folha', 'TOTVS, SAP, Senior, CNAB, Siape'],
+  faturamento: ['Faturamento & Receita', 'Taxa de averbação por contrato']
 };
 
 function navTo(page) {
@@ -868,6 +1032,10 @@ function loadPageData(page) {
     case 'bancos': carregarBancos(); break;
     case 'usuarios': carregarUsuarios(); break;
     case 'auditoria': carregarAuditoria(); break;
+    case 'iso27001': carregarISO27001(); break;
+    case 'certificados': carregarCertificados(); break;
+    case 'importacoes': carregarPaginaImportacoes(); break;
+    case 'faturamento': carregarFaturamento(); break;
   }
 }
 
@@ -1557,8 +1725,392 @@ async function consultarMargem() {
   `;
 }
 
-// ===================== CALCULADORA =====================
-function calcularMargem() {
+// ===================== ISO 27001 =====================
+async function carregarISO27001() {
+  try {
+    const resp = await apiFetch('/iso27001/dashboard');
+    if (!resp) return;
+    const d = await resp.json();
+    if (!resp.ok) { console.error('Erro ISO:', d); return; }
+
+    // Stats cards
+    const score = d.scoreConformidade;
+    const scoreColor = score >= 80 ? 'green' : score >= 60 ? 'yellow' : 'red';
+    document.getElementById('statsISO').innerHTML = `
+      <div class="stat-card ${scoreColor}">
+        <div class="stat-icon ${scoreColor}">🛡️</div>
+        <div class="stat-value">${score}%</div>
+        <div class="stat-label">Score de Conformidade ISO 27001</div>
+      </div>
+      <div class="stat-card blue">
+        <div class="stat-icon blue">📊</div>
+        <div class="stat-value">${d.resumo.totalEventos}</div>
+        <div class="stat-label">Eventos de Segurança (30 dias)</div>
+      </div>
+      <div class="stat-card ${d.resumo.loginsFalhos > 5 ? 'red' : 'green'}">
+        <div class="stat-icon ${d.resumo.loginsFalhos > 5 ? 'red' : 'green'}">🚨</div>
+        <div class="stat-value">${d.resumo.loginsFalhos}</div>
+        <div class="stat-label">Logins Falhados (24h)</div>
+      </div>
+      <div class="stat-card purple">
+        <div class="stat-icon purple">✅</div>
+        <div class="stat-value">${d.controlesISO.implementados}/${d.controlesISO.total}</div>
+        <div class="stat-label">Controles Implementados</div>
+      </div>
+    `;
+
+    // Controles ISO
+    const statusColor = { 'IMPLEMENTADO': '#10b981', 'PARCIAL': '#f59e0b', 'NÃO IMPLEMENTADO': '#ef4444' };
+    const statusIcon = { 'IMPLEMENTADO': '✅', 'PARCIAL': '⚠️', 'NÃO IMPLEMENTADO': '❌' };
+    document.getElementById('listaControlesISO').innerHTML = d.controlesISO.detalhes.map(c => `
+      <div style="display:flex;align-items:flex-start;gap:10px;padding:10px;border-bottom:1px solid #f1f5f9;">
+        <span style="font-size:18px;min-width:24px;">${statusIcon[c.status] || '⚠️'}</span>
+        <div style="flex:1;">
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <span style="font-weight:700;font-size:13px;">${c.id} — ${c.descricao}</span>
+            <span style="font-size:11px;font-weight:700;color:${statusColor[c.status] || '#64748b'};background:${statusColor[c.status]}22;padding:2px 8px;border-radius:20px;">${c.status}</span>
+          </div>
+          <div style="font-size:11px;color:#64748b;margin-top:3px;">📌 ${c.evidencia}</div>
+        </div>
+      </div>
+    `).join('');
+
+    // Eventos por categoria
+    document.querySelector('#tabelaEventosISO table tbody').innerHTML = d.logsPorCategoria.map(e => `
+      <tr><td>${e.acao}</td><td><strong>${e.total}</strong></td></tr>
+    `).join('') || '<tr><td colspan="2" style="text-align:center;color:#64748b;">Nenhum evento</td></tr>';
+
+    // Incidentes
+    carregarIncidentesISO();
+  } catch(e) { console.error('Erro ISO 27001:', e); }
+}
+
+async function carregarIncidentesISO() {
+  try {
+    const resp = await apiFetch('/iso27001/incidentes');
+    if (!resp) return;
+    const d = await resp.json();
+    const tbody = document.querySelector('#listaIncidentes table tbody');
+    if (!tbody) return;
+    tbody.innerHTML = d.incidentes.slice(0, 10).map(i => `
+      <tr>
+        <td><span style="font-size:11px;font-weight:700;color:#ef4444;">${i.acao}</span></td>
+        <td style="font-size:11px;color:#64748b;">${i.ip_address || '-'}</td>
+        <td style="font-size:11px;">${fmtData(i.created_at)}</td>
+      </tr>
+    `).join('') || '<tr><td colspan="3" style="text-align:center;color:#64748b;padding:20px;">✅ Nenhum incidente</td></tr>';
+  } catch(e) { console.error('Erro incidentes:', e); }
+}
+
+async function gerarRelatorioISO() {
+  try {
+    const resp = await apiFetch('/iso27001/relatorio');
+    if (!resp) return;
+    const d = await resp.json();
+    toast(`📄 Relatório gerado: ${d.totalEventos} eventos no período`, 'success');
+    // Exibir modal com resumo
+    const resumo = d.estatisticas.slice(0, 10).map(e =>
+      `• ${e.acao}: ${e.total} ocorrências`
+    ).join('\n');
+    alert(`Relatório ISO 27001\n\nGerado em: ${fmtData(d.relatorio.geradoEm)}\nTotal de eventos: ${d.totalEventos}\n\nTop ações:\n${resumo}`);
+  } catch(e) { toast('Erro ao gerar relatório', 'error'); }
+}
+
+// ===================== CERTIFICADOS DIGITAIS =====================
+async function carregarCertificados() {
+  try {
+    const resp = await apiFetch('/certificados');
+    if (!resp) return;
+    const d = await resp.json();
+    const lista = d.certificados || [];
+    const el = document.getElementById('listaCertificados');
+    if (!lista.length) {
+      el.innerHTML = '<div class="alert alert-info">Nenhum certificado emitido ainda.</div>';
+      return;
+    }
+    el.innerHTML = lista.map(c => {
+      const exp = new Date(c.valido_ate);
+      const hoje = new Date();
+      const diasRestantes = Math.ceil((exp - hoje) / 86400000);
+      const statusColor = diasRestantes > 30 ? '#10b981' : diasRestantes > 7 ? '#f59e0b' : '#ef4444';
+      return `
+        <div style="border:1px solid #e2e8f0;border-radius:10px;padding:14px;margin-bottom:10px;background:white;">
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <div>
+              <div style="font-weight:700;font-size:13px;">🔐 ${c.nome_titular}</div>
+              <div style="font-size:11px;color:#64748b;">${c.tipo_titular === 'PF' ? '🪪 e-CPF' : '🏢 e-CNPJ'} — Tipo ${c.tipo_certificado}</div>
+              <div style="font-size:11px;color:#94a3b8;margin-top:2px;">SN: ${(c.serial_number||'').substring(0,20)}...</div>
+            </div>
+            <div style="text-align:right;">
+              <div style="font-size:11px;color:${statusColor};font-weight:700;">${diasRestantes > 0 ? `${diasRestantes} dias` : 'EXPIRADO'}</div>
+              <div style="font-size:10px;color:#94a3b8;">Exp: ${fmtData(c.valido_ate).split(' ')[0]}</div>
+              <button class="btn btn-sm btn-outline" style="margin-top:6px;" onclick="verificarCertificado('${c.id}')">🔍 Verificar</button>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('');
+  } catch(e) {
+    document.getElementById('listaCertificados').innerHTML = '<div class="alert alert-error">Erro ao carregar certificados.</div>';
+  }
+}
+
+function toggleCertTipo() {
+  const tipo = document.getElementById('certTipoTitular').value;
+  document.getElementById('certGrpPF').style.display = tipo === 'PF' ? 'block' : 'none';
+  document.getElementById('certGrpPJ').style.display = tipo === 'PJ' ? 'block' : 'none';
+}
+
+async function emitirCertificado() {
+  const tipo = document.getElementById('certTipoTitular').value;
+  const body = {
+    tipo_titular: tipo,
+    cpf: tipo === 'PF' ? document.getElementById('certCpf').value.replace(/\D/g,'') : undefined,
+    cnpj: tipo === 'PJ' ? document.getElementById('certCnpj').value.replace(/\D/g,'') : undefined,
+    nome: document.getElementById('certNome').value,
+    tipo_certificado: document.getElementById('certTipo').value,
+    validade_dias: parseInt(document.getElementById('certValidade').value) || 365
+  };
+  if (!body.nome || (!body.cpf && !body.cnpj)) {
+    document.getElementById('alertCert').innerHTML = '<div class="alert alert-error">⚠️ Preencha todos os campos obrigatórios.</div>';
+    return;
+  }
+  document.getElementById('alertCert').innerHTML = '<div class="alert alert-info">⏳ Emitindo certificado...</div>';
+  const resp = await apiFetch('/certificados/emitir', { method: 'POST', body: JSON.stringify(body) });
+  if (!resp) return;
+  const d = await resp.json();
+  if (!resp.ok) {
+    document.getElementById('alertCert').innerHTML = `<div class="alert alert-error">❌ ${d.erro}</div>`;
+    return;
+  }
+  document.getElementById('alertCert').innerHTML = `
+    <div class="alert alert-success">
+      ✅ Certificado emitido com sucesso!<br>
+      <strong>Serial:</strong> ${(d.certificado?.serial_number || '').substring(0,30)}...<br>
+      <strong>Válido até:</strong> ${fmtData(d.certificado?.valido_ate)}
+    </div>`;
+  carregarCertificados();
+}
+
+async function verificarCertificado(id) {
+  const resp = await apiFetch(`/certificados/${id}/verificar`);
+  if (!resp) return;
+  const d = await resp.json();
+  if (!resp.ok) { toast('Erro ao verificar certificado', 'error'); return; }
+  const v = d.verificacao;
+  alert(`Verificação de Certificado\n\n✅ Válido: ${v.valido ? 'SIM' : 'NÃO'}\n📋 Titular: ${v.titular}\n📅 Emitido: ${fmtData(v.emitido_em)}\n⏰ Expira: ${fmtData(v.valido_ate)}\n⌛ Dias restantes: ${v.dias_restantes}`);
+}
+
+// ===================== IMPORTAÇÕES DE FOLHA =====================
+async function carregarPaginaImportacoes() {
+  // Carregar convênios para o select
+  const resp = await apiFetch('/convenios');
+  if (!resp) return;
+  const convenios = await resp.json();
+  const sel = document.getElementById('impConvenio');
+  if (sel) {
+    sel.innerHTML = '<option value="">Selecione um convênio...</option>' +
+      convenios.filter(c => c.ativo).map(c => `<option value="${c.id}">${c.nome}</option>`).join('');
+  }
+  // Definir competência atual
+  const hoje = new Date();
+  const comp = `${hoje.getFullYear()}-${String(hoje.getMonth()+1).padStart(2,'0')}`;
+  if (document.getElementById('impCompetencia')) document.getElementById('impCompetencia').value = comp;
+  // Carregar histórico de importações
+  carregarHistoricoImportacoes();
+}
+
+async function carregarHistoricoImportacoes() {
+  try {
+    const resp = await apiFetch('/importacoes/historico');
+    if (!resp) return;
+    const d = await resp.json();
+    const lista = d.importacoes || [];
+    const el = document.getElementById('listaImportacoes');
+    if (!lista.length) {
+      el.innerHTML = '<div class="alert alert-info">Nenhuma importação realizada ainda.</div>';
+      return;
+    }
+    el.innerHTML = lista.slice(0, 8).map(i => `
+      <div style="border:1px solid #e2e8f0;border-radius:8px;padding:12px;margin-bottom:8px;background:white;">
+        <div style="display:flex;justify-content:space-between;">
+          <div>
+            <div style="font-weight:700;font-size:13px;">📂 ${i.sistema_origem} — ${i.competencia}</div>
+            <div style="font-size:11px;color:#64748b;">${i.nome_arquivo}</div>
+          </div>
+          <div style="text-align:right;">
+            <span class="status ${(i.status||'').toLowerCase()}">${i.status}</span>
+            <div style="font-size:11px;color:#64748b;margin-top:4px;">${i.registros_processados || 0} registros</div>
+          </div>
+        </div>
+        <div style="font-size:11px;color:#94a3b8;margin-top:4px;">${fmtData(i.created_at)}</div>
+      </div>
+    `).join('');
+  } catch(e) {
+    document.getElementById('listaImportacoes').innerHTML = '<div class="alert alert-error">Erro ao carregar histórico.</div>';
+  }
+}
+
+async function importarFolha() {
+  const sistema = document.getElementById('impSistema').value;
+  const convenio_id = document.getElementById('impConvenio').value;
+  const competencia = document.getElementById('impCompetencia').value;
+  const arquivo = document.getElementById('impArquivo').files[0];
+
+  if (!convenio_id || !competencia || !arquivo) {
+    document.getElementById('alertImp').innerHTML = '<div class="alert alert-error">⚠️ Preencha todos os campos e selecione um arquivo.</div>';
+    return;
+  }
+
+  document.getElementById('alertImp').innerHTML = '<div class="alert alert-info">⏳ Processando arquivo... Aguarde.</div>';
+
+  const formData = new FormData();
+  formData.append('arquivo', arquivo);
+  formData.append('sistema', sistema);
+  formData.append('convenio_id', convenio_id);
+  formData.append('competencia', competencia);
+
+  try {
+    const token = localStorage.getItem('token');
+    const resp = await fetch(`${API_BASE}/importacoes/upload`, {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${token}` },
+      body: formData
+    });
+    const d = await resp.json();
+    if (!resp.ok) {
+      document.getElementById('alertImp').innerHTML = `<div class="alert alert-error">❌ ${d.erro || 'Erro na importação'}</div>`;
+      return;
+    }
+
+    const r = d.resultado || {};
+    document.getElementById('alertImp').innerHTML = '';
+    document.getElementById('resultadoImportacao').innerHTML = `
+      <div class="form-card" style="border-left:4px solid #10b981;">
+        <div class="form-title" style="color:#10b981;">✅ Importação Concluída</div>
+        <div class="stats-grid" style="margin-top:16px;">
+          <div class="stat-card green"><div class="stat-icon green">📋</div><div class="stat-value">${r.processados || 0}</div><div class="stat-label">Registros Processados</div></div>
+          <div class="stat-card blue"><div class="stat-icon blue">👥</div><div class="stat-value">${r.funcionarios_atualizados || 0}</div><div class="stat-label">Funcionários Atualizados</div></div>
+          <div class="stat-card yellow"><div class="stat-icon yellow">🆕</div><div class="stat-value">${r.funcionarios_criados || 0}</div><div class="stat-label">Funcionários Criados</div></div>
+          <div class="stat-card ${(r.erros||0) > 0 ? 'red' : 'green'}">
+            <div class="stat-icon ${(r.erros||0) > 0 ? 'red' : 'green'}">${(r.erros||0) > 0 ? '⚠️' : '✅'}</div>
+            <div class="stat-value">${r.erros || 0}</div>
+            <div class="stat-label">Erros/Avisos</div>
+          </div>
+        </div>
+        ${r.erros_detalhes?.length ? `
+          <div class="alert alert-warning" style="margin-top:16px;">
+            <strong>⚠️ Avisos:</strong><br>
+            ${r.erros_detalhes.slice(0,5).map(e => `• ${e}`).join('<br>')}
+          </div>
+        ` : ''}
+      </div>
+    `;
+    carregarHistoricoImportacoes();
+    toast(`✅ ${r.processados || 0} registros importados!`, 'success');
+  } catch(e) {
+    document.getElementById('alertImp').innerHTML = `<div class="alert alert-error">❌ Erro de conexão: ${e.message}</div>`;
+  }
+}
+
+// ===================== FATURAMENTO =====================
+async function carregarFaturamento() {
+  try {
+    const filtro = document.getElementById('filtroMesFat');
+    let mes = '', ano = '';
+    if (filtro?.value) {
+      [ano, mes] = filtro.value.split('-');
+    } else {
+      const hoje = new Date();
+      mes = hoje.getMonth() + 1;
+      ano = hoje.getFullYear();
+      if (filtro) filtro.value = `${ano}-${String(mes).padStart(2,'0')}`;
+    }
+
+    const resp = await apiFetch(`/faturamento/dashboard?mes=${mes}&ano=${ano}`);
+    if (!resp) return;
+    const d = await resp.json();
+    if (!resp.ok) { console.error('Erro faturamento:', d); return; }
+
+    // Stats
+    document.getElementById('statsFaturamento').innerHTML = `
+      <div class="stat-card green">
+        <div class="stat-icon green">💵</div>
+        <div class="stat-value">${fmtMoeda(d.resumo.receitaTotal)}</div>
+        <div class="stat-label">Receita do Período</div>
+      </div>
+      <div class="stat-card blue">
+        <div class="stat-icon blue">📋</div>
+        <div class="stat-value">${d.resumo.totalAverbacoes}</div>
+        <div class="stat-label">Averbações Faturadas</div>
+      </div>
+      <div class="stat-card yellow">
+        <div class="stat-icon yellow">💰</div>
+        <div class="stat-value">${fmtMoeda(d.resumo.taxaMedia)}</div>
+        <div class="stat-label">Taxa Média por Contrato</div>
+      </div>
+      <div class="stat-card purple">
+        <div class="stat-icon purple">📈</div>
+        <div class="stat-value">${fmtMoeda(d.resumo.projecaoAnual)}</div>
+        <div class="stat-label">Projeção Anual</div>
+      </div>
+    `;
+
+    // Receita por banco
+    document.querySelector('#tabelaFaturamentoBanco table tbody').innerHTML =
+      d.receitaPorBanco.map(b => `
+        <tr>
+          <td><strong>${b.banco}</strong></td>
+          <td>${b.quantidade}</td>
+          <td style="color:#10b981;font-weight:700;">${fmtMoeda(b.receita)}</td>
+        </tr>
+      `).join('') || '<tr><td colspan="3" style="text-align:center;color:#64748b;padding:20px;">Nenhum dado no período</td></tr>';
+
+    // Histórico mensal — mini gráfico de barras
+    const maxReceita = Math.max(...d.historicoMensal.map(m => m.receita), 1);
+    document.getElementById('historicoFaturamento').innerHTML = d.historicoMensal.map(m => {
+      const pct = Math.round((m.receita / maxReceita) * 100);
+      return `
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+          <div style="width:60px;font-size:11px;color:#64748b;flex-shrink:0;">${m.mes}</div>
+          <div style="flex:1;background:#f1f5f9;border-radius:4px;height:22px;position:relative;overflow:hidden;">
+            <div style="width:${pct}%;background:linear-gradient(90deg,#1e40af,#0ea5e9);height:100%;border-radius:4px;transition:width 0.5s;display:flex;align-items:center;padding-left:6px;">
+              ${pct > 20 ? `<span style="font-size:10px;color:white;font-weight:700;">${fmtMoeda(m.receita)}</span>` : ''}
+            </div>
+          </div>
+          <div style="width:70px;font-size:11px;font-weight:700;text-align:right;color:#1e40af;">${m.quantidade} avs</div>
+        </div>
+      `;
+    }).join('');
+
+    // Detalhes de averbações faturadas
+    document.querySelector('#tabelaFaturamentoDetalhes table tbody').innerHTML =
+      d.averbacoes.map(av => `
+        <tr>
+          <td><span class="cod-averbacao" style="font-size:11px;">${av.codigo_averbacao}</span></td>
+          <td style="font-size:12px;">${av.funcionario_nome || '-'}</td>
+          <td style="font-size:12px;">${av.banco_nome || '-'}</td>
+          <td>${tipoLabel(av.tipo)}</td>
+          <td>${fmtMoeda(av.valor_parcela)}</td>
+          <td style="color:#10b981;font-weight:700;">${fmtMoeda(av.taxa_averbacao || 15)}</td>
+          <td style="font-size:11px;">${fmtData(av.created_at)}</td>
+        </tr>
+      `).join('') || '<tr><td colspan="7" style="text-align:center;color:#64748b;padding:20px;">Nenhuma averbação faturada no período</td></tr>';
+
+  } catch(e) { console.error('Erro faturamento:', e); }
+}
+
+async function gerarRelatorioFaturamento() {
+  try {
+    const resp = await apiFetch('/faturamento/relatorio-banco');
+    if (!resp) return;
+    const d = await resp.json();
+    const linhas = d.bancos.map(b =>
+      `${b.banco_nome}: ${b.total_averbacoes} averbações = ${fmtMoeda(b.receita_total || 0)}`
+    ).join('\n');
+    alert(`Relatório de Faturamento por Banco\nGerado em: ${fmtData(d.geradoEm)}\n\n${linhas}\n\nTOTAL GERAL: ${fmtMoeda(d.totalGeral)}`);
+  } catch(e) { toast('Erro ao gerar relatório', 'error'); }
+}
   const bruto = parseFloat(document.getElementById('calcBruto').value || 0);
   const liquido = parseFloat(document.getElementById('calcLiquido').value || 0);
   const pEmp = parseFloat(document.getElementById('calcPctEmp').value || 35);

@@ -16,6 +16,10 @@ const averba_coesRoutes = require('./routes/averbacoes');
 const auditoriaRoutes = require('./routes/auditoria');
 const dashboardRoutes = require('./routes/dashboard');
 const usuariosRoutes = require('./routes/usuarios');
+const certificadosRoutes = require('./routes/certificados');
+const importacoesRoutes = require('./routes/importacoes');
+const iso27001Routes = require('./routes/iso27001');
+const faturamentoRoutes = require('./routes/faturamento');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -46,6 +50,10 @@ app.use('/api/averbacoes', averba_coesRoutes);
 app.use('/api/auditoria', auditoriaRoutes);
 app.use('/api/dashboard', dashboardRoutes);
 app.use('/api/usuarios', usuariosRoutes);
+app.use('/api/certificados', certificadosRoutes);
+app.use('/api/importacoes', importacoesRoutes);
+app.use('/api/iso27001', iso27001Routes);
+app.use('/api/faturamento', faturamentoRoutes);
 
 app.get('/api/health', (req, res) => {
   res.json({

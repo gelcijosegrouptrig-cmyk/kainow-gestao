@@ -21,6 +21,7 @@ function autenticar(req, res, next) {
       return res.status(401).json({ erro: 'Usuário inativo ou não encontrado' });
     }
     req.usuario = usuario;
+    req.user = usuario; // alias para compatibilidade
     next();
   } catch (err) {
     registrarLog({
