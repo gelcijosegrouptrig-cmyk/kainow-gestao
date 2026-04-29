@@ -2111,6 +2111,8 @@ async function gerarRelatorioFaturamento() {
     alert(`Relatório de Faturamento por Banco\nGerado em: ${fmtData(d.geradoEm)}\n\n${linhas}\n\nTOTAL GERAL: ${fmtMoeda(d.totalGeral)}`);
   } catch(e) { toast('Erro ao gerar relatório', 'error'); }
 }
+
+function calcularMargem() {
   const bruto = parseFloat(document.getElementById('calcBruto').value || 0);
   const liquido = parseFloat(document.getElementById('calcLiquido').value || 0);
   const pEmp = parseFloat(document.getElementById('calcPctEmp').value || 35);

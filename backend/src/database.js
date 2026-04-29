@@ -173,6 +173,50 @@ function initializeDatabase() {
     );
 
     -- ===================================================
+    -- TABELA: certificados_digitais (e-CPF / e-CNPJ)
+    -- ===================================================
+    CREATE TABLE IF NOT EXISTS certificados_digitais (
+      id TEXT PRIMARY KEY DEFAULT (lower(hex(randomblob(16)))),
+      usuario_id TEXT NOT NULL,
+      tipo TEXT NOT NULL CHECK(tipo IN ('eCPF','eCNPJ','SSL','TIMESTAMP')),
+      titular_nome TEXT NOT NULL,
+      titular_cpf_cnpj TEXT NOT NULL,
+      serial_number TEXT UNIQUE,
+      status TEXT NOT NULL DEFAULT 'ATIVO' CHECK(status IN ('ATIVO','REVOGADO','EXPIRADO')),
+      valido_desde TEXT NOT NULL DEFAULT (datetime('now')),
+      valido_ate TEXT NOT NULL,
+      certificado_pem TEXT,
+      chave_privada_enc TEXT,
+      algoritmo TEXT DEFAULT 'RSA-2048',
+      motivo_revogacao TEXT,
+      revogado_em TEXT,
+      criado_em TEXT NOT NULL DEFAULT (datetime('now')),
+      FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
+    );
+
+    -- ===================================================
+    -- TABELA: itens_importacao_folha (linhas do arquivo)
+    -- ===================================================
+    CREATE TABLE IF NOT EXISTS itens_importacao_folha (
+      id TEXT PRIMARY KEY DEFAULT (lower(hex(randomblob(16)))),
+      importacao_id TEXT NOT NULL,
+      cpf TEXT,
+      matricula TEXT,
+      nome TEXT,
+      salario_bruto REAL,
+      salario_liquido REAL,
+      situacao TEXT,
+      cargo TEXT,
+      lotacao TEXT,
+      linha_original TEXT,
+      status_processamento TEXT DEFAULT 'PENDENTE',
+      erro_processamento TEXT,
+      funcionario_id TEXT,
+      criado_em TEXT NOT NULL DEFAULT (datetime('now')),
+      FOREIGN KEY (importacao_id) REFERENCES importacoes_folha(id)
+    );
+
+    -- ===================================================
     -- ÍNDICES para performance
     -- ===================================================
     CREATE INDEX IF NOT EXISTS idx_averbacoes_funcionario ON averbacoes(funcionario_id);
