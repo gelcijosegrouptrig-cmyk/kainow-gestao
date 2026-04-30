@@ -9093,16 +9093,9 @@ function navTo(page) {
   const psEl = document.getElementById('pageSubtitle');
   if (ptEl) ptEl.textContent = title;
   if (psEl) psEl.textContent = sub;
-  // PASSO 5: garantir scroll=0 após render (duplo rAF para aguardar layout)
+  // PASSO 5: garantir scroll=0 após render
   requestAnimationFrame(() => {
-    if (contentEl) { contentEl.scrollTop = 0; contentEl.scrollTo(0, 0); }
-    requestAnimationFrame(() => {
-      if (contentEl) { contentEl.scrollTop = 0; }
-      // scrollIntoView na seção para garantir visibilidade no topo
-      if (sec) sec.scrollIntoView({ block: 'start', behavior: 'instant' });
-      // reset scroll do content novamente após scrollIntoView
-      if (contentEl) { contentEl.scrollTop = 0; contentEl.scrollTo(0, 0); }
-    });
+    if (contentEl) contentEl.scrollTop = 0;
   });
   loadPageData(page);
 }
