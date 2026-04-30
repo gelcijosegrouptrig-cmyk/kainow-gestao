@@ -4,8 +4,8 @@
  * Proxies requests to the backend server and adds CORS headers
  */
 
-// Backend URL — sandbox Novita (update when migrating to VPS/production)
-const BACKEND = 'https://3001-i4i7i743o756tjyp8h57t-18e660f9.sandbox.novita.ai';
+// Backend URL — Railway production
+const BACKEND = 'https://kainow-gestao-production.up.railway.app';
 
 const CORS_HEADERS = {
   'Access-Control-Allow-Origin': '*',
