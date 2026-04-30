@@ -9064,6 +9064,9 @@ function navTo(page) {
   const psEl = document.getElementById('pageSubtitle');
   if (ptEl) ptEl.textContent = title;
   if (psEl) psEl.textContent = sub;
+  // ✅ RESET SCROLL: volta ao topo ao trocar de seção
+  const contentEl = document.querySelector('.content');
+  if (contentEl) contentEl.scrollTop = 0;
   loadPageData(page);
 }
 
