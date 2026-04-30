@@ -3269,7 +3269,7 @@ h2 { font-size: var(--fs-lg); font-weight: 700; letter-spacing: -0.2px; margin-b
 /* ── END PATCH: rule-card components ─────────────────────────────────── */
 
 /* ── LAYOUT DEFINITIVO: sidebar fixed + main offset ─────────────────── */
-html { scroll-behavior: smooth; }
+html { scroll-behavior: auto !important; } /* auto = sem smooth para scrollTo funcionar */
 .sidebar {
   position: fixed !important;
   top: 0; left: 0;
@@ -3281,14 +3281,14 @@ html { scroll-behavior: smooth; }
   margin-left: var(--sidebar-w) !important;
   width: calc(100% - var(--sidebar-w)) !important;
   min-width: 0 !important;
-  overflow: clip !important; /* clip: sem scroll-container, não quebra nada */
+  overflow: clip !important;
   display: flex !important;
   flex-direction: column !important;
   height: 100vh !important;
 }
 .topbar {
   flex-shrink: 0 !important;
-  position: static !important; /* remove sticky que criava espaço fantasma */
+  position: static !important;
   height: var(--topbar-h) !important;
 }
 .content {
@@ -3298,6 +3298,19 @@ html { scroll-behavior: smooth; }
   min-height: 0 !important;
   padding: 20px 24px 32px !important;
   min-width: 0 !important;
+}
+/* Garantir que seções ocultas não ocupam espaço e que a ativa começa no topo */
+.page-section {
+  display: none !important;
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+.page-section.active {
+  display: block !important;
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+  padding-bottom: 16px !important;
+  scroll-margin-top: 0 !important;
 }
 /* ── END LAYOUT DEFINITIVO ───────────────────────────────────────────── */
 
@@ -9063,21 +9076,34 @@ const pageTitles = {
 };
 
 function navTo(page) {
+  const contentEl = document.querySelector('.content');
+  // PASSO 1: esconder todas as seções
   document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  // PASSO 2: resetar scroll ANTES de mostrar nova seção (enquanto altura=0)
+  if (contentEl) { contentEl.scrollTop = 0; contentEl.scrollTo(0, 0); }
+  // PASSO 3: ativar nova seção
   const sec = document.getElementById(`section-${page}`);
   if (sec) sec.classList.add('active');
   const nav = document.querySelector(`[onclick="navTo('${page}')"]`);
   if (nav) nav.classList.add('active');
+  // PASSO 4: atualizar título
   const [title, sub] = pageTitles[page] || [page, ''];
-  // Update topbar title and subtitle
   const ptEl = document.getElementById('pageTitle');
   const psEl = document.getElementById('pageSubtitle');
   if (ptEl) ptEl.textContent = title;
   if (psEl) psEl.textContent = sub;
-  // ✅ RESET SCROLL: volta ao topo ao trocar de seção
-  const contentEl = document.querySelector('.content');
-  if (contentEl) contentEl.scrollTop = 0;
+  // PASSO 5: garantir scroll=0 após render (duplo rAF para aguardar layout)
+  requestAnimationFrame(() => {
+    if (contentEl) { contentEl.scrollTop = 0; contentEl.scrollTo(0, 0); }
+    requestAnimationFrame(() => {
+      if (contentEl) { contentEl.scrollTop = 0; }
+      // scrollIntoView na seção para garantir visibilidade no topo
+      if (sec) sec.scrollIntoView({ block: 'start', behavior: 'instant' });
+      // reset scroll do content novamente após scrollIntoView
+      if (contentEl) { contentEl.scrollTop = 0; contentEl.scrollTo(0, 0); }
+    });
+  });
   loadPageData(page);
 }
 
