@@ -141,8 +141,8 @@
 
 /* ── 2. RESET & BASE ────────────────────────────────────────────────────── */
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-html { scroll-behavior: smooth; }
-html, body { overflow-x: hidden; }
+html { scroll-behavior: auto; }
+html, body { overflow-x: hidden; overflow-y: hidden; }
 body {
   font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
   font-size: var(--fs-md);
@@ -3269,11 +3269,13 @@ h2 { font-size: var(--fs-lg); font-weight: 700; letter-spacing: -0.2px; margin-b
 .rule-type-badge.militar  { background: rgba(234,179,8,.6); color: #1c1917; }
 /* ── END PATCH: rule-card components ─────────────────────────────────── */
 
-/* ── LAYOUT DEFINITIVO v4: padding-left no body ──────────────────────── */
-html { scroll-behavior: auto !important; }
+/* ── LAYOUT DEFINITIVO v5: padding-left no body, overflow hidden ─────── */
+html, body {
+  overflow: hidden !important;
+  height: 100vh !important;
+}
 body {
   padding-left: var(--sidebar-w) !important;
-  min-height: 100vh !important;
   box-sizing: border-box !important;
 }
 .sidebar {
