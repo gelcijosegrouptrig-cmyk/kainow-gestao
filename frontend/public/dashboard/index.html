@@ -3279,12 +3279,13 @@ html { scroll-behavior: auto !important; } /* auto = sem smooth para scrollTo fu
 }
 .main {
   margin-left: var(--sidebar-w) !important;
-  width: calc(100% - var(--sidebar-w)) !important;
+  width: auto !important;
   min-width: 0 !important;
   overflow: clip !important;
   display: flex !important;
   flex-direction: column !important;
   height: 100vh !important;
+  box-sizing: border-box !important;
 }
 .topbar {
   flex-shrink: 0 !important;
