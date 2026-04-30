@@ -141,8 +141,8 @@
 
 /* ── 2. RESET & BASE ────────────────────────────────────────────────────── */
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-html { scroll-behavior: auto; }
-html, body { overflow-x: hidden; overflow-y: hidden; }
+html { scroll-behavior: smooth; }
+html, body { overflow-x: hidden; }
 body {
   font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
   font-size: var(--fs-md);
@@ -1129,10 +1129,9 @@ code { font-size: var(--fs-sm); background: var(--gray-100); padding: 2px 6px; b
   #dashPillarCards { grid-template-columns: repeat(2,1fr) !important; }
 }
 @media (max-width: 768px) {
-  body { padding-left: 0 !important; }
   .sidebar { transform: translateX(-100%); }
   .sidebar.open { transform: translateX(0); }
-  .main { margin-left: 0 !important; width: 100% !important; }
+  .main { margin-left: 0; width: 100%; }
   .content { padding: 12px 12px 20px; }
   .stats-grid { grid-template-columns: repeat(2, 1fr) !important; }
   #dashPillarCards { grid-template-columns: 1fr !important; }
@@ -3269,61 +3268,38 @@ h2 { font-size: var(--fs-lg); font-weight: 700; letter-spacing: -0.2px; margin-b
 .rule-type-badge.militar  { background: rgba(234,179,8,.6); color: #1c1917; }
 /* ── END PATCH: rule-card components ─────────────────────────────────── */
 
-/* ── LAYOUT DEFINITIVO v6 ────────────────────────────────────────────── */
-html {
-  scroll-behavior: auto !important;
-  height: 100% !important;
-  overflow: hidden !important;
-}
-body {
-  padding-left: var(--sidebar-w) !important;
-  box-sizing: border-box !important;
-  height: 100vh !important;
-  overflow: hidden !important;
-  min-height: unset !important;
-}
+/* ── LAYOUT DEFINITIVO: sidebar fixed + main offset ─────────────────── */
+html { scroll-behavior: auto !important; } /* auto = sem smooth para scrollTo funcionar */
 .sidebar {
   position: fixed !important;
-  top: 0 !important;
-  left: 0 !important;
-  width: var(--sidebar-w) !important;
-  height: 100vh !important;
-  z-index: 300 !important;
-  overflow-y: auto !important;
-  overflow-x: hidden !important;
+  top: 0; left: 0;
+  height: 100vh;
+  z-index: 300;
+  will-change: transform;
 }
 .main {
-  margin-left: 0 !important;
-  width: 100% !important;
+  margin-left: var(--sidebar-w) !important;
+  width: calc(100% - var(--sidebar-w)) !important;
   min-width: 0 !important;
-  overflow: hidden !important;
+  overflow: clip !important;
   display: flex !important;
   flex-direction: column !important;
   height: 100vh !important;
-  box-sizing: border-box !important;
-  position: relative !important;
 }
 .topbar {
-  flex: 0 0 var(--topbar-h) !important;
-  height: var(--topbar-h) !important;
-  min-height: var(--topbar-h) !important;
-  max-height: var(--topbar-h) !important;
+  flex-shrink: 0 !important;
   position: static !important;
-  width: 100% !important;
-  box-sizing: border-box !important;
-  overflow: hidden !important;
+  height: var(--topbar-h) !important;
 }
 .content {
-  flex: 1 1 0 !important;
-  overflow-y: scroll !important;
+  flex: 1 !important;
+  overflow-y: auto !important;
   overflow-x: hidden !important;
   min-height: 0 !important;
-  height: 0 !important;
   padding: 20px 24px 32px !important;
   min-width: 0 !important;
-  width: 100% !important;
-  box-sizing: border-box !important;
 }
+/* Garantir que seções ocultas não ocupam espaço e que a ativa começa no topo */
 .page-section {
   display: none !important;
   margin-top: 0 !important;
@@ -3334,6 +3310,7 @@ body {
   margin-top: 0 !important;
   padding-top: 0 !important;
   padding-bottom: 16px !important;
+  scroll-margin-top: 0 !important;
 }
 /* ── END LAYOUT DEFINITIVO ───────────────────────────────────────────── */
 
@@ -9100,25 +9077,32 @@ const pageTitles = {
 
 function navTo(page) {
   const contentEl = document.querySelector('.content');
-  // PASSO 1: esconder todas as seções e nav
+  // PASSO 1: esconder todas as seções
   document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  // PASSO 2: resetar scroll ANTES (seções ocultas = altura 0, scroll some imediatamente)
-  if (contentEl) { contentEl.scrollTop = 0; }
+  // PASSO 2: resetar scroll ANTES de mostrar nova seção (enquanto altura=0)
+  if (contentEl) { contentEl.scrollTop = 0; contentEl.scrollTo(0, 0); }
   // PASSO 3: ativar nova seção
   const sec = document.getElementById(`section-${page}`);
   if (sec) sec.classList.add('active');
   const nav = document.querySelector(`[onclick="navTo('${page}')"]`);
   if (nav) nav.classList.add('active');
-  // PASSO 4: atualizar título topbar
+  // PASSO 4: atualizar título
   const [title, sub] = pageTitles[page] || [page, ''];
   const ptEl = document.getElementById('pageTitle');
   const psEl = document.getElementById('pageSubtitle');
   if (ptEl) ptEl.textContent = title;
   if (psEl) psEl.textContent = sub;
-  // PASSO 5: forçar scroll=0 após paint — sem scrollIntoView que causa offset
+  // PASSO 5: garantir scroll=0 após render (duplo rAF para aguardar layout)
   requestAnimationFrame(() => {
-    if (contentEl) contentEl.scrollTop = 0;
+    if (contentEl) { contentEl.scrollTop = 0; contentEl.scrollTo(0, 0); }
+    requestAnimationFrame(() => {
+      if (contentEl) { contentEl.scrollTop = 0; }
+      // scrollIntoView na seção para garantir visibilidade no topo
+      if (sec) sec.scrollIntoView({ block: 'start', behavior: 'instant' });
+      // reset scroll do content novamente após scrollIntoView
+      if (contentEl) { contentEl.scrollTop = 0; contentEl.scrollTo(0, 0); }
+    });
   });
   loadPageData(page);
 }
