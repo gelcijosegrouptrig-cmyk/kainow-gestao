@@ -295,8 +295,9 @@ h1,h2,h3,h4,h5,h6 { color: var(--c-dark); }
   margin-left: var(--sidebar-w);
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  height: 100vh;
   min-width: 0;
+  overflow: hidden;
 }
 
 /* ── 5. TOPBAR ──────────────────────────────────────────────────────────── */
@@ -421,7 +422,6 @@ html[data-fs="lg"]  {
   overflow-x: hidden;
   overflow-y: auto;
   max-width: 100%;
-  height: calc(100vh - var(--topbar-h));
 }
 
 /* ── 7. PAGE SECTIONS ───────────────────────────────────────────────────── */
@@ -920,7 +920,7 @@ td .acoes-cell { display: inline-flex !important; gap: 4px !important; align-ite
 #tabelaUltimasAverb tbody tr { height: 46px; }
 #tabelaUltimasAverb td { vertical-align: middle; }
 /* Consistent stat-card inner padding */
-.stat-card { padding: 20px 20px 16px; }
+.stat-card { padding: 14px 16px 12px; }
 .stat-card .stat-icon { margin-bottom: 12px; }
 /* page-header always single line title */
 .page-header-title { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -1152,8 +1152,8 @@ code { font-size: var(--fs-sm); background: var(--gray-100); padding: 2px 6px; b
 h2 { font-size: var(--fs-lg); font-weight: 700; letter-spacing: -0.2px; margin-bottom: 10px; }
 .page-section > .panel,
 .page-section > .form-card,
-.page-section > .stats-grid { margin-bottom: 20px; }
-.panel + .panel { margin-top: 20px; }
+.page-section > .stats-grid { margin-bottom: 12px; }
+.panel + .panel { margin-top: 12px; }
 .panel-header .btn { align-self: center; }
 
 /* ── 28. LAYOUT UTILITY GRID CLASSES ────────────────────────────────────── */
@@ -1740,41 +1740,12 @@ h2 { font-size: var(--fs-lg); font-weight: 700; letter-spacing: -0.2px; margin-b
   flex-direction: column;
 }
 
-/* ── 48. COMPONENT — PAGE-HEADER REFRESH ───────────────────────────────────*/
-.page-header {
-  background: linear-gradient(90deg, #eff6ff 0%, #f8fbff 100%);
-  border: 1px solid #dce8ff;
-  border-left: 5px solid var(--blue-600);
-  border-radius: var(--r-lg);
-  padding: 20px 24px;
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  margin-bottom: 24px;
-}
-.page-header-icon {
-  width: 40px; height: 40px;
-  background: linear-gradient(135deg, var(--blue-600), var(--blue-400));
-  border-radius: var(--r-md);
-  display: flex; align-items: center; justify-content: center;
-  font-size: var(--fs-3xl);
-  flex-shrink: 0;
-  box-shadow: 0 4px 12px rgba(37,99,235,.2);
-}
+/* ── 48. PAGE-HEADER (compact, sem duplicar regra principal) ───────────────*/
 .page-header-body { flex: 1; }
-.page-header-title {
-  font-size: var(--fs-2xl);
-  font-weight: var(--fw-black);
-  color: var(--gray-900);
-  letter-spacing: -0.4px;
-  line-height: var(--lh-tight);
-  margin: 0 0 5px;
-}
 .page-header-sub {
-  font-size: var(--fs-base);
+  font-size: var(--fs-sm);
   color: var(--gray-500);
   font-weight: var(--fw-medium);
-  line-height: var(--lh-snug);
   margin: 0;
 }
 
@@ -1782,7 +1753,7 @@ h2 { font-size: var(--fs-lg); font-weight: 700; letter-spacing: -0.2px; margin-b
 .stat-card {
   background: var(--white);
   border-radius: var(--r-xl);
-  padding: 20px 20px 16px;
+  padding: 14px 16px 12px;
   border: 1px solid var(--gray-100);
   box-shadow: 0 1px 4px rgba(0,0,0,.04), 0 4px 16px rgba(0,0,0,.03);
   position: relative;
@@ -3189,10 +3160,10 @@ h2 { font-size: var(--fs-lg); font-weight: 700; letter-spacing: -0.2px; margin-b
 /* ── stat-card com stat-info: resetar flex do stat-icon ─────────────────── */
 .stat-card .stat-icon {
   flex-shrink: 0;
-  width: 44px; height: 44px;
+  width: 36px; height: 36px;
   display: flex; align-items: center; justify-content: center;
-  border-radius: 12px;
-  font-size: var(--fs-2xl);
+  border-radius: 10px;
+  font-size: var(--fs-xl);
 }
 
 /* ── page-header-icon: garantir display flex ────────────────────────────── */
@@ -3238,6 +3209,7 @@ h2 { font-size: var(--fs-lg); font-weight: 700; letter-spacing: -0.2px; margin-b
   background: linear-gradient(135deg, #1e40af, #0ea5e9);
   color: white; text-align: center;
   word-break: break-word;
+  padding: 14px;
 }
 
 /* ── Topbar: garantir que font-ctrl não quebre o layout ─────────────────── */
@@ -3309,12 +3281,12 @@ html { scroll-behavior: smooth; }
 }
 .main {
   margin-left: var(--sidebar-w) !important;
-  width: auto !important;
+  width: calc(100% - var(--sidebar-w)) !important;
   min-width: 0 !important;
   overflow-x: hidden;
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  height: 100vh;
 }
 /* ── END LAYOUT DEFINITIVO ───────────────────────────────────────────── */
 
