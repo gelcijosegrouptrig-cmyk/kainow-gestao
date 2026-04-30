@@ -1,9 +1,6 @@
 [build]
-builder = "NIXPACKS"
-buildCommand = "npm ci --build-from-source"
-
-[build.nixpacksPlan.phases.setup]
-nixPkgs = ["nodejs_20", "python3", "python3Packages.pip", "nodePackages.node-gyp", "gcc", "gnumake"]
+builder = "DOCKERFILE"
+dockerfilePath = "backend/Dockerfile"
 
 [deploy]
 startCommand = "node src/server.js"
