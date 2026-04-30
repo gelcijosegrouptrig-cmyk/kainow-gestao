@@ -1129,9 +1129,10 @@ code { font-size: var(--fs-sm); background: var(--gray-100); padding: 2px 6px; b
   #dashPillarCards { grid-template-columns: repeat(2,1fr) !important; }
 }
 @media (max-width: 768px) {
-  .sidebar { transform: translateX(-100%); }
+  body { display: block !important; }
+  .sidebar { position: fixed !important; transform: translateX(-100%); top:0; left:0; height:100vh; z-index:300; }
   .sidebar.open { transform: translateX(0); }
-  .main { margin-left: 0; width: 100%; }
+  .main { margin-left: 0 !important; width: 100% !important; grid-column: unset !important; }
   .content { padding: 12px 12px 20px; }
   .stats-grid { grid-template-columns: repeat(2, 1fr) !important; }
   #dashPillarCards { grid-template-columns: 1fr !important; }
@@ -3268,20 +3269,34 @@ h2 { font-size: var(--fs-lg); font-weight: 700; letter-spacing: -0.2px; margin-b
 .rule-type-badge.militar  { background: rgba(234,179,8,.6); color: #1c1917; }
 /* ── END PATCH: rule-card components ─────────────────────────────────── */
 
-/* ── LAYOUT DEFINITIVO: sidebar fixed + main offset ─────────────────── */
-html { scroll-behavior: auto !important; } /* auto = sem smooth para scrollTo funcionar */
+/* ── LAYOUT DEFINITIVO v3: CSS Grid no body — infalível ─────────────── */
+html { scroll-behavior: auto !important; }
+body {
+  display: grid !important;
+  grid-template-columns: var(--sidebar-w) 1fr !important;
+  grid-template-rows: 100vh !important;
+  height: 100vh !important;
+  overflow: hidden !important;
+  min-height: unset !important;
+}
 .sidebar {
-  position: fixed !important;
-  top: 0; left: 0;
-  height: 100vh;
-  z-index: 300;
+  grid-column: 1 !important;
+  grid-row: 1 !important;
+  position: relative !important;
+  top: unset !important; left: unset !important;
+  height: 100vh !important;
+  z-index: 300 !important;
   will-change: transform;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
 }
 .main {
-  margin-left: var(--sidebar-w) !important;
-  width: auto !important;
+  grid-column: 2 !important;
+  grid-row: 1 !important;
+  margin-left: 0 !important;
+  width: 100% !important;
   min-width: 0 !important;
-  overflow: clip !important;
+  overflow: hidden !important;
   display: flex !important;
   flex-direction: column !important;
   height: 100vh !important;
@@ -3291,6 +3306,7 @@ html { scroll-behavior: auto !important; } /* auto = sem smooth para scrollTo fu
   flex-shrink: 0 !important;
   position: static !important;
   height: var(--topbar-h) !important;
+  width: 100% !important;
 }
 .content {
   flex: 1 !important;
@@ -3299,6 +3315,8 @@ html { scroll-behavior: auto !important; } /* auto = sem smooth para scrollTo fu
   min-height: 0 !important;
   padding: 20px 24px 32px !important;
   min-width: 0 !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
 }
 /* Garantir que seções ocultas não ocupam espaço e que a ativa começa no topo */
 .page-section {
