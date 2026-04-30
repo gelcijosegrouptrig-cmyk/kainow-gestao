@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AverbaTech - Login</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%231e40af'/><text x='50%' y='55%' dominant-baseline='middle' text-anchor='middle' font-size='18' font-weight='bold' fill='white'>A</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: linear-gradient(135deg, #0d1526 0%, #0f1f3e 50%, #0d1526 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── CARD WRAPPER ─────────────────────────────── */
+  .login-wrapper {
+    display: flex;
+    width: 900px;
+    max-width: 100%;
+    min-height: 560px;
+    border-radius: 22px;
+    overflow: hidden;
+    box-shadow: 0 32px 80px rgba(0,0,0,.6), 0 0 0 1px rgba(255,255,255,.06);
+  }
+
+  /* ── LEFT PANEL ───────────────────────────────── */
+  .login-left {
+    flex: 1;
+    background: linear-gradient(160deg, #3b4fd4 0%, #4f63e7 45%, #5b72f0 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 52px 40px;
+    color: white;
+    position: relative;
+    overflow: hidden;
+  }
+  .login-left::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 15% 85%, rgba(255,255,255,.1) 0%, transparent 55%),
+                radial-gradient(ellipse at 85% 15%, rgba(255,255,255,.07) 0%, transparent 50%);
+    pointer-events: none;
+  }
+
+  .logo-wrap {
+    width: 68px; height: 68px;
+    background: rgba(255,255,255,.18);
+    border-radius: 18px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 34px; font-weight: 900; color: white;
+    margin-bottom: 18px;
+    border: 1px solid rgba(255,255,255,.25);
+    backdrop-filter: blur(10px);
+    letter-spacing: -2px;
+    box-shadow: 0 8px 24px rgba(0,0,0,.2);
+  }
+
+  .login-left h1 {
+    font-size: 28px;
+    font-weight: 900;
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+  }
+  .login-left .tagline {
+    font-size: 13px;
+    opacity: 0.72;
+    text-align: center;
+    line-height: 1.6;
+    margin-bottom: 36px;
+  }
+
+  .features { display: flex; flex-direction: column; gap: 9px; width: 100%; }
+  .feature-item {
+    display: flex; align-items: center; gap: 10px;
+    background: rgba(255,255,255,.12);
+    border: 1px solid rgba(255,255,255,.15);
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-size: 13px;
+    font-weight: 500;
+    backdrop-filter: blur(6px);
+    transition: background 0.2s;
+  }
+  .feature-item:hover { background: rgba(255,255,255,.18); }
+  .fi { font-size: 16px; flex-shrink: 0; }
+
+  /* ── RIGHT PANEL ──────────────────────────────── */
+  .login-right {
+    flex: 1;
+    background: #ffffff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 52px 48px;
+  }
+
+  .login-right-header { margin-bottom: 32px; }
+  .login-right-header h2 {
+    font-size: 26px;
+    font-weight: 900;
+    color: #0f172a;
+    letter-spacing: -0.5px;
+    margin-bottom: 6px;
+  }
+  .login-right-header p {
+    font-size: 13.5px;
+    color: #64748b;
+    font-weight: 400;
+  }
+
+  .form-group { margin-bottom: 18px; }
+  .form-group label {
+    display: block;
+    font-size: 11px;
+    font-weight: 700;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    margin-bottom: 7px;
+  }
+  .form-group input {
+    width: 100%;
+    padding: 13px 16px;
+    border: 1.5px solid #e5e7eb;
+    border-radius: 10px;
+    font-size: 14.5px;
+    color: #1e293b;
+    background: #fafbfc;
+    transition: all 0.2s;
+    outline: none;
+    font-family: inherit;
+  }
+  .form-group input:focus {
+    border-color: #4f63e7;
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(79,99,231,.12);
+  }
+  .form-group input::placeholder { color: #94a3b8; }
+
+  .btn-login {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, #3b4fd4, #4f63e7);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.25s;
+    margin-bottom: 20px;
+    font-family: inherit;
+    letter-spacing: 0.1px;
+    box-shadow: 0 4px 14px rgba(79,99,231,.35);
+  }
+  .btn-login:hover {
+    background: linear-gradient(135deg, #4f63e7, #6674f0);
+    transform: translateY(-1px);
+    box-shadow: 0 8px 22px rgba(79,99,231,.45);
+  }
+  .btn-login:active { transform: translateY(0); }
+  .btn-login:disabled { opacity: 0.6; cursor: not-allowed; transform: none; box-shadow: none; }
+
+  .error-msg {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    border-left: 3px solid #ef4444;
+    color: #991b1b;
+    padding: 10px 14px;
+    border-radius: 9px;
+    font-size: 13px;
+    margin-bottom: 16px;
+    display: none;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .demo-creds {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 16px;
+  }
+  .demo-creds h4 {
+    font-size: 10.5px;
+    font-weight: 700;
+    color: #64748b;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .demo-btns { display: flex; gap: 8px; flex-wrap: wrap; }
+  .demo-btn {
+    flex: 1; min-width: 80px;
+    padding: 8px 10px;
+    border-radius: 8px;
+    background: white;
+    border: 1.5px solid #e2e8f0;
+    font-size: 11.5px;
+    font-weight: 600;
+    cursor: pointer;
+    color: #334155;
+    transition: all 0.2s;
+    font-family: inherit;
+  }
+  .demo-btn:hover {
+    background: #f1f5f9;
+    border-color: #cbd5e1;
+    transform: translateY(-1px);
+  }
+
+  .security-note {
+    margin-top: 18px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11.5px;
+    color: #94a3b8;
+    justify-content: center;
+  }
+
+  /* ── RESPONSIVE ──────────────────────────────── */
+  @media (max-width: 640px) {
+    .login-left { display: none; }
+    .login-right { padding: 40px 28px; }
+    .login-wrapper { border-radius: 16px; min-height: auto; }
+  }
+
+  /* ── ANIMATION ───────────────────────────────── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .login-wrapper { animation: fadeUp 0.45s ease both; }
+</style>
+</head>
+<body>
+<div class="login-wrapper">
+
+  <!-- LEFT PANEL -->
+  <div class="login-left">
+    <div class="logo-wrap">A</div>
+    <h1>AverbaTech</h1>
+    <p class="tagline">Plataforma Inteligente de<br>Consignado &amp; Margem Salarial</p>
+    <div class="features">
+      <div class="feature-item"><span class="fi">🧠</span> Score de Margem Inteligente</div>
+      <div class="feature-item"><span class="fi">⚡</span> Antecipação Salarial On-Demand</div>
+      <div class="feature-item"><span class="fi">📡</span> eSocial Tempo Real</div>
+      <div class="feature-item"><span class="fi">🔄</span> Portabilidade One-Click</div>
+      <div class="feature-item"><span class="fi">🛡️</span> IA Anti-Superendividamento</div>
+      <div class="feature-item"><span class="fi">🔒</span> Biometria + LGPD Compliant</div>
+    </div>
+  </div>
+
+  <!-- RIGHT PANEL -->
+  <div class="login-right">
+    <div class="login-right-header">
+      <h2>Bem-vindo de volta</h2>
+      <p>Acesse sua conta para continuar</p>
+    </div>
+
+    <div class="error-msg" id="errorMsg">❌ <span id="errorText">Credenciais inválidas</span></div>
+
+    <form id="loginForm" onsubmit="event.preventDefault(); fazerLogin();" autocomplete="on" novalidate>
+      <div class="form-group">
+        <label for="email">E-mail</label>
+        <input type="email" id="email" placeholder="seu@email.com.br" autocomplete="username email" required>
+      </div>
+      <div class="form-group">
+        <label for="senha">Senha</label>
+        <input type="password" id="senha" placeholder="••••••••" autocomplete="current-password" required>
+      </div>
+      <button class="btn-login" id="btnLogin" type="submit">Entrar no Sistema →</button>
+    </form>
+
+    <div class="demo-creds">
+      <h4>🧪 Acesso Demonstração</h4>
+      <div class="demo-btns">
+        <button class="demo-btn" onclick="preencherDemo('admin@averba.tech','Admin@2024')">👑 Super Admin</button>
+        <button class="demo-btn" onclick="preencherDemo('rh@prefeitura.sp.gov.br','RH@12345')">🏛️ RH</button>
+        <button class="demo-btn" onclick="preencherDemo('operador@bb.com.br','Banco@123')">🏦 Banco</button>
+      </div>
+    </div>
+
+    <div class="security-note">🔒 Conexão criptografada · LGPD Compliant</div>
+  </div>
+
+</div>
+<script>
+
+// ── AUTO-LOGIN: se já tem token, ir direto ao dashboard ──────────────
+(function() {
+  const logout = new URLSearchParams(window.location.search).get('logout');
+  if (logout) return; // não redirecionar após logout
+  try {
+    const tok = sessionStorage.getItem('token') || localStorage.getItem('token');
+    if (tok) { window.location.replace('/dashboard/'); }
+  } catch(e) {}
+})();
+const API = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+  ? '/api'
+  : 'https://averba-api-proxy.gelci-jose-grouptrig.workers.dev/api';
+
+function preencherDemo(e, s) {
+  document.getElementById('email').value = e;
+  document.getElementById('senha').value = s;
+}
+document.getElementById('senha').addEventListener('keydown', e => {
+  if (e.key === 'Enter') fazerLogin();
+});
+document.getElementById('email').addEventListener('keydown', e => {
+  if (e.key === 'Enter') fazerLogin();
+});
+
+async function fazerLogin() {
+  const email = document.getElementById('email').value.trim();
+  const senha = document.getElementById('senha').value;
+  const btn   = document.getElementById('btnLogin');
+  const errEl = document.getElementById('errorMsg');
+  const errTx = document.getElementById('errorText');
+  errEl.style.display = 'none';
+  if (!email || !senha) { mostrarErro('Preencha todos os campos'); return; }
+  btn.disabled = true; btn.textContent = 'Autenticando...';
+
+  let data;
+  try {
+    const resp = await fetch(API + '/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, senha })
+    });
+    data = await resp.json();
+    if (!resp.ok) { mostrarErro(data.erro || data.error || 'Credenciais inválidas'); return; }
+  } catch(fetchErr) {
+    mostrarErro('Erro de rede: ' + fetchErr.message); return;
+  } finally {
+    btn.disabled = false; btn.textContent = 'Entrar no Sistema →';
+  }
+
+  const tok  = data.token;
+  const uobj = data.usuario || {};
+  const ustr = JSON.stringify(uobj);
+  try { localStorage.setItem('token', tok);   localStorage.setItem('usuario', ustr);   } catch(e){}
+  try { sessionStorage.setItem('token', tok); sessionStorage.setItem('usuario', ustr); } catch(e){}
+  const exp = new Date(Date.now() + 8*3600*1000).toUTCString();
+  document.cookie = 'auth_token=' + encodeURIComponent(tok)  + '; expires=' + exp + '; path=/; SameSite=Lax';
+  document.cookie = 'auth_user='  + encodeURIComponent(ustr) + '; expires=' + exp + '; path=/; SameSite=Lax';
+
+  await new Promise(r => setTimeout(r, 80));
+  // Token já salvo em cookie+storage — vai direto para /dashboard/ SEM hash
+  // Isso evita o 301 que perde o hash, e o dashboard lê o token das storages
+  window.location.replace('/dashboard/');
+}
+
+function mostrarErro(msg) {
+  const errEl = document.getElementById('errorMsg');
+  const errTx = document.getElementById('errorText');
+  errTx.textContent = msg;
+  errEl.style.display = 'flex';
+}
+
+(function(){
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('logout') === '1') {
+    try { localStorage.clear(); } catch(e) {}
+    try { sessionStorage.clear(); } catch(e) {}
+    ['auth_token','token','usuario','auth_user'].forEach(n => {
+      document.cookie = n + '=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; SameSite=Lax';
+    });
+    try { history.replaceState(null, '', '/'); } catch(e) {}
+    return;
+  }
+  function getCookie(n){ const m=document.cookie.match('(?:^|; )'+n+'=([^;]*)'); return m?decodeURIComponent(m[1]):null; }
+  try {
+    const tok = localStorage.getItem('token') || sessionStorage.getItem('token') || getCookie('auth_token');
+    if (tok) window.location.replace('/dashboard/');
+  } catch(e){}
+})();
+</script>
+</body>
+</html>
