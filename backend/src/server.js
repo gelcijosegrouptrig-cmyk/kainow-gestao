@@ -164,7 +164,14 @@ app.get('/api/docs', (req, res) => {
 // ── Servir Frontend Estático ──────────────────────────────────────────────────
 const path = require('path');
 const fs   = require('fs');
-const FRONTEND = path.resolve(__dirname, '../../frontend/public');
+// Procura o frontend em múltiplos paths (local dev, Railway, Docker)
+const FRONTEND_CANDIDATES = [
+  process.env.FRONTEND_PATH,                        // via env var
+  path.resolve(__dirname, '../../frontend/public'),  // dev local: repo raiz
+  path.resolve(__dirname, '../public'),              // Railway/Docker: backend/public
+  path.resolve(__dirname, 'public'),                 // alternativo
+];
+const FRONTEND = FRONTEND_CANDIDATES.find(p => p && fs.existsSync(p)) || null;
 
 if (fs.existsSync(FRONTEND)) {
   // Servir arquivos estáticos (CSS, JS, imagens) com cache normal
