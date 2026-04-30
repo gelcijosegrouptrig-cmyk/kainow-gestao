@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<style>
+:root { --sidebar-w: 256px; --topbar-h: 64px; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body { overflow: hidden; }
+
+.sidebar {
+  position: fixed;
+  top: 0; left: 0;
+  width: var(--sidebar-w);
+  height: 100vh;
+  background: #1e293b;
+  z-index: 300;
+}
+
+.main {
+  margin-left: var(--sidebar-w);
+  width: calc(100% - var(--sidebar-w));
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.topbar {
+  height: var(--topbar-h);
+  background: white;
+  border-bottom: 1px solid #e2e8f0;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  font-weight: bold;
+}
+
+.content {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 20px 24px;
+  background: #f8fafc;
+}
+
+.page-section { display: none; }
+.page-section.active { display: block; }
+
+.page-header {
+  background: linear-gradient(135deg, #fafcff, #eef4ff);
+  border: 1px solid #dce8ff;
+  border-left: 4px solid #2563eb;
+  border-radius: 12px;
+  padding: 12px 18px;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.card {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 12px;
+}
+</style>
+</head>
+<body>
+<aside class="sidebar">
+  <div style="color:white;padding:20px;font-size:14px">SIDEBAR<br><br>
+    <div onclick="navTo('a')" style="cursor:pointer;padding:8px;margin:4px 0;background:#334155;border-radius:6px">Seção A</div>
+    <div onclick="navTo('b')" style="cursor:pointer;padding:8px;margin:4px 0;background:#334155;border-radius:6px">Seção B</div>
+  </div>
+</aside>
+
+<div class="main">
+  <div class="topbar" id="topbar">Dashboard — Seção Ativa: <span id="titulo">A</span></div>
+  <div class="content" id="content">
+    
+    <div class="page-section active" id="section-a">
+      <div class="page-header"><span style="font-size:24px">🔥</span><div><strong>Seção A</strong><br><small>Subtítulo da seção A</small></div></div>
+      <div class="card">Card 1 da seção A</div>
+      <div class="card">Card 2 da seção A</div>
+      <div class="card">Card 3 da seção A</div>
+      <div class="card" style="height:400px">Card alto — para criar scroll</div>
+      <div class="card">Card abaixo do scroll</div>
+    </div>
+
+    <div class="page-section" id="section-b">
+      <div class="page-header"><span style="font-size:24px">💎</span><div><strong>Seção B</strong><br><small>Subtítulo da seção B</small></div></div>
+      <div class="card">Card 1 da seção B</div>
+      <div class="card">Card 2 da seção B</div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function navTo(page) {
+  document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
+  document.getElementById('section-' + page).classList.add('active');
+  document.getElementById('titulo').textContent = page.toUpperCase();
+  // Reset scroll
+  const c = document.querySelector('.content');
+  if (c) c.scrollTop = 0;
+}
+</script>
+</body>
+</html>

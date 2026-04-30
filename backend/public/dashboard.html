@@ -297,7 +297,7 @@ h1,h2,h3,h4,h5,h6 { color: var(--c-dark); }
   flex-direction: column;
   height: 100vh;
   min-width: 0;
-  overflow: visible; /* NÃO hidden — deixa .content scrollar internamente */
+  overflow: clip; /* clip: corta sem criar scroll-container, não quebra sticky */
 }
 
 /* ── 5. TOPBAR ──────────────────────────────────────────────────────────── */
@@ -309,11 +309,9 @@ h1,h2,h3,h4,h5,h6 { color: var(--c-dark); }
   align-items: center;
   justify-content: space-between;
   border-bottom: 1px solid var(--gray-200);
-  position: sticky;
-  top: 0;
+  flex-shrink: 0; /* fica fixo no topo via flex-column, sem position:sticky */
   z-index: 200;
   box-shadow: var(--shadow-xs);
-  flex-shrink: 0;
   gap: 16px;
 }
 .topbar-title-wrap {
@@ -3283,16 +3281,21 @@ html { scroll-behavior: smooth; }
   margin-left: var(--sidebar-w) !important;
   width: calc(100% - var(--sidebar-w)) !important;
   min-width: 0 !important;
-  overflow: visible !important; /* permite scroll no .content filho */
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
+  overflow: clip !important; /* clip: sem scroll-container, não quebra nada */
+  display: flex !important;
+  flex-direction: column !important;
+  height: 100vh !important;
+}
+.topbar {
+  flex-shrink: 0 !important;
+  position: static !important; /* remove sticky que criava espaço fantasma */
+  height: var(--topbar-h) !important;
 }
 .content {
   flex: 1 !important;
   overflow-y: auto !important;
   overflow-x: hidden !important;
-  height: calc(100vh - var(--topbar-h)) !important;
+  min-height: 0 !important;
   padding: 20px 24px 32px !important;
   min-width: 0 !important;
 }
