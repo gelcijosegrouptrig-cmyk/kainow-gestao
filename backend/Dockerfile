@@ -11,14 +11,17 @@ RUN apt-get update && apt-get install -y \
 
 WORKDIR /app
 
-# Copy package files
-COPY package.json package-lock.json ./
+# Copy package files from backend
+COPY backend/package.json backend/package-lock.json ./
 
 # Install dependencies (will compile better-sqlite3 natively for Node 20)
 RUN npm ci
 
-# Copy source code
-COPY . .
+# Copy backend source code
+COPY backend/ .
+
+# Copy frontend static files (served by Express)
+COPY frontend/public/ ../frontend/public/
 
 # Create uploads directory
 RUN mkdir -p uploads
