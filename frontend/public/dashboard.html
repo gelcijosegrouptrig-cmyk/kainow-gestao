@@ -416,11 +416,12 @@ html[data-fs="lg"]  {
 /* ── 6. CONTENT WRAPPER ─────────────────────────────────────────────────── */
 .content {
   flex: 1;
-  padding: 24px 28px 48px;
+  padding: 20px 24px 32px;
   min-width: 0;
-  min-height: calc(100vh - var(--topbar-h));
   overflow-x: hidden;
+  overflow-y: auto;
   max-width: 100%;
+  height: calc(100vh - var(--topbar-h));
 }
 
 /* ── 7. PAGE SECTIONS ───────────────────────────────────────────────────── */
@@ -428,29 +429,29 @@ html[data-fs="lg"]  {
 .page-section.active {
   display: block;
   min-width: 0;
-  padding-bottom: 40px;
+  padding-bottom: 16px;
 }
 
 /* ── 8. PAGE HEADER BANNER ──────────────────────────────────────────────── */
 .page-header {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 12px;
   background: linear-gradient(135deg, #fafcff 0%, #eef4ff 100%);
   border: 1px solid #dce8ff;
   border-left: 4px solid var(--blue-600);
   border-radius: var(--r-lg);
-  padding: 18px 22px;
-  margin-bottom: 20px;
+  padding: 12px 18px;
+  margin-bottom: 14px;
   box-shadow: 0 2px 8px rgba(37,99,235,.05);
 }
 .page-header-icon {
-  width: 52px; height: 52px;
+  width: 40px; height: 40px;
   background: white;
   border-radius: 14px;
   display: flex; align-items: center; justify-content: center;
-  font-size: var(--fs-3xl);
-  box-shadow: 0 2px 12px rgba(0,0,0,.08);
+  font-size: var(--fs-2xl);
+  box-shadow: 0 2px 8px rgba(0,0,0,.06);
   border: 1px solid #dce8ff;
   flex-shrink: 0;
 }
@@ -474,20 +475,20 @@ html[data-fs="lg"]  {
 /* ── 9. STATS GRID & CARDS ──────────────────────────────────────────────── */
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(170px, 100%), 1fr));
-  gap: 14px;
-  margin-bottom: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(min(160px, 100%), 1fr));
+  gap: 10px;
+  margin-bottom: 14px;
 }
 .stat-card {
   background: var(--white);
   border-radius: var(--r-lg);
-  padding: 20px 20px 18px;
+  padding: 14px 16px 12px;
   box-shadow: var(--shadow-sm);
   border: 1px solid var(--gray-200);
   position: relative;
   overflow: hidden;
   transition: transform var(--t-base), box-shadow var(--t-base);
-  min-height: 130px;
+  min-height: 80px;
 }
 .stat-card::before {
   content: '';
@@ -1123,7 +1124,7 @@ code { font-size: var(--fs-sm); background: var(--gray-100); padding: 2px 6px; b
 
 /* ── 26. RESPONSIVE ─────────────────────────────────────────────────────── */
 @media (max-width: 1280px) {
-  .content { padding: 22px 24px 48px; }
+  .content { padding: 16px 20px 24px; }
 }
 @media (max-width: 1100px) {
   .panels-grid { grid-template-columns: 1fr !important; }
@@ -1133,7 +1134,7 @@ code { font-size: var(--fs-sm); background: var(--gray-100); padding: 2px 6px; b
   .sidebar { transform: translateX(-100%); }
   .sidebar.open { transform: translateX(0); }
   .main { margin-left: 0; width: 100%; }
-  .content { padding: 16px 16px 32px; }
+  .content { padding: 12px 12px 20px; }
   .stats-grid { grid-template-columns: repeat(2, 1fr) !important; }
   #dashPillarCards { grid-template-columns: 1fr !important; }
   .page-header { padding: 16px 18px; gap: 12px; }
@@ -1752,7 +1753,7 @@ h2 { font-size: var(--fs-lg); font-weight: 700; letter-spacing: -0.2px; margin-b
   margin-bottom: 24px;
 }
 .page-header-icon {
-  width: 52px; height: 52px;
+  width: 40px; height: 40px;
   background: linear-gradient(135deg, var(--blue-600), var(--blue-400));
   border-radius: var(--r-md);
   display: flex; align-items: center; justify-content: center;
