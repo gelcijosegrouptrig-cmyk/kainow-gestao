@@ -37,6 +37,9 @@ const payrollRoutes       = require('./routes/payroll');
 const app  = express();
 const PORT = process.env.PORT || 3001;
 
+// ── Trust proxy (Railway / Cloudflare) ───────────────────────────────────────
+app.set('trust proxy', 1);
+
 // ── Segurança ─────────────────────────────────────────────────────────────────
 app.use(helmet({ crossOriginEmbedderPolicy: false, contentSecurityPolicy: false }));
 
