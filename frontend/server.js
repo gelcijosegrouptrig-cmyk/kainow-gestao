@@ -51,6 +51,6 @@ app.get('*', (req, res) => {
 });
 
 app.listen(PORT, '0.0.0.0', () => {
-  console.log(`🌐 MargemPRO Frontend na porta ${PORT}`);
+  console.log(`🌐 AverbaTech Frontend na porta ${PORT}`);
   console.log(`🔗 Proxy API -> localhost:${BACKEND_PORT}`);
 });

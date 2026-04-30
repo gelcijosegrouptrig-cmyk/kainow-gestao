@@ -16,13 +16,13 @@ router.get('/resumo', autenticar, (req, res) => {
   const pAverb = [];
 
   if (req.usuario.perfil === 'RH' && convenio_id) {
-    whereFunc += ' AND convenio_id = ?'; pFunc.push(convenio_id);
-    whereAverb += ' AND convenio_id = ?'; pAverb.push(convenio_id);
+    whereFunc  += ' AND f.convenio_id = ?'; pFunc.push(convenio_id);
+    whereAverb += ' AND a.convenio_id = ?'; pAverb.push(convenio_id);
   } else if (req.usuario.perfil === 'BANCO' && req.usuario.banco_id) {
-    whereAverb += ' AND banco_id = ?'; pAverb.push(req.usuario.banco_id);
+    whereAverb += ' AND a.banco_id = ?'; pAverb.push(req.usuario.banco_id);
   }
 
-  const totalFuncionarios = db.prepare(`SELECT COUNT(*) as v FROM funcionarios WHERE situacao='ATIVO' AND ${whereFunc}`).get(...pFunc).v;
+  const totalFuncionarios = db.prepare(`SELECT COUNT(*) as v FROM funcionarios f WHERE f.situacao='ATIVO' AND ${whereFunc}`).get(...pFunc).v;
   const totalConvenios = db.prepare(`SELECT COUNT(*) as v FROM convenios WHERE ativo=1`).get().v;
   const totalBancos = db.prepare(`SELECT COUNT(*) as v FROM bancos WHERE ativo=1`).get().v;
 
@@ -34,13 +34,13 @@ router.get('/resumo', autenticar, (req, res) => {
       SUM(CASE WHEN status='CANCELADA' THEN 1 ELSE 0 END) as canceladas,
       SUM(CASE WHEN status IN ('APROVADA','RESERVADA') THEN valor_parcela ELSE 0 END) as volume_parcelas,
       SUM(CASE WHEN status IN ('APROVADA','RESERVADA') THEN taxa_averbacao_cobrada ELSE 0 END) as receita_averbacao
-    FROM averbacoes WHERE strftime('%Y-%m', criado_em) = strftime('%Y-%m', 'now') AND ${whereAverb}
+    FROM averbacoes a WHERE strftime('%Y-%m', a.criado_em) = strftime('%Y-%m', 'now') AND ${whereAverb}
   `).get(...pAverb);
 
   const averbacoesPorTipo = db.prepare(`
-    SELECT tipo, COUNT(*) as total, SUM(valor_parcela) as volume
-    FROM averbacoes WHERE status IN ('APROVADA','RESERVADA') AND ${whereAverb}
-    GROUP BY tipo
+    SELECT a.tipo, COUNT(*) as total, SUM(a.valor_parcela) as volume
+    FROM averbacoes a WHERE a.status IN ('APROVADA','RESERVADA','ATIVO','PENDENTE') AND ${whereAverb}
+    GROUP BY a.tipo
   `).all(...pAverb);
 
   const ultimasAverbacoes = db.prepare(`

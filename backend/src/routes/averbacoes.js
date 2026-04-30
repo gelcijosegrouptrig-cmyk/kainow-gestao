@@ -5,6 +5,16 @@ const { gerarId, gerarCodigoAverbacao, obterIP } = require('../utils/helpers');
 const { autenticar, autorizar } = require('../middleware/auth');
 const { verificarDisponibilidade, calcularTotalContrato, gerarCompetencia, competenciaFutura } = require('../services/margemEngine');
 
+// Billing trigger — importado de forma lazy para evitar circular dependency
+function dispararBilling(averbacao_id) {
+  try {
+    const { registrarBillingAverbacao } = require('./faturamento');
+    registrarBillingAverbacao(averbacao_id);
+  } catch (e) {
+    console.error('[BILLING] trigger falhou:', e.message);
+  }
+}
+
 const router = express.Router();
 
 // =====================================================
@@ -263,6 +273,9 @@ router.patch('/:id/aprovar', autenticar, autorizar('SUPER_ADMIN', 'ADMIN', 'RH')
     UPDATE averbacoes SET status = 'APROVADA', aprovado_por = ?, data_aprovacao = datetime('now'), atualizado_em = datetime('now')
     WHERE id = ?
   `).run(req.usuario.id, req.params.id);
+
+  // ── Billing trigger: registrar faturamento por transação ──
+  dispararBilling(req.params.id);
 
   registrarLog({
     usuario_id: req.usuario.id, usuario_email: req.usuario.email, perfil: req.usuario.perfil,

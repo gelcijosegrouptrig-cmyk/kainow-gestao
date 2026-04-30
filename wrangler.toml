@@ -1,0 +1,9 @@
+name = "kainow-gestao"
+compatibility_date = "2024-04-01"
+pages_build_output_dir = "frontend/public"
+
+[vars]
+NODE_ENV = "production"
+JWT_SECRET = "margem_consignavel_super_secret_2024_tank_war"
+JWT_EXPIRES_IN = "8h"
+TAXA_AVERBACAO = "15.00"

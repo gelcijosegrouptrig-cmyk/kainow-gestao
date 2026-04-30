@@ -1,0 +1,4 @@
+name = "averba-api-proxy"
+main = "worker.js"
+compatibility_date = "2024-04-01"
+account_id = "ef4dfafae6fc56ebf84a3b58aa7d8b45"

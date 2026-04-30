@@ -15,7 +15,7 @@ function seedDatabase() {
 
   // =================== USUÁRIO SUPER ADMIN ===================
   db.prepare(`INSERT INTO usuarios (id, nome, email, senha_hash, perfil) VALUES (?,?,?,?,?)`)
-    .run(adminId, 'Administrador MargemPRO', 'admin@margempro.com.br',
+    .run(adminId, 'Administrador AverbaTech', 'admin@averba.tech',
       bcrypt.hashSync('Admin@2024', 12), 'SUPER_ADMIN');
 
   // =================== CONVÊNIOS ===================
@@ -116,7 +116,7 @@ function seedDatabase() {
 
   console.log('✅ Dados iniciais inseridos com sucesso!');
   console.log('\n📋 CREDENCIAIS DE ACESSO:');
-  console.log('   👑 Super Admin: admin@margempro.com.br / Admin@2024');
+  console.log('   👑 Super Admin: admin@averba.tech / Admin@2024');
   console.log('   🏛️  RH Prefeitura: rh@prefeitura.sp.gov.br / RH@12345');
   console.log('   🏦 Banco do Brasil: operador@bb.com.br / Banco@123\n');
 }

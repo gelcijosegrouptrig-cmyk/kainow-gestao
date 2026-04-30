@@ -152,7 +152,7 @@ router.get('/relatorio', autenticar, autorizar('SUPER_ADMIN', 'ADMIN'), (req, re
     res.json({
       relatorio: {
         titulo: 'Relatório de Conformidade ISO 27001',
-        sistema: 'MargemPRO - Sistema de Gestão de Margem Consignável',
+        sistema: 'AverbaTech - Plataforma de Consignado Inteligente',
         geradoEm: agora.toISOString(),
         geradoPor: req.user.email,
         periodo
