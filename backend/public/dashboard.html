@@ -297,7 +297,7 @@ h1,h2,h3,h4,h5,h6 { color: var(--c-dark); }
   flex-direction: column;
   height: 100vh;
   min-width: 0;
-  overflow: hidden;
+  overflow: visible; /* NÃO hidden — deixa .content scrollar internamente */
 }
 
 /* ── 5. TOPBAR ──────────────────────────────────────────────────────────── */
@@ -3283,10 +3283,18 @@ html { scroll-behavior: smooth; }
   margin-left: var(--sidebar-w) !important;
   width: calc(100% - var(--sidebar-w)) !important;
   min-width: 0 !important;
-  overflow-x: hidden;
+  overflow: visible !important; /* permite scroll no .content filho */
   display: flex;
   flex-direction: column;
   height: 100vh;
+}
+.content {
+  flex: 1 !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  height: calc(100vh - var(--topbar-h)) !important;
+  padding: 20px 24px 32px !important;
+  min-width: 0 !important;
 }
 /* ── END LAYOUT DEFINITIVO ───────────────────────────────────────────── */
 
