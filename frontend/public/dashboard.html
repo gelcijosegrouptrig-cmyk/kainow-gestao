@@ -1129,10 +1129,10 @@ code { font-size: var(--fs-sm); background: var(--gray-100); padding: 2px 6px; b
   #dashPillarCards { grid-template-columns: repeat(2,1fr) !important; }
 }
 @media (max-width: 768px) {
-  body { display: block !important; }
-  .sidebar { position: fixed !important; transform: translateX(-100%); top:0; left:0; height:100vh; z-index:300; }
+  body { padding-left: 0 !important; }
+  .sidebar { transform: translateX(-100%); }
   .sidebar.open { transform: translateX(0); }
-  .main { margin-left: 0 !important; width: 100% !important; grid-column: unset !important; }
+  .main { margin-left: 0 !important; width: 100% !important; }
   .content { padding: 12px 12px 20px; }
   .stats-grid { grid-template-columns: repeat(2, 1fr) !important; }
   #dashPillarCards { grid-template-columns: 1fr !important; }
@@ -3269,34 +3269,28 @@ h2 { font-size: var(--fs-lg); font-weight: 700; letter-spacing: -0.2px; margin-b
 .rule-type-badge.militar  { background: rgba(234,179,8,.6); color: #1c1917; }
 /* ── END PATCH: rule-card components ─────────────────────────────────── */
 
-/* ── LAYOUT DEFINITIVO v3: CSS Grid no body — infalível ─────────────── */
+/* ── LAYOUT DEFINITIVO v4: padding-left no body ──────────────────────── */
 html { scroll-behavior: auto !important; }
 body {
-  display: grid !important;
-  grid-template-columns: var(--sidebar-w) 1fr !important;
-  grid-template-rows: 100vh !important;
-  height: 100vh !important;
-  overflow: hidden !important;
-  min-height: unset !important;
+  padding-left: var(--sidebar-w) !important;
+  min-height: 100vh !important;
+  box-sizing: border-box !important;
 }
 .sidebar {
-  grid-column: 1 !important;
-  grid-row: 1 !important;
-  position: relative !important;
-  top: unset !important; left: unset !important;
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: var(--sidebar-w) !important;
   height: 100vh !important;
   z-index: 300 !important;
-  will-change: transform;
   overflow-y: auto !important;
   overflow-x: hidden !important;
 }
 .main {
-  grid-column: 2 !important;
-  grid-row: 1 !important;
   margin-left: 0 !important;
   width: 100% !important;
   min-width: 0 !important;
-  overflow: hidden !important;
+  overflow: clip !important;
   display: flex !important;
   flex-direction: column !important;
   height: 100vh !important;
@@ -3307,6 +3301,7 @@ body {
   position: static !important;
   height: var(--topbar-h) !important;
   width: 100% !important;
+  box-sizing: border-box !important;
 }
 .content {
   flex: 1 !important;
