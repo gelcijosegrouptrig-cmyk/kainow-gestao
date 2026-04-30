@@ -1,9 +1,7 @@
 FROM node:20-slim
 
-# Install Python, build tools needed for better-sqlite3
 RUN apt-get update && apt-get install -y \
     python3 \
-    python3-pip \
     make \
     g++ \
     gcc \
@@ -11,17 +9,14 @@ RUN apt-get update && apt-get install -y \
 
 WORKDIR /app
 
-# Copy package files from backend
-COPY backend/package.json backend/package-lock.json ./
+# Copy package files
+COPY package.json package-lock.json ./
 
-# Install dependencies (will compile better-sqlite3 natively for Node 20)
+# Install dependencies (compiles better-sqlite3 natively for Node 20)
 RUN npm ci
 
-# Copy backend source code
-COPY backend/ .
-
-# Copy frontend static files (served by Express)
-COPY frontend/public/ ../frontend/public/
+# Copy backend source
+COPY . .
 
 # Create uploads directory
 RUN mkdir -p uploads
