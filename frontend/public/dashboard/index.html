@@ -9132,25 +9132,30 @@ const pageTitles = {
 
 function navTo(page) {
   const contentEl = document.querySelector('.content');
-  // PASSO 1: esconder todas as seções
+  // 1. Esconder todas as seções e nav
   document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  // PASSO 2: resetar scroll ANTES de mostrar nova seção (enquanto altura=0)
-  if (contentEl) { contentEl.scrollTop = 0; contentEl.scrollTo(0, 0); }
-  // PASSO 3: ativar nova seção
+  // 2. Ativar nova seção
   const sec = document.getElementById(`section-${page}`);
   if (sec) sec.classList.add('active');
   const nav = document.querySelector(`[onclick="navTo('${page}')"]`);
   if (nav) nav.classList.add('active');
-  // PASSO 4: atualizar título
+  // 3. Atualizar título topbar
   const [title, sub] = pageTitles[page] || [page, ''];
   const ptEl = document.getElementById('pageTitle');
   const psEl = document.getElementById('pageSubtitle');
   if (ptEl) ptEl.textContent = title;
   if (psEl) psEl.textContent = sub;
-  // PASSO 5: garantir scroll=0 após render
+  // 4. Reset scroll — após ativar (seção já visível), forçar topo
+  if (contentEl) {
+    contentEl.scrollTop = 0;
+    contentEl.scrollLeft = 0;
+  }
   requestAnimationFrame(() => {
     if (contentEl) contentEl.scrollTop = 0;
+    requestAnimationFrame(() => {
+      if (contentEl) contentEl.scrollTop = 0;
+    });
   });
   loadPageData(page);
 }
