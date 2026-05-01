@@ -3473,7 +3473,7 @@ html, body {
     <a class="nav-item" id="nav-nova-averbacao" href="javascript:void(0)" data-page="nova-averbacao" onclick="navTo('nova-averbacao'); return false;"><span class="icon">➕</span> Nova Averbação</a>
 
     <div class="nav-section" id="nav-admin-section">Administração</div>
-    <a class="nav-item" id="nav-funcionarios" href="javascript:void(0)" data-page="funcionários" onclick="navTo('funcionários'); return false;"><span class="icon">👥</span> Funcionários</a>
+    <a class="nav-item" id="nav-funcionarios" href="javascript:void(0)" data-page="funcionarios" onclick="navTo('funcionarios'); return false;"><span class="icon">👥</span> Funcionários</a>
     <a class="nav-item" id="nav-convenios" href="javascript:void(0)" data-page="convenios" onclick="navTo('convenios'); return false;"><span class="icon">🏛️</span> Convênios</a>
     <a class="nav-item" id="nav-bancos" href="javascript:void(0)" data-page="bancos" onclick="navTo('bancos'); return false;"><span class="icon">🏦</span> Bancos</a>
     <a class="nav-item" id="nav-usuarios" href="javascript:void(0)" data-page="usuarios" onclick="navTo('usuarios'); return false;"><span class="icon">👤</span> Usuários</a>
@@ -9172,7 +9172,6 @@ function navTo(page) {
   if (sec) sec.classList.add('active');
 
   // 3. Ativar nav-item (seletor corrigido — sem espaço extra)
-  const nav = document.querySelector('[data-page="' + page + '"]');
   if (nav) nav.classList.add('active');
 
   // 4. Atualizar título topbar
@@ -9210,7 +9209,7 @@ async function loadPageData(page) {
     case 'dashboard': _safeLoad(carregarDashboard); break;
     case 'averbacoes': _safeLoad(carregarAverbacoes); break;
     case 'nova-averbacao': iniciarNovaAverbacao(); break;
-    case 'funcionários': _safeLoad(carregarFuncionarios); break;
+    case 'funcionarios': _safeLoad(carregarFuncionarios); break;
     case 'convenios': _safeLoad(carregarConvenios); break;
     case 'bancos': _safeLoad(carregarBancos); break;
     case 'usuarios': _safeLoad(carregarUsuarios); break;
@@ -11562,7 +11561,7 @@ async function salvarFuncionario() {
     salario_liquido: parseFloat(document.getElementById('fLiquido').value),
     data_admissao: document.getElementById('fAdmissao').value
   };
-  const resp = await apiFetch('/funcionários', { method: 'POST', body: JSON.stringify(body) });
+  const resp = await apiFetch('/funcionarios', { method: 'POST', body: JSON.stringify(body) });
   if (!resp) return;
   const data = await resp.json();
   if (!resp.ok) { document.getElementById('alertModalFunc').innerHTML = `<div class="alert alert-error">❌ ${data.erro}</div>`; return; }
@@ -12801,7 +12800,7 @@ async function salvarFuncionarioManual() {
     document.getElementById('alertManualFunc').innerHTML = '<div class="alert alert-error">❌ Preencha todos os campos obrigatórios (Matrícula, Nome, CPF, Convênio, Salário Bruto)</div>';
     return;
   }
-  const resp = await apiFetch('/funcionários', { method: 'POST', body: JSON.stringify(body) });
+  const resp = await apiFetch('/funcionarios', { method: 'POST', body: JSON.stringify(body) });
   if (!resp) return;
   const data = await resp.json();
   if (!resp.ok) { document.getElementById('alertManualFunc').innerHTML = `<div class="alert alert-error">❌ ${data.erro}</div>`; return; }
@@ -12823,7 +12822,7 @@ async function baixarModeloCSV() {
   const blob = new Blob([content], { type: 'text/csv;charset=utf-8;' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
-  a.href = url; a.download = 'modelo_funcionários.csv'; a.click();
+  a.href = url; a.download = 'modelo_funcionarios.csv'; a.click();
   URL.revokeObjectURL(url);
   toast('Modelo CSV baixado!', 'success');
 }
