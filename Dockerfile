@@ -16,7 +16,7 @@ COPY backend/package.json backend/package-lock.json ./
 # Install dependencies (compiles better-sqlite3 natively for Node 20)
 RUN npm ci
 
-# Copy backend source
+# Copy backend source — bust 1777595063
 COPY backend/ .
 
 # Copy frontend static files into backend/public so Express can serve them
