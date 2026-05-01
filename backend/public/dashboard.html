@@ -3361,18 +3361,21 @@ html, body {
   overflow-x: hidden !important;
 }
 
-/* 3. .main: flex column, ocupa o viewport à direita da sidebar */
+/* 3. .main: position:fixed, ocupa exatamente o espaço à direita da sidebar */
 .main {
-  margin-left: 256px !important;
-  width: calc(100vw - 256px) !important;
+  position: fixed !important;
+  top: 0 !important;
+  left: 256px !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  width: auto !important;
+  margin-left: 0 !important;
   min-width: 0 !important;
   display: flex !important;
   flex-direction: column !important;
-  height: 100vh !important;
-  max-height: 100vh !important;
   overflow: hidden !important;
   box-sizing: border-box !important;
-  position: static !important;
+  z-index: 100 !important;
 }
 
 /* 4. Topbar: altura fixa 64px, não cresce nem encolhe */
