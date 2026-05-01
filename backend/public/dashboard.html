@@ -15531,7 +15531,6 @@ async function carregarIAPreditiva() {
   const mes = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
   const el = document.getElementById('iaDryRunMes');
   if (el) el.value = mes;
-  } catch(e) { console.error(e && e.message || e); }
 }
 
 function calcularConfidenceScore() {
