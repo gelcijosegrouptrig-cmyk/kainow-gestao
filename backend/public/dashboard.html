@@ -149,7 +149,6 @@ body {
   line-height: var(--lh-normal);
   color: var(--c-text);
   background: var(--c-bg);
-  min-height: 100vh;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
@@ -297,7 +296,7 @@ h1,h2,h3,h4,h5,h6 { color: var(--c-dark); }
   flex-direction: column;
   height: 100vh;
   min-width: 0;
-  overflow: clip; /* clip: corta sem criar scroll-container, não quebra sticky */
+  overflow: hidden;
 }
 
 /* ── 5. TOPBAR ──────────────────────────────────────────────────────────── */
@@ -3342,14 +3341,12 @@ html { scroll-behavior: auto !important; }
 /* LAYOUT OVERRIDE — carregado por último, máxima prioridade */
 
 /* 1. html/body: sem scroll de documento */
-html {
+html, body {
   scroll-behavior: auto !important;
   overflow: hidden !important;
-  height: 100% !important;
-}
-body {
-  overflow: hidden !important;
-  height: 100% !important;
+  height: 100vh !important;
+  max-height: 100vh !important;
+  min-height: 0 !important;
 }
 
 /* 2. Sidebar: fixa à esquerda */
