@@ -3388,45 +3388,69 @@ html { scroll-behavior: auto !important; }
 </style>
 <style id="layout-override">
 /* LAYOUT OVERRIDE — carregado após todo o CSS, máxima prioridade */
+
+/* 1. Travar html/body no viewport — elimina scroll do documento */
+html, body {
+  height: 100% !important;
+  max-height: 100% !important;
+  overflow: hidden !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* 2. Sidebar fixa à esquerda */
 .sidebar {
   position: fixed !important;
-  top: 0 !important; left: 0 !important;
+  top: 0 !important;
+  left: 0 !important;
   width: 256px !important;
   height: 100vh !important;
   z-index: 300 !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
 }
+
+/* 3. .main ocupa o restante à direita da sidebar */
 .main {
-  position: relative !important;
-  margin-left: 256px !important;
-  width: calc(100vw - 256px) !important;
-  max-width: calc(100vw - 256px) !important;
-  min-width: 0 !important;
+  position: fixed !important;
+  top: 0 !important;
+  left: 256px !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  width: auto !important;
   height: 100vh !important;
+  margin: 0 !important;
   overflow: hidden !important;
   display: flex !important;
   flex-direction: column !important;
   box-sizing: border-box !important;
 }
+
+/* 4. Topbar: altura fixa, não cresce */
 .topbar {
   flex: 0 0 64px !important;
   height: 64px !important;
   min-height: 64px !important;
   max-height: 64px !important;
+  width: 100% !important;
   overflow: hidden !important;
   position: static !important;
-  width: 100% !important;
   box-sizing: border-box !important;
 }
+
+/* 5. .content: ÚNICO container de scroll — ocupa o resto */
 .content {
-  flex: 1 1 auto !important;
-  height: calc(100vh - 64px) !important;
-  max-height: calc(100vh - 64px) !important;
+  flex: 1 1 0 !important;
+  height: 0 !important;       /* flex item: height:0 + flex:1 = ocupa todo espaço restante sem vazar */
+  min-height: 0 !important;
   overflow-y: auto !important;
   overflow-x: hidden !important;
   padding: 20px 24px 32px !important;
   box-sizing: border-box !important;
   width: 100% !important;
 }
+
+/* 6. Seções */
 .page-section { display: none !important; }
 .page-section.active {
   display: block !important;
