@@ -15524,17 +15524,9 @@ const IA_HISTORICO_MOCK = [
 ];
 
 async function carregarIAPreditiva() {
-  // Render static content FIRST — não depende da API
+  // ── 1. RENDER IMEDIATO com valores estáticos (sem await) ──────────────
   const fTotal = 6;
   const escrow = 1245119.5;
-  try {
-  // Stats (static defaults, override com API se disponível)
-  let s = null, f = null;
-  try { s = await apiFetch('/payroll/resumo'); } catch(e) {}
-  try { f = await apiFetch('/funcionarios?limit=1'); } catch(e) {}
-  const fTotalReal = (f && f.total) ? f.total : fTotal;
-  const escrowReal = (s && s.saldo_escrow) ? s.saldo_escrow : escrow;
-
   const statsIAEl = document.getElementById('statsIA');
   if (statsIAEl) statsIAEl.innerHTML = `
     <div class="stat-card blue">
@@ -15545,13 +15537,13 @@ async function carregarIAPreditiva() {
     </div>
     <div class="stat-card green">
       <div class="stat-icon green">👥</div>
-      <div class="stat-value">${fTotalReal}</div>
+      <div class="stat-value">${fTotal}</div>
       <div class="stat-label">Funcionários na Folha</div>
       <div class="stat-change up">Pronto para disparo</div>
     </div>
     <div class="stat-card yellow">
       <div class="stat-icon yellow">💰</div>
-      <div class="stat-value">R$ ${(escrowReal/1000).toLocaleString('pt-BR',{maximumFractionDigits:0})}k</div>
+      <div class="stat-value">R$ ${(escrow/1000).toLocaleString('pt-BR',{maximumFractionDigits:0})}k</div>
       <div class="stat-label">Saldo Escrow</div>
       <div class="stat-change up">↑ Suficiente</div>
     </div>
@@ -15563,13 +15555,28 @@ async function carregarIAPreditiva() {
     </div>
   `;
 
+  // ── 2. ASYNC: atualizar com dados reais da API (não bloqueia render) ──
+  try {
+    let s = null, f = null;
+    try { s = await apiFetch('/payroll/resumo'); } catch(e) {}
+    try { f = await apiFetch('/funcionarios?limit=1'); } catch(e) {}
+    const fTotalReal = (f && f.total) ? f.total : fTotal;
+    const escrowReal = (s && s.saldo_escrow) ? s.saldo_escrow : escrow;
+    // Atualizar valores com dados reais se disponíveis
+    if (statsIAEl && fTotalReal !== fTotal) {
+      const v = statsIAEl.querySelector('.stat-card.green .stat-value');
+      if (v) v.textContent = fTotalReal;
+    }
+    carregarSplitPizza(escrowReal);
+  } catch(e) { carregarSplitPizza(escrow); }
+
   // Animate confidence arc
   atualizarConfidenceArc(calcularConfidenceScore());
 
   // Load all sub-panels
   await carregarAlertasIA();
   carregarTimelineIA();
-  carregarSplitPizza(escrowReal);
+  carregarSplitPizza(escrow);
   await carregarSugestaoIA();
   popularConveniosDryRun();
 
