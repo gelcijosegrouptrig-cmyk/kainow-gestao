@@ -3340,16 +3340,27 @@ html { scroll-behavior: auto !important; }
 <style id="layout-override">
 /* LAYOUT OVERRIDE — carregado por último, máxima prioridade */
 
-/* 1. html/body: sem scroll de documento */
-html, body {
+/* 0. Reset base — sem margem/padding do browser no body */
+*, *::before, *::after {
+  box-sizing: border-box !important;
+}
+html {
   scroll-behavior: auto !important;
+  overflow: hidden !important;
+  height: 100% !important;
+  max-height: 100vh !important;
+}
+body {
+  margin: 0 !important;
+  padding: 0 !important;
   overflow: hidden !important;
   height: 100vh !important;
   max-height: 100vh !important;
   min-height: 0 !important;
+  /* Sem transform, filter ou perspective que quebre stacking context */
 }
 
-/* 2. Sidebar: fixa à esquerda */
+/* 1. Sidebar: fixa à esquerda — SEMPRE z-index alto */
 .sidebar {
   position: fixed !important;
   top: 0 !important;
@@ -3359,26 +3370,28 @@ html, body {
   z-index: 300 !important;
   overflow-y: auto !important;
   overflow-x: hidden !important;
+  transform: none !important;
 }
 
-/* 3. .main: position:fixed, ocupa exatamente o espaço à direita da sidebar */
+/* 2. .main: ocupa exatamente o espaço à DIREITA da sidebar */
 .main {
   position: fixed !important;
   top: 0 !important;
   left: 256px !important;
   right: 0 !important;
   bottom: 0 !important;
-  width: auto !important;
-  margin-left: 0 !important;
+  width: calc(100vw - 256px) !important;
+  margin: 0 !important;
+  padding: 0 !important;
   min-width: 0 !important;
   display: flex !important;
   flex-direction: column !important;
   overflow: hidden !important;
-  box-sizing: border-box !important;
   z-index: 100 !important;
+  transform: none !important;
 }
 
-/* 4. Topbar: altura fixa 64px, não cresce nem encolhe */
+/* 3. Topbar: altura fixa 64px */
 .topbar {
   flex: 0 0 64px !important;
   height: 64px !important;
@@ -3387,28 +3400,34 @@ html, body {
   width: 100% !important;
   overflow: hidden !important;
   position: static !important;
-  box-sizing: border-box !important;
-  z-index: 200 !important;
+  transform: none !important;
 }
 
-/* 5. .content: ÚNICO scroll container — preenche exatamente o espaço restante */
+/* 4. .content: ÚNICO scroll container */
 .content {
   flex: 1 1 0% !important;
   min-height: 0 !important;
+  min-width: 0 !important;
   overflow-y: auto !important;
   overflow-x: hidden !important;
   padding: 20px 24px 32px !important;
-  box-sizing: border-box !important;
   width: 100% !important;
 }
 
-/* 6. Seções */
+/* 5. Seções */
 .page-section { display: none !important; }
 .page-section.active {
   display: block !important;
   margin: 0 !important;
   padding-top: 0 !important;
   padding-bottom: 16px !important;
+  min-width: 0 !important;
+}
+
+/* 6. Garantir que nenhum elemento filho do .content ultrapasse a largura */
+.content > * {
+  max-width: 100% !important;
+  min-width: 0 !important;
 }
 </style>
 </head>
@@ -3426,81 +3445,81 @@ html, body {
   </div>
   <nav class="sidebar-nav">
     <div class="nav-section">Principal</div>
-    <a class="nav-item active" href="javascript:void(0)" onclick="navTo('dashboard'); return false;"><span class="icon">📊</span> Dashboard</a>
-    <a class="nav-item" href="javascript:void(0)" onclick="navTo('averbacoes'); return false;"><span class="icon">📋</span> Averbações</a>
-    <a class="nav-item" href="javascript:void(0)" onclick="navTo('nova-averbacao'); return false;"><span class="icon">➕</span> Nova Averbação</a>
+    <a class="nav-item active" href="javascript:void(0)" data-page="dashboard" onclick="navTo('dashboard'); return false;"><span class="icon">📊</span> Dashboard</a>
+    <a class="nav-item" href="javascript:void(0)" data-page="averbacoes" onclick="navTo('averbacoes'); return false;"><span class="icon">📋</span> Averbações</a>
+    <a class="nav-item" href="javascript:void(0)" data-page="nova-averbacao" onclick="navTo('nova-averbacao'); return false;"><span class="icon">➕</span> Nova Averbação</a>
 
     <div class="nav-section" id="nav-admin-section">Administração</div>
-    <a class="nav-item" id="nav-funcionários" href="javascript:void(0)" onclick="navTo('funcionários'); return false;"><span class="icon">👥</span> Funcionários</a>
-    <a class="nav-item" id="nav-convenios" href="javascript:void(0)" onclick="navTo('convenios'); return false;"><span class="icon">🏛️</span> Convênios</a>
-    <a class="nav-item" id="nav-bancos" href="javascript:void(0)" onclick="navTo('bancos'); return false;"><span class="icon">🏦</span> Bancos</a>
-    <a class="nav-item" id="nav-usuarios" href="javascript:void(0)" onclick="navTo('usuarios'); return false;"><span class="icon">👤</span> Usuários</a>
+    <a class="nav-item" id="nav-funcionários" href="javascript:void(0)" data-page="funcionários" onclick="navTo('funcionários'); return false;"><span class="icon">👥</span> Funcionários</a>
+    <a class="nav-item" id="nav-convenios" href="javascript:void(0)" data-page="convenios" onclick="navTo('convenios'); return false;"><span class="icon">🏛️</span> Convênios</a>
+    <a class="nav-item" id="nav-bancos" href="javascript:void(0)" data-page="bancos" onclick="navTo('bancos'); return false;"><span class="icon">🏦</span> Bancos</a>
+    <a class="nav-item" id="nav-usuarios" href="javascript:void(0)" data-page="usuarios" onclick="navTo('usuarios'); return false;"><span class="icon">👤</span> Usuários</a>
 
     <div class="nav-section" id="nav-section-rh">Módulo RH</div>
-    <a class="nav-item" id="nav-rh-folha" href="javascript:void(0)" onclick="navTo('rh-folha'); return false;"><span class="icon">📋</span> Folha / Sincronizar</a>
-    <a class="nav-item" id="nav-rh-ocorrencias" href="javascript:void(0)" onclick="navTo('rh-ocorrencias'); return false;"><span class="icon">⚠️</span> Ocorrências</a>
-    <a class="nav-item" id="nav-rh-reservas" href="javascript:void(0)" onclick="navTo('rh-reservas'); return false;"><span class="icon">🔒</span> Validar Reservas</a>
-    <a class="nav-item" id="nav-rh-desconto" href="javascript:void(0)" onclick="navTo('rh-desconto'); return false;"><span class="icon">📤</span> Arquivo Desconto</a>
+    <a class="nav-item" id="nav-rh-folha" href="javascript:void(0)" data-page="rh-folha" onclick="navTo('rh-folha'); return false;"><span class="icon">📋</span> Folha / Sincronizar</a>
+    <a class="nav-item" id="nav-rh-ocorrencias" href="javascript:void(0)" data-page="rh-ocorrencias" onclick="navTo('rh-ocorrencias'); return false;"><span class="icon">⚠️</span> Ocorrências</a>
+    <a class="nav-item" id="nav-rh-reservas" href="javascript:void(0)" data-page="rh-reservas" onclick="navTo('rh-reservas'); return false;"><span class="icon">🔒</span> Validar Reservas</a>
+    <a class="nav-item" id="nav-rh-desconto" href="javascript:void(0)" data-page="rh-desconto" onclick="navTo('rh-desconto'); return false;"><span class="icon">📤</span> Arquivo Desconto</a>
 
     <div class="nav-section" id="nav-section-banco">Painel Banco</div>
-    <a class="nav-item" id="nav-banco-margem" href="javascript:void(0)" onclick="navTo('banco-margem'); return false;"><span class="icon">💰</span> Consultar Margem</a>
-    <a class="nav-item" id="nav-banco-reserva" href="javascript:void(0)" onclick="navTo('banco-reserva'); return false;"><span class="icon">📝</span> Nova Reserva</a>
-    <a class="nav-item" id="nav-banco-carteira" href="javascript:void(0)" onclick="navTo('banco-carteira'); return false;"><span class="icon">📁</span> Carteira Contratos</a>
+    <a class="nav-item" id="nav-banco-margem" href="javascript:void(0)" data-page="banco-margem" onclick="navTo('banco-margem'); return false;"><span class="icon">💰</span> Consultar Margem</a>
+    <a class="nav-item" id="nav-banco-reserva" href="javascript:void(0)" data-page="banco-reserva" onclick="navTo('banco-reserva'); return false;"><span class="icon">📝</span> Nova Reserva</a>
+    <a class="nav-item" id="nav-banco-carteira" href="javascript:void(0)" data-page="banco-carteira" onclick="navTo('banco-carteira'); return false;"><span class="icon">📁</span> Carteira Contratos</a>
 
     <div class="nav-section">Compliance &amp; Segurança</div>
-    <a class="nav-item" id="nav-auditoria" href="javascript:void(0)" onclick="navTo('auditoria'); return false;"><span class="icon">🔍</span> Auditoria</a>
-    <a class="nav-item" id="nav-iso27001" href="javascript:void(0)" onclick="navTo('iso27001'); return false;"><span class="icon">🛡️</span> ISO 27001</a>
-    <a class="nav-item" id="nav-consulta-margem" href="javascript:void(0)" onclick="navTo('consulta-margem'); return false;"><span class="icon">🔎</span> Consultar Margem</a>
-    <a class="nav-item" id="nav-calculadora" href="javascript:void(0)" onclick="navTo('calculadora'); return false;"><span class="icon">🧮</span> Calculadora</a>
+    <a class="nav-item" id="nav-auditoria" href="javascript:void(0)" data-page="auditoria" onclick="navTo('auditoria'); return false;"><span class="icon">🔍</span> Auditoria</a>
+    <a class="nav-item" id="nav-iso27001" href="javascript:void(0)" data-page="iso27001" onclick="navTo('iso27001'); return false;"><span class="icon">🛡️</span> ISO 27001</a>
+    <a class="nav-item" id="nav-consulta-margem" href="javascript:void(0)" data-page="consulta-margem" onclick="navTo('consulta-margem'); return false;"><span class="icon">🔎</span> Consultar Margem</a>
+    <a class="nav-item" id="nav-calculadora" href="javascript:void(0)" data-page="calculadora" onclick="navTo('calculadora'); return false;"><span class="icon">🧮</span> Calculadora</a>
 
     <div class="nav-section" id="nav-section-modulos">Módulos Avançados</div>
-    <a class="nav-item" id="nav-certificados" href="javascript:void(0)" onclick="navTo('certificados'); return false;"><span class="icon">🔐</span> Cert. Digital</a>
-    <a class="nav-item" id="nav-importacoes" href="javascript:void(0)" onclick="navTo('importacoes'); return false;"><span class="icon">📂</span> Importar Folha</a>
-    <a class="nav-item" id="nav-faturamento" href="javascript:void(0)" onclick="navTo('faturamento'); return false;"><span class="icon">💵</span> Faturamento</a>
+    <a class="nav-item" id="nav-certificados" href="javascript:void(0)" data-page="certificados" onclick="navTo('certificados'); return false;"><span class="icon">🔐</span> Cert. Digital</a>
+    <a class="nav-item" id="nav-importacoes" href="javascript:void(0)" data-page="importacoes" onclick="navTo('importacoes'); return false;"><span class="icon">📂</span> Importar Folha</a>
+    <a class="nav-item" id="nav-faturamento" href="javascript:void(0)" data-page="faturamento" onclick="navTo('faturamento'); return false;"><span class="icon">💵</span> Faturamento</a>
     <div class="nav-section" id="nav-section-integracoes">Integrações</div>
-    <a class="nav-item" id="nav-integracoes" href="javascript:void(0)" onclick="navTo('integracoes'); return false;"><span class="icon">🔌</span> API Bancos</a>
-    <a class="nav-item" id="nav-rh-integracao" href="javascript:void(0)" onclick="navTo('rh-integracao'); return false;"><span class="icon">🗂️</span> RH / Folha</a>
-    <a class="nav-item" id="nav-banco-convenios" href="javascript:void(0)" onclick="navTo('banco-convenios'); return false;"><span class="icon">🤝</span> Credenciamento</a>
-    <a class="nav-item" id="nav-esocial" href="javascript:void(0)" onclick="navTo('esocial'); return false;"><span class="icon">📡</span> eSocial</a>
-    <a class="nav-item" id="nav-portabilidade" href="javascript:void(0)" onclick="navTo('portabilidade'); return false;"><span class="icon">🔄</span> Portabilidade</a>
+    <a class="nav-item" id="nav-integracoes" href="javascript:void(0)" data-page="integracoes" onclick="navTo('integracoes'); return false;"><span class="icon">🔌</span> API Bancos</a>
+    <a class="nav-item" id="nav-rh-integracao" href="javascript:void(0)" data-page="rh-integracao" onclick="navTo('rh-integracao'); return false;"><span class="icon">🗂️</span> RH / Folha</a>
+    <a class="nav-item" id="nav-banco-convenios" href="javascript:void(0)" data-page="banco-convenios" onclick="navTo('banco-convenios'); return false;"><span class="icon">🤝</span> Credenciamento</a>
+    <a class="nav-item" id="nav-esocial" href="javascript:void(0)" data-page="esocial" onclick="navTo('esocial'); return false;"><span class="icon">📡</span> eSocial</a>
+    <a class="nav-item" id="nav-portabilidade" href="javascript:void(0)" data-page="portabilidade" onclick="navTo('portabilidade'); return false;"><span class="icon">🔄</span> Portabilidade</a>
     <div class="nav-section" id="nav-section-facultativos">Facultativos</div>
-    <a class="nav-item" id="nav-seguros" href="javascript:void(0)" onclick="navTo('seguros'); return false;"><span class="icon">🛡️</span> Seguros</a>
-    <a class="nav-item" id="nav-cartao-consignado" href="javascript:void(0)" onclick="navTo('cartao-consignado'); return false;"><span class="icon">💳</span> Cartão Consignado</a>
-    <a class="nav-item" id="nav-faturamento-recorrente" href="javascript:void(0)" onclick="navTo('faturamento-recorrente'); return false;"><span class="icon">🔁</span> Cobrança Recorrente</a>
+    <a class="nav-item" id="nav-seguros" href="javascript:void(0)" data-page="seguros" onclick="navTo('seguros'); return false;"><span class="icon">🛡️</span> Seguros</a>
+    <a class="nav-item" id="nav-cartao-consignado" href="javascript:void(0)" data-page="cartao-consignado" onclick="navTo('cartao-consignado'); return false;"><span class="icon">💳</span> Cartão Consignado</a>
+    <a class="nav-item" id="nav-faturamento-recorrente" href="javascript:void(0)" data-page="faturamento-recorrente" onclick="navTo('faturamento-recorrente'); return false;"><span class="icon">🔁</span> Cobrança Recorrente</a>
 
     <div class="nav-section" id="nav-section-inovacao">🚀 Diferenciais</div>
-    <a class="nav-item" id="nav-score-margem" href="javascript:void(0)" onclick="navTo('score-margem'); return false;"><span class="icon">🧠</span> Score de Margem</a>
-    <a class="nav-item" id="nav-antecipacao" href="javascript:void(0)" onclick="navTo('antecipacao'); return false;"><span class="icon">⚡</span> Antecipação Salarial</a>
-    <a class="nav-item" id="nav-superendividamento" href="javascript:void(0)" onclick="navTo('superendividamento'); return false;"><span class="icon">🛡️</span> IA Anti-Endividamento</a>
-    <a class="nav-item" id="nav-biometria" href="javascript:void(0)" onclick="navTo('biometria'); return false;"><span class="icon">🪪</span> Biometria Facial</a>
+    <a class="nav-item" id="nav-score-margem" href="javascript:void(0)" data-page="score-margem" onclick="navTo('score-margem'); return false;"><span class="icon">🧠</span> Score de Margem</a>
+    <a class="nav-item" id="nav-antecipacao" href="javascript:void(0)" data-page="antecipacao" onclick="navTo('antecipacao'); return false;"><span class="icon">⚡</span> Antecipação Salarial</a>
+    <a class="nav-item" id="nav-superendividamento" href="javascript:void(0)" data-page="superendividamento" onclick="navTo('superendividamento'); return false;"><span class="icon">🛡️</span> IA Anti-Endividamento</a>
+    <a class="nav-item" id="nav-biometria" href="javascript:void(0)" data-page="biometria" onclick="navTo('biometria'); return false;"><span class="icon">🪪</span> Biometria Facial</a>
 
     <div class="nav-section" id="nav-section-nextlevel">💎 Next Level</div>
-    <a class="nav-item nav-overview" id="nav-nextlevel" href="javascript:void(0)" onclick="navTo('nextlevel'); return false;"><span class="icon">💎</span> Visão Geral Next Level</a>
-    <a class="nav-item" id="nav-open-finance" href="javascript:void(0)" onclick="navTo('open-finance'); return false;"><span class="icon">🌐</span> Open Finance</a>
-    <a class="nav-item" id="nav-cashback" href="javascript:void(0)" onclick="navTo('cashback'); return false;"><span class="icon">🎁</span> Cashback</a>
-    <a class="nav-item" id="nav-leilao" href="javascript:void(0)" onclick="navTo('leilao'); return false;"><span class="icon">🔨</span> Leilão Reverso</a>
-    <a class="nav-item" id="nav-marketplace" href="javascript:void(0)" onclick="navTo('marketplace'); return false;"><span class="icon">🛒</span> Marketplace</a>
-    <a class="nav-item" id="nav-parceiros" href="javascript:void(0)" onclick="navTo('parceiros'); return false;"><span class="icon">🤝</span> Cadastro de Parceiros</a>
-    <a class="nav-item" id="nav-desligamento" href="javascript:void(0)" onclick="navTo('desligamento'); return false;"><span class="icon">🛡️</span> Desligamento Seguro</a>
+    <a class="nav-item nav-overview" id="nav-nextlevel" href="javascript:void(0)" data-page="nextlevel" onclick="navTo('nextlevel'); return false;"><span class="icon">💎</span> Visão Geral Next Level</a>
+    <a class="nav-item" id="nav-open-finance" href="javascript:void(0)" data-page="open-finance" onclick="navTo('open-finance'); return false;"><span class="icon">🌐</span> Open Finance</a>
+    <a class="nav-item" id="nav-cashback" href="javascript:void(0)" data-page="cashback" onclick="navTo('cashback'); return false;"><span class="icon">🎁</span> Cashback</a>
+    <a class="nav-item" id="nav-leilao" href="javascript:void(0)" data-page="leilao" onclick="navTo('leilao'); return false;"><span class="icon">🔨</span> Leilão Reverso</a>
+    <a class="nav-item" id="nav-marketplace" href="javascript:void(0)" data-page="marketplace" onclick="navTo('marketplace'); return false;"><span class="icon">🛒</span> Marketplace</a>
+    <a class="nav-item" id="nav-parceiros" href="javascript:void(0)" data-page="parceiros" onclick="navTo('parceiros'); return false;"><span class="icon">🤝</span> Cadastro de Parceiros</a>
+    <a class="nav-item" id="nav-desligamento" href="javascript:void(0)" data-page="desligamento" onclick="navTo('desligamento'); return false;"><span class="icon">🛡️</span> Desligamento Seguro</a>
 
     <div class="nav-section" id="nav-section-plataforma">🏗️ Plataforma</div>
-    <a class="nav-item nav-overview" id="nav-plataforma" href="javascript:void(0)" onclick="navTo('plataforma'); return false;"><span class="icon">🏗️</span> Visão Geral Plataforma</a>
-    <a class="nav-item" id="nav-camaleao" href="javascript:void(0)" onclick="navTo('camaleao'); return false;"><span class="icon">🦎</span> Módulo Camaleão</a>
-    <a class="nav-item" id="nav-fgts" href="javascript:void(0)" onclick="navTo('fgts'); return false;"><span class="icon">💼</span> FGTS Aniversário</a>
-    <a class="nav-item" id="nav-carteira-digital" href="javascript:void(0)" onclick="navTo('carteira-digital'); return false;"><span class="icon">📲</span> Carteira Digital</a>
-    <a class="nav-item" id="nav-gamificacao" href="javascript:void(0)" onclick="navTo('gamificacao'); return false;"><span class="icon">🎮</span> Educação Financeira</a>
-    <a class="nav-item" id="nav-erp" href="javascript:void(0)" onclick="navTo('erp'); return false;"><span class="icon">🔌</span> Conectores ERP</a>
-    <a class="nav-item" id="nav-antecipacao-recebiveis" href="javascript:void(0)" onclick="navTo('antecipacao-recebiveis'); return false;"><span class="icon">🏭</span> Antecip. Recebíveis</a>
+    <a class="nav-item nav-overview" id="nav-plataforma" href="javascript:void(0)" data-page="plataforma" onclick="navTo('plataforma'); return false;"><span class="icon">🏗️</span> Visão Geral Plataforma</a>
+    <a class="nav-item" id="nav-camaleao" href="javascript:void(0)" data-page="camaleao" onclick="navTo('camaleao'); return false;"><span class="icon">🦎</span> Módulo Camaleão</a>
+    <a class="nav-item" id="nav-fgts" href="javascript:void(0)" data-page="fgts" onclick="navTo('fgts'); return false;"><span class="icon">💼</span> FGTS Aniversário</a>
+    <a class="nav-item" id="nav-carteira-digital" href="javascript:void(0)" data-page="carteira-digital" onclick="navTo('carteira-digital'); return false;"><span class="icon">📲</span> Carteira Digital</a>
+    <a class="nav-item" id="nav-gamificacao" href="javascript:void(0)" data-page="gamificacao" onclick="navTo('gamificacao'); return false;"><span class="icon">🎮</span> Educação Financeira</a>
+    <a class="nav-item" id="nav-erp" href="javascript:void(0)" data-page="erp" onclick="navTo('erp'); return false;"><span class="icon">🔌</span> Conectores ERP</a>
+    <a class="nav-item" id="nav-antecipacao-recebiveis" href="javascript:void(0)" data-page="antecipacao-recebiveis" onclick="navTo('antecipacao-recebiveis'); return false;"><span class="icon">🏭</span> Antecip. Recebíveis</a>
 
     <div class="nav-section" id="nav-section-controle">📊 Controle</div>
-    <a class="nav-item nav-overview" id="nav-controle" href="javascript:void(0)" onclick="navTo('controle'); return false;"><span class="icon">📊</span> Visão Geral Controle</a>
-    <a class="nav-item" id="nav-painel-controle" href="javascript:void(0)" onclick="navTo('painel-controle'); return false;"><span class="icon">🎛️</span> Painel de Controle</a>
+    <a class="nav-item nav-overview" id="nav-controle" href="javascript:void(0)" data-page="controle" onclick="navTo('controle'); return false;"><span class="icon">📊</span> Visão Geral Controle</a>
+    <a class="nav-item" id="nav-painel-controle" href="javascript:void(0)" data-page="painel-controle" onclick="navTo('painel-controle'); return false;"><span class="icon">🎛️</span> Painel de Controle</a>
     <div class="nav-section" id="nav-section-fintech">⚡ Fintech &amp; Onboarding</div>
-    <a class="nav-item" id="nav-onboarding" href="javascript:void(0)" onclick="navTo('onboarding'); return false;"><span class="icon">🚀</span> Onboarding Digital</a>
-    <a class="nav-item" id="nav-payroll" href="javascript:void(0)" onclick="navTo('payroll'); return false;"><span class="icon">💸</span> Motor de Folha</a>
-    <a class="nav-item" id="nav-payment-flow" href="javascript:void(0)" onclick="navTo('payment-flow'); return false;"><span class="icon">🔄</span> Fluxo de Pagamento</a>
+    <a class="nav-item" id="nav-onboarding" href="javascript:void(0)" data-page="onboarding" onclick="navTo('onboarding'); return false;"><span class="icon">🚀</span> Onboarding Digital</a>
+    <a class="nav-item" id="nav-payroll" href="javascript:void(0)" data-page="payroll" onclick="navTo('payroll'); return false;"><span class="icon">💸</span> Motor de Folha</a>
+    <a class="nav-item" id="nav-payment-flow" href="javascript:void(0)" data-page="payment-flow" onclick="navTo('payment-flow'); return false;"><span class="icon">🔄</span> Fluxo de Pagamento</a>
     <div class="nav-section" id="nav-section-ia">🤖 IA Preditiva</div>
-    <a class="nav-item" id="nav-ia-preditiva" href="javascript:void(0)" onclick="navTo('ia-preditiva'); return false;"><span class="icon">🧠</span> Motor IA Preditiva</a>
+    <a class="nav-item" id="nav-ia-preditiva" href="javascript:void(0)" data-page="ia-preditiva" onclick="navTo('ia-preditiva'); return false;"><span class="icon">🧠</span> Motor IA Preditiva</a>
   </nav>
   <div class="sidebar-footer">
     <div class="user-info mb-12">
@@ -9121,32 +9140,42 @@ const pageTitles = {
 };
 
 function navTo(page) {
-  const contentEl = document.querySelector('.content');
   // 1. Esconder todas as seções e nav
   document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+
   // 2. Ativar nova seção
-  const sec = document.getElementById(`section-${page}`);
+  const sec = document.getElementById('section-' + page);
   if (sec) sec.classList.add('active');
-  const nav = document.querySelector(`[onclick="navTo('${page}'); return false;" ]`);
+
+  // 3. Ativar nav-item (seletor corrigido — sem espaço extra)
+  const nav = document.querySelector('[data-page="' + page + '"]');
   if (nav) nav.classList.add('active');
-  // 3. Atualizar título topbar
+
+  // 4. Atualizar título topbar
   const [title, sub] = pageTitles[page] || [page, ''];
   const ptEl = document.getElementById('pageTitle');
   const psEl = document.getElementById('pageSubtitle');
   if (ptEl) ptEl.textContent = title;
   if (psEl) psEl.textContent = sub;
-  // 4. Reset scroll — após ativar (seção já visível), forçar topo
+
+  // 5. Reset scroll IMEDIATO e robusto — forçar topo antes e depois do paint
+  const contentEl = document.querySelector('.content');
   if (contentEl) {
     contentEl.scrollTop = 0;
     contentEl.scrollLeft = 0;
   }
+  // Também resetar o scroll da seção ativada
+  if (sec) sec.scrollTop = 0;
+
   requestAnimationFrame(() => {
-    if (contentEl) contentEl.scrollTop = 0;
+    if (contentEl) { contentEl.scrollTop = 0; contentEl.scrollLeft = 0; }
+    if (sec) sec.scrollTop = 0;
     requestAnimationFrame(() => {
-      if (contentEl) contentEl.scrollTop = 0;
+      if (contentEl) { contentEl.scrollTop = 0; contentEl.scrollLeft = 0; }
     });
   });
+
   loadPageData(page);
 }
 
