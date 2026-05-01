@@ -3331,96 +3331,98 @@ html { scroll-behavior: auto !important; }
 </style>
 <style id="layout-override">
 /* ═══════════════════════════════════════════════════════════════════
-   LAYOUT OVERRIDE — AverbaTech Dashboard  (versão definitiva v3)
-   Regra de ouro: sidebar 256px fixa | main à direita | topbar 64px
-   Usa 100dvh (dynamic viewport) para corrigir mobile Chrome/Safari
+   LAYOUT OVERRIDE v4 — AverbaTech Dashboard
+   Estratégia: margin-left (mesmo do design original) + CSS vars fixas
+   Sidebar: position fixed 256px | Main: margin-left 256px height 100dvh
    ═══════════════════════════════════════════════════════════════════ */
 
-/* ── 0. Reset base — dvh corrige barra de endereço mobile ── */
+/* ── 0. Forçar variável CSS --sidebar-w = 256px sempre ── */
+:root {
+  --sidebar-w:      256px !important;
+  --content-start:  256px !important;
+  --topbar-h:        64px !important;
+}
+
+/* ── 1. Reset base ── */
 html, body {
   margin:   0 !important;
   padding:  0 !important;
   width:    100% !important;
-  /* 100dvh = viewport sem barra de endereço (Chrome/Safari mobile) */
-  height:   100dvh !important;
-  /* fallback para browsers sem suporte a dvh */
   height:   100vh !important;
   height:   100dvh !important;
   overflow: hidden !important;
   box-sizing: border-box !important;
 }
 
-/* ── 1. SIDEBAR: sempre visível, 256px fixos ── */
+/* ── 2. SIDEBAR: posição fixa, 256px, sempre visível ── */
 .sidebar {
-  position:          fixed !important;
-  top:               0 !important;
-  left:              0 !important;
-  width:             256px !important;
-  min-width:         256px !important;
-  max-width:         256px !important;
-  height:            100% !important;
-  height:            100dvh !important;
-  overflow-y:        auto !important;
-  overflow-x:        hidden !important;
-  z-index:           400 !important;
-  transform:         none !important;
+  position:   fixed !important;
+  top:        0     !important;
+  left:       0     !important;
+  width:      256px !important;
+  min-width:  256px !important;
+  max-width:  256px !important;
+  height:     100vh !important;
+  height:     100dvh !important;
+  overflow-y: auto   !important;
+  overflow-x: hidden !important;
+  z-index:    400    !important;
+  transform:  none   !important;
   -webkit-transform: none !important;
-  visibility:        visible !important;
-  opacity:           1 !important;
-  display:           flex !important;
-  flex-direction:    column !important;
+  visibility: visible !important;
+  opacity:    1       !important;
+  display:    flex    !important;
+  flex-direction: column !important;
+  flex-shrink: 0 !important;
 }
 
-/* ── 2. MAIN: ocupa exatamente o espaço à direita ── */
+/* ── 3. MAIN: margin-left 256px (igual ao design original) ── */
 .main {
-  position:       fixed !important;
-  top:            0 !important;
-  left:           256px !important;
-  right:          0 !important;
-  bottom:         0 !important;
+  margin-left:    256px !important;
   width:          calc(100% - 256px) !important;
-  min-width:      0 !important;
-  margin:         0 !important;
-  padding:        0 !important;
-  display:        flex !important;
+  min-width:      0     !important;
+  height:         100vh !important;
+  height:         100dvh !important;
+  display:        flex  !important;
   flex-direction: column !important;
   overflow:       hidden !important;
-  z-index:        100 !important;
   box-sizing:     border-box !important;
+  /* REMOVER position:fixed para não conflitar com margin-left */
+  position:       relative !important;
 }
 
-/* ── 3. TOPBAR: 64px no topo, nunca some ── */
+/* ── 4. TOPBAR: 64px, fixo no topo via flexbox ── */
 .topbar {
-  flex:            0 0 64px !important;
-  height:          64px !important;
-  min-height:      64px !important;
-  max-height:      64px !important;
-  width:           100% !important;
-  display:         flex !important;
-  align-items:     center !important;
+  flex:        0 0 64px !important;
+  height:      64px     !important;
+  min-height:  64px     !important;
+  max-height:  64px     !important;
+  width:       100%     !important;
+  display:     flex     !important;
+  align-items: center   !important;
   justify-content: space-between !important;
-  padding:         0 20px !important;
-  background:      #ffffff !important;
-  border-bottom:   2px solid #e2e8f0 !important;
-  box-shadow:      0 1px 8px rgba(0,0,0,.07) !important;
-  z-index:         200 !important;
-  box-sizing:      border-box !important;
-  overflow:        hidden !important;
-  flex-shrink:     0 !important;
+  padding:     0 20px   !important;
+  background:  #ffffff  !important;
+  border-bottom: 2px solid #e2e8f0 !important;
+  box-shadow:  0 1px 8px rgba(0,0,0,.07) !important;
+  z-index:     200      !important;
+  box-sizing:  border-box !important;
+  overflow:    hidden   !important;
+  flex-shrink: 0        !important;
 }
 
-/* ── 4. CONTENT: única zona scrollável, ocupa resto ── */
+/* ── 5. CONTENT: ocupa o resto, scroll vertical ── */
 .content {
-  flex:       1 1 0% !important;
-  min-height: 0 !important;
-  overflow-y: auto !important;
-  overflow-x: hidden !important;
-  padding:    20px 24px 32px !important;
-  box-sizing: border-box !important;
+  flex:        1 1 0% !important;
+  min-height:  0      !important;
+  overflow-y:  auto   !important;
+  overflow-x:  hidden !important;
+  padding:     20px 24px 32px !important;
+  box-sizing:  border-box !important;
 }
 
-/* ── 5. PAGE-SECTIONS ── */
-.page-section        { display: none  !important; }
+/* ── 6. PAGE-SECTIONS ── */
+.page-section        { display: none !important; }
 .page-section.active {
   display:    block !important;
   margin:     0     !important;
@@ -3430,26 +3432,29 @@ html, body {
   box-sizing: border-box !important;
 }
 
-/* ── 6. Sem overflow horizontal nos filhos ── */
+/* ── 7. Filhos sem overflow horizontal ── */
 .content > * {
   max-width:  100% !important;
-  min-width:  0   !important;
+  min-width:  0    !important;
   box-sizing: border-box !important;
 }
 
-/* ── 7. Anular todo @media que mova sidebar/main ── */
+/* ── 8. Anular QUALQUER @media que mova sidebar/main ── */
 @media (max-width: 9999px) {
+  :root { --sidebar-w: 256px !important; }
   .sidebar {
-    transform:  none    !important;
-    left:       0       !important;
-    width:      256px   !important;
-    visibility: visible !important;
-    display:    flex    !important;
+    transform:   none    !important;
+    left:        0       !important;
+    width:       256px   !important;
+    min-width:   256px   !important;
+    visibility:  visible !important;
+    display:     flex    !important;
+    opacity:     1       !important;
   }
   .main {
-    left:   256px                  !important;
-    width:  calc(100% - 256px)     !important;
-    margin: 0                      !important;
+    margin-left: 256px              !important;
+    width:       calc(100% - 256px) !important;
+    position:    relative           !important;
   }
 }
 </style>
@@ -16700,15 +16705,16 @@ function applyFontScale(scale) {
 
 </script>
 <style>
-/* EMERGENCY LAYOUT FIX — injected last, overrides everything */
-html,body{margin:0!important;padding:0!important;overflow:hidden!important;height:100%!important}
-.sidebar{position:fixed!important;top:0!important;left:0!important;width:256px!important;min-width:256px!important;max-width:256px!important;height:100%!important;z-index:400!important;transform:none!important;-webkit-transform:none!important;visibility:visible!important;display:flex!important;flex-direction:column!important;overflow-y:auto!important;overflow-x:hidden!important}
-.main{position:fixed!important;top:0!important;left:256px!important;right:0!important;bottom:0!important;width:calc(100% - 256px)!important;min-width:0!important;margin:0!important;padding:0!important;display:flex!important;flex-direction:column!important;overflow:hidden!important;z-index:100!important}
-.topbar{flex:0 0 64px!important;height:64px!important;min-height:64px!important;max-height:64px!important;width:100%!important;display:flex!important;align-items:center!important;background:#fff!important;border-bottom:2px solid #e2e8f0!important;padding:0 20px!important;box-sizing:border-box!important;flex-shrink:0!important;overflow:hidden!important}
+/* EMERGENCY LAYOUT FIX v4 — margin-left strategy, overrides everything */
+:root{--sidebar-w:256px!important;--topbar-h:64px!important}
+html,body{margin:0!important;padding:0!important;overflow:hidden!important;height:100vh!important;height:100dvh!important;width:100%!important;box-sizing:border-box!important}
+.sidebar{position:fixed!important;top:0!important;left:0!important;width:256px!important;min-width:256px!important;max-width:256px!important;height:100vh!important;height:100dvh!important;z-index:400!important;transform:none!important;-webkit-transform:none!important;visibility:visible!important;opacity:1!important;display:flex!important;flex-direction:column!important;overflow-y:auto!important;overflow-x:hidden!important;flex-shrink:0!important}
+.main{margin-left:256px!important;width:calc(100% - 256px)!important;min-width:0!important;height:100vh!important;height:100dvh!important;display:flex!important;flex-direction:column!important;overflow:hidden!important;box-sizing:border-box!important;position:relative!important}
+.topbar{flex:0 0 64px!important;height:64px!important;min-height:64px!important;max-height:64px!important;width:100%!important;display:flex!important;align-items:center!important;justify-content:space-between!important;background:#fff!important;border-bottom:2px solid #e2e8f0!important;padding:0 20px!important;box-sizing:border-box!important;flex-shrink:0!important;overflow:hidden!important;z-index:200!important}
 .content{flex:1 1 0%!important;min-height:0!important;overflow-y:auto!important;overflow-x:hidden!important;padding:20px 24px 32px!important;box-sizing:border-box!important}
 .page-section{display:none!important}
 .page-section.active{display:block!important;margin:0!important;padding:0!important;max-width:100%!important;box-sizing:border-box!important}
-@media(max-width:9999px){.sidebar{transform:none!important;left:0!important;width:256px!important;visibility:visible!important;display:flex!important}.main{left:256px!important;width:calc(100% - 256px)!important;margin:0!important}}
+@media(max-width:9999px){:root{--sidebar-w:256px!important}.sidebar{transform:none!important;left:0!important;width:256px!important;min-width:256px!important;visibility:visible!important;display:flex!important;opacity:1!important}.main{margin-left:256px!important;width:calc(100% - 256px)!important;position:relative!important}}
 </style>
 </body>
 </html>
