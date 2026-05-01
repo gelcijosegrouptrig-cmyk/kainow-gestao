@@ -8987,6 +8987,7 @@ async function apiFetch(url, options = {}) {
       if (_apiFetch401Count >= 5) { logout(); }
       return null;
     }
+    if (!resp.ok) { return null; } // ← any non-2xx returns null, never throws
     _apiFetch401Count = 0; // reset on success
     // Parse JSON once; attach .ok and stub .json() for backwards compat
     let data = null;
@@ -15567,7 +15568,7 @@ async function carregarIAPreditiva() {
       const v = statsIAEl.querySelector('.stat-card.green .stat-value');
       if (v) v.textContent = fTotalReal;
     }
-    carregarSplitPizza(escrowReal);
+    carregarSplitPizza(escrow);
   } catch(e) { carregarSplitPizza(escrow); }
 
   // Animate confidence arc
