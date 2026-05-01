@@ -3730,7 +3730,7 @@ html, body {
         </div>
         <div class="panel-body p-0">
           <div class="table-wrap">
-            <table id="tabelaAverbações">
+            <table id="tabelaAverbacoes">
               <thead>
                 <tr>
                   <th>Código</th><th>Funcionário</th><th>Convênio</th><th>Banco</th>
@@ -3743,7 +3743,7 @@ html, body {
           </div>
         </div>
         <div class="panel-footer">
-          <span id="countAverbações" class="panel-footer-count"></span>
+          <span id="countAverbacoes" class="panel-footer-count"></span>
           <div id="paginacaoAverb" class="pagination"></div>
         </div>
       </div>
@@ -8968,7 +8968,7 @@ const API = (function() {
   }
   return 'https://averba-api-proxy.gelci-jose-grouptrig.workers.dev/api';
 })();
-let usuário = null;
+let usuario = null;
 let dadosAtuaisFuncionario = null;
 let dadosAtuaisMargem = null;
 let averbacoesPagina = 1;
@@ -9313,7 +9313,7 @@ window.addEventListener('DOMContentLoaded', async () => {
       '{}'
     );
   } catch(e) { u = {}; }
-  usuário = u;
+  usuario = u;
   document.getElementById('userNameSidebar').textContent = u.nome || 'Usuário';
   document.getElementById('userAvatarSidebar').textContent = (u.nome || 'U')[0].toUpperCase();
   document.getElementById('userNameTop').textContent = u.nome || '';
@@ -9504,14 +9504,14 @@ async function carregarAverbacoes(page = 1) {
   if (!resp) return;
   const data = await resp.json();
   renderTabelaAverbacoes(data.data || []);
-  renderPaginacao('paginacaoAverb', data.total, data.limit, data.page, carregarAverbações);
+  renderPaginacao('paginacaoAverb', data.total, data.limit, data.page, carregarAverbacoes);
   } catch(e) { console.error(e && e.message || e); }
 }
 
 async function filtrarAverbacoes() { carregarAverbacoes(1); }
 
 async function renderTabelaAverbacoes(items) {
-  const tbody = document.querySelector('#tabelaAverbações tbody');
+  const tbody = document.querySelector('#tabelaAverbacoes tbody');
   if (!items.length) { tbody.innerHTML = '<tr><td colspan="10"><div class="empty-state"><div class="icon">📋</div><h3>Nenhuma averbação encontrada</h3></div></td></tr>'; return; }
   tbody.innerHTML = items.map(a => `
     <tr>
@@ -9817,7 +9817,7 @@ async function carregarFuncionarios(page = 1) {
       </td>
     </tr>
   `).join('');
-  renderPaginacao('', data.total, data.limit, data.page, carregarFuncionários);
+  renderPaginacao('', data.total, data.limit, data.page, carregarFuncionarios);
   } catch(e) { console.error(e && e.message || e); }
 }
 
@@ -13965,7 +13965,7 @@ async function calcularScoreLocal(f) {
   return Math.max(0, Math.min(1000, Math.round(score)));
 }
 
-async function nivelScore(s) {
+function nivelScore(s) {
   if (s>=800) return ['🟢 Excelente','#059669'];
   if (s>=700) return ['🟢 Alto',     '#10b981'];
   if (s>=600) return ['🟡 Bom',      '#d97706'];
@@ -15700,7 +15700,7 @@ async function carregarTimelineIA() {
 }
 
 async function carregarSplitPizza(escrowReal) {
-  const total = escrow || 1245119.5;
+  const total = escrowReal || 1245119.5;
   const pct = { A: 0.62, B: 0.22, C: 0.12, D: 0.04 };
   const vals = {
     A: total * pct.A, B: total * pct.B,
@@ -16485,7 +16485,7 @@ function importarFuncionariosCSV() {
     toast(`📤 Importando ${file.name}…`, 'info');
     setTimeout(() => {
       toast(`✅ ${file.name} importado — dados na fila de processamento`, 'success');
-      if (typeof carregarFuncionários === 'function') carregarFuncionarios(1);
+      if (typeof carregarFuncionarios === 'function') carregarFuncionarios(1);
     }, 1800);
   };
   input.click();
