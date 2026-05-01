@@ -9172,6 +9172,7 @@ function navTo(page) {
   if (sec) sec.classList.add('active');
 
   // 3. Ativar nav-item (seletor corrigido — sem espaço extra)
+  const nav = document.querySelector('[data-page="' + page + '"]');
   if (nav) nav.classList.add('active');
 
   // 4. Atualizar título topbar
