@@ -9135,62 +9135,64 @@ function navTo(page) {
 }
 
 async function loadPageData(page) {
+  // Wrapper: se carregarXxx falhar, a seção estática do HTML permanece visível
+  const _safeLoad = async (fn) => { try { await fn(); } catch(e) { console.warn('loadPageData:', e && e.message || e); } };
   try {
   switch(page) {
-    case 'dashboard': carregarDashboard(); break;
-    case 'averbacoes': carregarAverbacoes(); break;
+    case 'dashboard': _safeLoad(carregarDashboard); break;
+    case 'averbacoes': _safeLoad(carregarAverbacoes); break;
     case 'nova-averbacao': iniciarNovaAverbacao(); break;
-    case 'funcionários': carregarFuncionarios(); break;
-    case 'convenios': carregarConvenios(); break;
-    case 'bancos': carregarBancos(); break;
-    case 'usuarios': carregarUsuarios(); break;
-    case 'auditoria': carregarAuditoria(); break;
-    case 'iso27001': carregarISO27001(); break;
-    case 'certificados': carregarCertificados(); break;
-    case 'importacoes': carregarPaginaImportacoes(); break;
-    case 'faturamento': carregarFaturamento(); break;
-    case 'integracoes': carregarIntegracoes(); break;
-    case 'rh-integracao': carregarRHIntegracao(); break;
-    case 'banco-convenios': carregarCredenciamentos(); break;
-    case 'esocial': carregarESocialDashboard(); break;
-    case 'portabilidade': carregarPortabilidadeDashboard(); break;
-    case 'seguros': carregarSeguros(); break;
-    case 'cartao-consignado': carregarCartaoConsignado(); break;
-    case 'faturamento-recorrente': carregarRecorrente(); break;
-    case 'score-margem':       carregarScoreMargem(); break;
-    case 'antecipacao':        carregarAntecipacoes(); break;
-    case 'superendividamento': carregarSuperEndividamento(); break;
-    case 'biometria':          carregarBiometria(); break;
+    case 'funcionários': _safeLoad(carregarFuncionarios); break;
+    case 'convenios': _safeLoad(carregarConvenios); break;
+    case 'bancos': _safeLoad(carregarBancos); break;
+    case 'usuarios': _safeLoad(carregarUsuarios); break;
+    case 'auditoria': _safeLoad(carregarAuditoria); break;
+    case 'iso27001': _safeLoad(carregarISO27001); break;
+    case 'certificados': _safeLoad(carregarCertificados); break;
+    case 'importacoes': _safeLoad(carregarPaginaImportacoes); break;
+    case 'faturamento': _safeLoad(carregarFaturamento); break;
+    case 'integracoes': _safeLoad(carregarIntegracoes); break;
+    case 'rh-integracao': _safeLoad(carregarRHIntegracao); break;
+    case 'banco-convenios': _safeLoad(carregarCredenciamentos); break;
+    case 'esocial': _safeLoad(carregarESocialDashboard); break;
+    case 'portabilidade': _safeLoad(carregarPortabilidadeDashboard); break;
+    case 'seguros': _safeLoad(carregarSeguros); break;
+    case 'cartao-consignado': _safeLoad(carregarCartaoConsignado); break;
+    case 'faturamento-recorrente': _safeLoad(carregarRecorrente); break;
+    case 'score-margem':       _safeLoad(carregarScoreMargem); break;
+    case 'antecipacao':        _safeLoad(carregarAntecipacoes); break;
+    case 'superendividamento': _safeLoad(carregarSuperEndividamento); break;
+    case 'biometria':          _safeLoad(carregarBiometria); break;
     // Next Level modules
-    case 'open-finance':       carregarOpenFinance(); break;
-    case 'cashback':           carregarCashback(); break;
-    case 'leilao':             carregarLeiloes(); break;
-    case 'marketplace':        carregarMarketplace(); break;
-    case 'parceiros':          carregarParceiros(); break;
-    case 'desligamento':       carregarDesligamentos(); break;
+    case 'open-finance':       _safeLoad(carregarOpenFinance); break;
+    case 'cashback':           _safeLoad(carregarCashback); break;
+    case 'leilao':             _safeLoad(carregarLeiloes); break;
+    case 'marketplace':        _safeLoad(carregarMarketplace); break;
+    case 'parceiros':          _safeLoad(carregarParceiros); break;
+    case 'desligamento':       _safeLoad(carregarDesligamentos); break;
     // Plataforma modules
-    case 'camaleao':           carregarCamaleao(); break;
-    case 'fgts':               carregarFGTS(); break;
-    case 'carteira-digital':   carregarCarteiraDigital(); break;
-    case 'gamificacao':        carregarGamificacao(); break;
-    case 'erp':                carregarERP(); break;
-    case 'antecipacao-recebiveis': carregarAntecipacoesRecebiveis(); break;
-    case 'onboarding':             carregarOnboarding(); break;
-    case 'payroll':                carregarPayroll(); break;
-    case 'ia-preditiva':           carregarIAPreditiva(); break;
-    case 'painel-controle':        carregarPainelControle(); break;
+    case 'camaleao':           _safeLoad(carregarCamaleao); break;
+    case 'fgts':               _safeLoad(carregarFGTS); break;
+    case 'carteira-digital':   _safeLoad(carregarCarteiraDigital); break;
+    case 'gamificacao':        _safeLoad(carregarGamificacao); break;
+    case 'erp':                _safeLoad(carregarERP); break;
+    case 'antecipacao-recebiveis': _safeLoad(carregarAntecipacoesRecebiveis); break;
+    case 'onboarding':             _safeLoad(carregarOnboarding); break;
+    case 'payroll':                _safeLoad(carregarPayroll); break;
+    case 'ia-preditiva':           _safeLoad(carregarIAPreditiva); break;
+    case 'painel-controle':        _safeLoad(carregarPainelControle); break;
     // Novos módulos
-    case 'rh-folha': carregarRHFolha(); break;
-    case 'rh-ocorrencias': carregarFuncOcorrencias(); break;
-    case 'rh-reservas': carregarReservasRH(); break;
-    case 'rh-desconto': carregarDescontoRH(); break;
+    case 'rh-folha': _safeLoad(carregarRHFolha); break;
+    case 'rh-ocorrencias': _safeLoad(carregarFuncOcorrencias); break;
+    case 'rh-reservas': _safeLoad(carregarReservasRH); break;
+    case 'rh-desconto': _safeLoad(carregarDescontoRH); break;
     case 'banco-margem': iniciarBancoMargem(); break;
     case 'banco-reserva': iniciarBancoReserva(); break;
-    case 'banco-carteira': carregarCarteiraContratos(); break;
-    case 'payment-flow': carregarPaymentFlow(); break;
-    case 'nextlevel':  carregarNextLevel(); break;
-    case 'plataforma': carregarPlataforma(); break;
-    case 'controle':   carregarControle(); break;
+    case 'banco-carteira': _safeLoad(carregarCarteiraContratos); break;
+    case 'payment-flow': _safeLoad(carregarPaymentFlow); break;
+    case 'nextlevel':  _safeLoad(carregarNextLevel); break;
+    case 'plataforma': _safeLoad(carregarPlataforma); break;
+    case 'controle':   _safeLoad(carregarControle); break;
     // Consultas diretas
     case 'consulta-margem': break; // página estática — sem chamada extra
     case 'calculadora': break;    // página estática — sem chamada extra
