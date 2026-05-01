@@ -3473,7 +3473,7 @@ html, body {
     <a class="nav-item" id="nav-nova-averbacao" href="javascript:void(0)" data-page="nova-averbacao" onclick="navTo('nova-averbacao'); return false;"><span class="icon">➕</span> Nova Averbação</a>
 
     <div class="nav-section" id="nav-admin-section">Administração</div>
-    <a class="nav-item" id="nav-funcionários" href="javascript:void(0)" data-page="funcionários" onclick="navTo('funcionários'); return false;"><span class="icon">👥</span> Funcionários</a>
+    <a class="nav-item" id="nav-funcionarios" href="javascript:void(0)" data-page="funcionários" onclick="navTo('funcionários'); return false;"><span class="icon">👥</span> Funcionários</a>
     <a class="nav-item" id="nav-convenios" href="javascript:void(0)" data-page="convenios" onclick="navTo('convenios'); return false;"><span class="icon">🏛️</span> Convênios</a>
     <a class="nav-item" id="nav-bancos" href="javascript:void(0)" data-page="bancos" onclick="navTo('bancos'); return false;"><span class="icon">🏦</span> Bancos</a>
     <a class="nav-item" id="nav-usuarios" href="javascript:void(0)" data-page="usuarios" onclick="navTo('usuarios'); return false;"><span class="icon">👤</span> Usuários</a>
@@ -3694,7 +3694,7 @@ html, body {
       </div>
 
       <!-- KPI Stats -->
-      <div class="stats-grid mb-20" id="statsAverbações">
+      <div class="stats-grid mb-20" id="statsAverbacoes">
         <div class="stat-card blue"><div class="stat-icon blue">📋</div><div class="stat-value" id="avTotal">0</div><div class="stat-label">Total de Averbações</div><div class="stat-change up">↑ Registradas</div></div>
         <div class="stat-card green"><div class="stat-icon green">✅</div><div class="stat-value" id="avAprovadas">0</div><div class="stat-label">Aprovadas</div><div class="stat-change up">↑ Ativas</div></div>
         <div class="stat-card yellow"><div class="stat-icon yellow">⏳</div><div class="stat-value" id="avPendentes">0</div><div class="stat-label">Pendentes</div><div class="stat-change neutral">→ Aguardando</div></div>
@@ -3787,7 +3787,7 @@ html, body {
             </div>
           </div>
         </div>
-        <div class="form-grid form-grid-3 hidden-mt16" id="camposAverbação">
+        <div class="form-grid form-grid-3 hidden-mt16" id="camposAverbacao">
           <div class="form-group">
             <label>Tipo</label>
             <select id="tipoAverb" onchange="atualizarMargemDisplay()">
@@ -3824,11 +3824,11 @@ html, body {
           <button class="btn btn-success" onclick="confirmarAverbacao()">✅ Confirmar Averbação</button>
         </div>
       </div>
-      <div id="resultadoAverbação" class="d-none"></div>
+      <div id="resultadoAverbacao" class="d-none"></div>
     </div>
 
     <!-- ===================== FUNCIONÁRIOS ===================== -->
-    <div class="page-section" id="section-funcionários">
+    <div class="page-section" id="section-funcionarios">
       <div class="page-header">
         <div class="page-header-icon">👥</div>
         <div class="page-header-text">
@@ -3838,7 +3838,7 @@ html, body {
       </div>
 
       <!-- KPI Stats -->
-      <div class="stats-grid mb-20" id="statsFuncionários">
+      <div class="stats-grid mb-20" id="statsFuncionarios">
         <div class="stat-card blue"><div class="stat-icon blue">👤</div><div class="stat-value" id="fnTotal">0</div><div class="stat-label">Total de Funcionários</div><div class="stat-change up">↑ Cadastrados</div></div>
         <div class="stat-card green"><div class="stat-icon green">✅</div><div class="stat-value" id="fnAtivos">0</div><div class="stat-label">Ativos</div><div class="stat-change up">↑ Em atividade</div></div>
         <div class="stat-card yellow"><div class="stat-icon yellow">💰</div><div class="stat-value" id="fnComMargem">0</div><div class="stat-label">Com Margem Disponível</div><div class="stat-change up">↑ Aptos</div></div>
@@ -3853,7 +3853,7 @@ html, body {
               <span class="list-search-icon">🔍</span>
               <input type="text" class="list-search-input" id="searchFunc" placeholder="Buscar por nome, matrícula ou CPF..." oninput="filtrarFuncionarios()">
             </div>
-            <select class="filter-select filter-select-sm" id="filterSituação" onchange="filtrarFuncionarios()">
+            <select class="filter-select filter-select-sm" id="filterSituacao" onchange="filtrarFuncionarios()">
               <option value="">Todas as situações</option>
               <option value="ATIVO">✅ Ativo</option>
               <option value="INATIVO">❌ Inativo</option>
@@ -3861,7 +3861,7 @@ html, body {
               <option value="APOSENTADO">🏖️ Aposentado</option>
             </select>
             <select id="filterConvenioFunc" class="filter-select filter-select-sm" onchange="filtrarFuncionarios()">
-              <option value="">Todos os convênios</option>
+              <option value="">Todos os convenios</option>
             </select>
             <button class="btn btn-outline btn-sm" onclick="exportarFuncionarios()">📥 CSV</button>
             <button class="btn btn-primary" onclick="abrirModalNovoFuncionario()">➕ Novo Funcionário</button>
@@ -3869,7 +3869,7 @@ html, body {
         </div>
         <div class="panel-body p-0">
           <div class="table-wrap">
-            <table id="tabelaFuncionários">
+            <table id="tabelaFuncionarios">
               <thead>
                 <tr><th>Matrícula</th><th>Nome</th><th>CPF</th><th>Cargo</th><th>Convênio</th><th>Salário Líquido</th><th>Margem Disponível</th><th>Situação</th><th>Ações</th></tr>
               </thead>
@@ -3878,7 +3878,7 @@ html, body {
           </div>
         </div>
         <div class="panel-footer">
-          <span id="countFuncionários" class="panel-footer-count"></span>
+          <span id="countFuncionarios" class="panel-footer-count"></span>
           <div class="flex-gap-8">
             <button class="btn btn-outline btn-sm" onclick="importarFuncionariosCSV()">📤 Importar CSV</button>
             <button class="btn btn-outline btn-sm" onclick="exportarFuncionarios()">📥 Exportar CSV</button>
@@ -3899,10 +3899,10 @@ html, body {
       </div>
 
       <!-- KPI Stats -->
-      <div class="stats-grid mb-20" id="statsConvênios">
+      <div class="stats-grid mb-20" id="statsConvenios">
         <div class="stat-card blue"><div class="stat-icon blue">🏛️</div><div class="stat-value" id="cvTotal">0</div><div class="stat-label">Total de Convênios</div><div class="stat-change up">↑ Cadastrados</div></div>
         <div class="stat-card green"><div class="stat-icon green">✅</div><div class="stat-value" id="cvAtivos">0</div><div class="stat-label">Convênios Ativos</div><div class="stat-change up">↑ Operando</div></div>
-        <div class="stat-card yellow"><div class="stat-icon yellow">👤</div><div class="stat-value" id="cvFuncionários">0</div><div class="stat-label">Funcionários Vinculados</div><div class="stat-change up">↑ Cadastrados</div></div>
+        <div class="stat-card yellow"><div class="stat-icon yellow">👤</div><div class="stat-value" id="cvFuncionarios">0</div><div class="stat-label">Funcionários Vinculados</div><div class="stat-change up">↑ Cadastrados</div></div>
         <div class="stat-card purple"><div class="stat-icon purple">🏦</div><div class="stat-value" id="cvBancos">0</div><div class="stat-label">Bancos Credenciados</div><div class="stat-change neutral">→ Parceiros</div></div>
       </div>
 
@@ -3910,17 +3910,17 @@ html, body {
       <div class="list-toolbar mb-12">
         <div class="list-search-wrap">
           <span class="list-search-icon">🔍</span>
-          <input type="text" id="searchConvênios" class="list-search-input" placeholder="Pesquisar por nome, CNPJ ou tipo..." oninput="filtrarConvenios(this.value)">
-          <button class="list-search-clear" id="btnClearConvênios" onclick="limparBuscaConvenios()" title="Limpar">✕</button>
+          <input type="text" id="searchConvenios" class="list-search-input" placeholder="Pesquisar por nome, CNPJ ou tipo..." oninput="filtrarConvenios(this.value)">
+          <button class="list-search-clear" id="btnClearConvenios" onclick="limparBuscaConvenios()" title="Limpar">✕</button>
         </div>
         <div class="list-filters">
-          <select id="filterConvenioTipo" class="filter-select" onchange="filtrarConvenios(document.getElementById('searchConvênios').value)">
+          <select id="filterConvenioTipo" class="filter-select" onchange="filtrarConvenios(document.getElementById('searchConvenios').value)">
             <option value="">Todos os tipos</option>
             <option value="PUBLICO">🏛️ Público</option>
             <option value="PRIVADO">🏢 Privado</option>
             <option value="MILITAR">⭐ Militar</option>
           </select>
-          <select id="filterConvenioStatus" class="filter-select" onchange="filtrarConvenios(document.getElementById('searchConvênios').value)">
+          <select id="filterConvenioStatus" class="filter-select" onchange="filtrarConvenios(document.getElementById('searchConvenios').value)">
             <option value="">Todos os status</option>
             <option value="1">✅ Ativo</option>
             <option value="0">❌ Inativo</option>
@@ -3931,8 +3931,8 @@ html, body {
           <button class="btn btn-primary" onclick="abrirModalNovoConvenio()">➕ Novo Convênio</button>
         </div>
       </div>
-      <div class="list-count" id="countConvênios"></div>
-      <div id="listaConvênios" class="entity-list"></div>
+      <div class="list-count" id="countConvenios"></div>
+      <div id="listaConvenios" class="entity-list"></div>
 
     </div>
 
@@ -3950,7 +3950,7 @@ html, body {
       <div class="stats-grid mb-20" id="statsBancos">
         <div class="stat-card blue"><div class="stat-icon blue">🏦</div><div class="stat-value" id="bnTotal">0</div><div class="stat-label">Total de Bancos</div><div class="stat-change up">↑ Cadastrados</div></div>
         <div class="stat-card green"><div class="stat-icon green">✅</div><div class="stat-value" id="bnAtivos">0</div><div class="stat-label">Bancos Ativos</div><div class="stat-change up">↑ Operando</div></div>
-        <div class="stat-card yellow"><div class="stat-icon yellow">📋</div><div class="stat-value" id="bnConvênios">0</div><div class="stat-label">Convênios Atendidos</div><div class="stat-change up">↑ Credenciados</div></div>
+        <div class="stat-card yellow"><div class="stat-icon yellow">📋</div><div class="stat-value" id="bnConvenios">0</div><div class="stat-label">Convênios Atendidos</div><div class="stat-change up">↑ Credenciados</div></div>
         <div class="stat-card purple"><div class="stat-icon purple">💰</div><div class="stat-value" id="bnContratos">0</div><div class="stat-label">Contratos Ativos</div><div class="stat-change up">↑ Carteira</div></div>
       </div>
 
@@ -3995,8 +3995,8 @@ html, body {
       </div>
 
       <!-- KPI Stats -->
-      <div class="stats-grid mb-20" id="statsUsuários">
-        <div class="stat-card blue"><div class="stat-icon blue">👥</div><div class="stat-value" id="usTotalUsuários">0</div><div class="stat-label">Total de Usuários</div><div class="stat-change up">↑ Cadastrados</div></div>
+      <div class="stats-grid mb-20" id="statsUsuarios">
+        <div class="stat-card blue"><div class="stat-icon blue">👥</div><div class="stat-value" id="usTotalUsuarios">0</div><div class="stat-label">Total de Usuários</div><div class="stat-change up">↑ Cadastrados</div></div>
         <div class="stat-card green"><div class="stat-icon green">✅</div><div class="stat-value" id="usAtivos">0</div><div class="stat-label">Usuários Ativos</div><div class="stat-change up">↑ Acessando</div></div>
         <div class="stat-card yellow"><div class="stat-icon yellow">🔑</div><div class="stat-value" id="usAdmins">0</div><div class="stat-label">Administradores</div><div class="stat-change neutral">→ Permissão total</div></div>
         <div class="stat-card red"><div class="stat-icon red">🚫</div><div class="stat-value" id="usBloqueados">0</div><div class="stat-label">Bloqueados</div><div class="stat-change down">↓ Sem acesso</div></div>
@@ -4008,7 +4008,7 @@ html, body {
           <div class="flex-gap-8">
             <div class="list-search-wrap m-0">
               <span class="list-search-icon">🔍</span>
-              <input type="text" id="searchUsuários" class="list-search-input" placeholder="Buscar por nome, e-mail ou perfil..." oninput="filtrarUsuarios()">
+              <input type="text" id="searchUsuarios" class="list-search-input" placeholder="Buscar por nome, e-mail ou perfil..." oninput="filtrarUsuarios()">
             </div>
             <select id="filterUsuarioPerfil" class="filter-select filter-select-sm" onchange="filtrarUsuarios()">
               <option value="">Todos os perfis</option>
@@ -4028,14 +4028,14 @@ html, body {
         </div>
         <div class="panel-body p-0">
           <div class="table-wrap">
-            <table id="tabelaUsuários">
+            <table id="tabelaUsuarios">
               <thead><tr><th>Nome</th><th>E-mail</th><th>Perfil</th><th>Vínculo</th><th>Último Login</th><th>Status</th><th>Ações</th></tr></thead>
               <tbody><tr><td colspan="7"><div class="tc-muted-p20" style="text-align:center;padding:20px;color:#94a3b8">Aguardando conexão...</div></td></tr></tbody>
             </table>
           </div>
         </div>
         <div class="panel-footer">
-          <span id="countUsuários" class="panel-footer-count"></span>
+          <span id="countUsuarios" class="panel-footer-count"></span>
           <button class="btn btn-outline btn-sm" onclick="exportarUsuarios()">📥 Exportar CSV</button>
         </div>
       </div>
@@ -4047,7 +4047,7 @@ html, body {
           <div class="grid-5">
             <div class="bg-error txt-center">
               <div class="txt-2xl">🔴</div><div class="fw7-red-sm">Super Admin</div>
-              <div class="txt-sm txt-slate">Acesso total — todos os módulos, convênios e bancos</div>
+              <div class="txt-sm txt-slate">Acesso total — todos os módulos, convenios e bancos</div>
             </div>
             <div class="bg-warn txt-center">
               <div class="txt-2xl">🟠</div><div class="fw7-orange-sm">Admin</div>
@@ -4077,13 +4077,13 @@ html, body {
         <div class="page-header-icon">📋</div>
         <div class="page-header-text">
           <h2 class="page-header-title">RH — Importar Folha</h2>
-          <p class="page-header-subtitle">Sincronização mensal de salários</p>
+          <p class="page-header-subtitle">Sincronização mensal de salarios</p>
         </div>
       </div>
       <div class="tabs" id="rhFolhaTabs">
         <button class="tab-btn active" onclick="switchRHTab('rhImport','this')">📂 Importar CSV/TXT</button>
         <button class="tab-btn" onclick="switchRHTab('rhManual','this')">➕ Cadastro Manual</button>
-        <button class="tab-btn" onclick="switchRHTab('rhHistórico','this')">📋 Histórico</button>
+        <button class="tab-btn" onclick="switchRHTab('rhHistorico','this')">📋 Histórico</button>
       </div>
       <!-- Tab: Importar CSV/TXT -->
       <div class="tab-panel active" id="tab-rhImport">
@@ -4154,11 +4154,11 @@ html, body {
           <div class="form-title">➕ Cadastro Manual de Funcionário</div>
           <div id="alertManualFunc"></div>
           <div class="form-grid">
-            <div class="form-group"><label>Matrícula *</label><input type="text" id="mfMatrícula" placeholder="MAT001"></div>
+            <div class="form-group"><label>Matrícula *</label><input type="text" id="mfMatricula" placeholder="MAT001"></div>
             <div class="form-group"><label>Nome Completo *</label><input type="text" id="mfNome" placeholder="Nome do funcionário"></div>
             <div class="form-group"><label>CPF *</label><input type="text" id="mfCpf" placeholder="000.000.000-00" maxlength="14" oninput="formatarCPFInput(this)"></div>
             <div class="form-group"><label>Data de Nascimento</label><input type="date" id="mfNascimento"></div>
-            <div class="form-group"><label>Convênio *</label><select id="mfConvênio"></select></div>
+            <div class="form-group"><label>Convênio *</label><select id="mfConvenio"></select></div>
             <div class="form-group"><label>Cargo</label><input type="text" id="mfCargo" placeholder="Ex: Analista"></div>
             <div class="form-group"><label>Lotação/Setor</label><input type="text" id="mfLotacao" placeholder="Ex: Secretaria de Finanças"></div>
             <div class="form-group"><label>Data Admissão</label><input type="date" id="mfAdmissao"></div>
@@ -4172,7 +4172,7 @@ html, body {
         </div>
       </div>
       <!-- Tab: Histórico -->
-      <div class="tab-panel" id="tab-rhHistórico">
+      <div class="tab-panel" id="tab-rhHistorico">
         <div class="panel">
           <div class="panel-header">
             <div class="panel-title">📋 Histórico de Sincronizações</div>
@@ -4350,7 +4350,7 @@ html, body {
         <div class="form-card">
           <div class="form-title">📤 Gerar Arquivo de Desconto</div>
           <div id="alertDescontoRH"></div>
-          <div class="form-group"><label>Convênio</label><select id="dcConvênio"></select></div>
+          <div class="form-group"><label>Convênio</label><select id="dcConvenio"></select></div>
           <div class="form-grid grid-1x2-12">
             <div class="form-group"><label>Mês</label>
               <select id="dcMes">
@@ -4852,7 +4852,7 @@ html, body {
                   <span class="fw-600">📧 E-mail:</span> consignado@averba.tech
                 </div>
                 <div class="card-yellow-p8">
-                  ⚠ Em caso de divergência, entre em contato com o RH do seu convênio.
+                  ⚠ Em caso de divergência, entre em contato com o RH do seu convenio.
                 </div>
               </div>
             </div>
@@ -4940,7 +4940,7 @@ html, body {
               </div>
               <div class="form-group">
                 <label>Convênio</label>
-                <select id="calcConvênio" oninput="calcularMargem()" class="form-input">
+                <select id="calcConvenio" oninput="calcularMargem()" class="form-input">
                   <option value="federal">Federal (35%/5%/5%)</option>
                   <option value="estadual">Estadual (30%/5%/5%)</option>
                   <option value="municipal">Municipal (25%/5%)</option>
@@ -5071,7 +5071,7 @@ html, body {
               </select>
             </div>
             <div class="form-group"><label>Convênio</label>
-              <select id="impConvênio"></select>
+              <select id="impConvenio"></select>
             </div>
             <div class="form-group"><label>Competência (AAAA-MM)</label>
               <input type="month" id="impCompetencia">
@@ -5218,7 +5218,7 @@ html, body {
               </div>
               <div class="form-group">
                 <label class="form-label">Convênio (deixe vazio = todos)</label>
-                <select id="tarifaConvenioId" class="form-control"><option value="">Todos os convênios</option></select>
+                <select id="tarifaConvenioId" class="form-control"><option value="">Todos os convenios</option></select>
               </div>
               <div class="form-group">
                 <label class="form-label">Nome da Tarifa *</label>
@@ -5348,7 +5348,7 @@ html, body {
         </div>
       </div>
       <!-- Stats rápidos -->
-      <div class="stats-grid mb-20" id="statsIntegrações"></div>
+      <div class="stats-grid mb-20" id="statsIntegracoes"></div>
 
       <div class="grid-2-mb">
         <!-- Clientes OAuth2 -->
@@ -5426,7 +5426,7 @@ html, body {
               <div class="form-group mb-6"><label class="txt-sm">Nº Contrato Banco</label>
                 <input type="text" id="averbContrato" placeholder="CTR-2026-001" class="txt-sm2">
               </div>
-              <div id="infoAverbação" class="fs12-slate-mb8">Aguardando reserva...</div>
+              <div id="infoAverbacao" class="fs12-slate-mb8">Aguardando reserva...</div>
               <button class="btn btn-primary btn-sm w100-green-bar" onclick="apiEfetivarAverbacao()" disabled id="btnAverbar">Averbar →</button>
             </div>
             <!-- Step 4: Bilhete -->
@@ -5473,7 +5473,7 @@ html, body {
             <div id="alertRHSync"></div>
             <div class="form-group">
               <label>Convênio *</label>
-              <select id="rhConvênio"></select>
+              <select id="rhConvenio"></select>
             </div>
             <div class="form-grid grid-1x2-12">
               <div class="form-group"><label>Mês</label>
@@ -5494,7 +5494,7 @@ html, body {
               <label>Upload Arquivo (.csv ou .txt)</label>
               <input type="file" id="rhArquivo" accept=".csv,.txt" class="input-sm-full">
             </div>
-            <div id="rhPreviewFuncionários" class="mb-12"></div>
+            <div id="rhPreviewFuncionarios" class="mb-12"></div>
             <button class="btn btn-primary w-100" onclick="sincronizarFolhaRH()">
               🔄 Sincronizar Folha
             </button>
@@ -5511,7 +5511,7 @@ html, body {
             <div id="alertRHExport"></div>
             <div class="form-group">
               <label>Convênio</label>
-              <select id="expConvênio"></select>
+              <select id="expConvenio"></select>
             </div>
             <div class="form-grid grid-1x2-12">
               <div class="form-group"><label>Mês</label>
@@ -5563,13 +5563,13 @@ html, body {
 
 
     <!-- ===================== CONVÊNIOS DETALHADO ===================== -->
-    <!-- (section-convênios kept, enhanced in JS) -->
+    <!-- (section-convenios kept, enhanced in JS) -->
     <div class="page-section" id="section-banco-convenios">
       <div class="page-header">
         <div class="page-header-icon">🤝</div>
         <div class="page-header-text">
           <h2 class="page-header-title">Credenciamento Banco × Convênio</h2>
-          <p class="page-header-subtitle">Controle de acesso de bancos por convênio</p>
+          <p class="page-header-subtitle">Controle de acesso de bancos por convenio</p>
         </div>
       </div>
       <div class="panel">
@@ -5578,11 +5578,11 @@ html, body {
           <button class="btn btn-primary btn-sm" onclick="abrirModalCredenciar()">➕ Credenciar Banco</button>
         </div>
         <div class="panel-body">
-          <div class="alert alert-info">ℹ️ Gerencie quais bancos podem operar em cada convênio. Um banco deve estar credenciado para solicitar averbações.</div>
+          <div class="alert alert-info">ℹ️ Gerencie quais bancos podem operar em cada convenio. Um banco deve estar credenciado para solicitar averbações.</div>
           <div id="alertCredenciamento"></div>
         </div>
         <div class="filter-bar pad-16-24-0-flex-g12-wrap">
-          <select class="filter-select" id="filterCredConvênio" onchange="carregarCredenciamentos()">
+          <select class="filter-select" id="filterCredConvenio" onchange="carregarCredenciamentos()">
             <option value="">Todos os Convênios</option>
           </select>
           <select class="filter-select" id="filterCredBanco" onchange="carregarCredenciamentos()">
@@ -5669,7 +5669,7 @@ html, body {
             <div id="alertESocial"></div>
             <div class="form-group">
               <label>Convênio *</label>
-              <select id="esConvênio"><option value="">Selecione...</option></select>
+              <select id="esConvenio"><option value="">Selecione...</option></select>
             </div>
             <div class="form-group">
               <label>Tipo de Evento *</label>
@@ -6065,7 +6065,7 @@ html, body {
           <div class="panel-header"><div class="panel-title">🧠 Consultar Score de Margem</div></div>
           <div class="panel-body">
             <div class="alert alert-info val-label">
-              O <strong>Score de Margem</strong> avalia estabilidade de emprego, histórico de pagamentos, comprometimento de renda e comportamento de crédito — permitindo que os bancos parceiros ofereçam <strong>taxas personalizadas e menores</strong> para funcionários de alto score.
+              O <strong>Score de Margem</strong> avalia estabilidade de emprego, histórico de pagamentos, comprometimento de renda e comportamento de crédito — permitindo que os bancos parceiros ofereçam <strong>taxas personalizadas e menores</strong> para funcionarios de alto score.
             </div>
             <div class="form-group">
               <label class="form-label">CPF do Funcionário</label>
@@ -6092,7 +6092,7 @@ html, body {
           <div class="panel-title">🏆 Top Funcionários por Score</div>
           <div class="flex-gap-8">
             <select id="scoreConvenioFiltro" class="filter-select" onchange="carregarRankingScore()">
-              <option value="">Todos convênios</option>
+              <option value="">Todos convenios</option>
             </select>
             <button class="btn btn-outline btn-sm" onclick="exportarScoreCSV()">⬇️ CSV</button>
           </div>
@@ -6251,10 +6251,10 @@ html, body {
           </div>
         </div>
       </div>
-      <!-- Mapa de risco por convênio -->
+      <!-- Mapa de risco por convenio -->
       <div class="panel">
         <div class="panel-header"><div class="panel-title">🗺️ Mapa de Risco por Convênio</div></div>
-        <div class="panel-body" id="mapaRiscoConvênio">
+        <div class="panel-body" id="mapaRiscoConvenio">
           <div class="empty-20">Clique em "Rodar Análise Agora" para gerar o mapa</div>
         </div>
       </div>
@@ -6284,7 +6284,7 @@ html, body {
             </div>
             <div class="form-group ta-left">
               <label class="form-label">Operação a Autenticar</label>
-              <select id="bioOperação" class="form-control">
+              <select id="bioOperacao" class="form-control">
                 <option value="AVERBACAO">📋 Averbação de Contrato</option>
                 <option value="PORTABILIDADE">🔄 Portabilidade</option>
                 <option value="ANTECIPACAO">⚡ Antecipação Salarial</option>
@@ -6718,7 +6718,7 @@ html, body {
         <!-- RIGHT: Registration Form -->
         <div class="panel">
           <div class="panel-header">
-            <div class="panel-title" id="formParceiroTítulo">➕ Novo Parceiro</div>
+            <div class="panel-title" id="formParceiroTitulo">➕ Novo Parceiro</div>
             <button class="btn btn-outline btn-sm" onclick="limparFormParceiro()">🔄 Limpar</button>
           </div>
           <div class="panel-body mh-480-scroll">
@@ -6912,7 +6912,7 @@ html, body {
             <div class="info-box-purple">
               <div class="txt-2xl">🔒</div>
               <div class="fw7-13-violet-m4">Exclusividade</div>
-              <div class="txt-sm txt-slate">Opcional por convênio — <strong>CNPJ protegido</strong> por 12 meses</div>
+              <div class="txt-sm txt-slate">Opcional por convenio — <strong>CNPJ protegido</strong> por 12 meses</div>
             </div>
           </div>
         </div>
@@ -7044,7 +7044,7 @@ html, body {
         <div class="panel-body">
           <div class="form-grid form-grid-3 gap14">
             <div class="form-group"><label>Convênio</label>
-              <select id="camConvênio" class="form-control"><option value="">Selecione...</option></select></div>
+              <select id="camConvenio" class="form-control"><option value="">Selecione...</option></select></div>
             <div class="form-group"><label>Setor</label>
               <select id="camSetor" class="form-control">
                 <option value="PUBLICO">🏛️ Público (lei federal)</option>
@@ -7441,7 +7441,7 @@ html, body {
       <div class="stats-grid mb-18" id="statsPainel">
         <div class="stat-card blue"><div class="stat-icon blue">🏙️</div><div class="stat-value" id="pctMunicipios">10</div><div class="stat-label">Municípios Ativos</div><div class="stat-change up">↑ 3 esta semana</div></div>
         <div class="stat-card green"><div class="stat-icon green">🏦</div><div class="stat-value" id="pctBancos">5</div><div class="stat-label">Bancos Parceiros</div><div class="stat-change up">↑ 1 novo</div></div>
-        <div class="stat-card yellow"><div class="stat-icon yellow">👥</div><div class="stat-value" id="pctFuncionários">847</div><div class="stat-label">Funcionários Onbordados</div><div class="stat-change up">↑ 124 hoje</div></div>
+        <div class="stat-card yellow"><div class="stat-icon yellow">👥</div><div class="stat-value" id="pctFuncionarios">847</div><div class="stat-label">Funcionários Onbordados</div><div class="stat-change up">↑ 124 hoje</div></div>
         <div class="stat-card purple"><div class="stat-icon purple">⚡</div><div class="stat-value" id="pctConversao">68%</div><div class="stat-label">Taxa de Conversão</div><div class="stat-change up">↑ 4 pp</div></div>
         <div class="stat-card red"><div class="stat-icon red">💰</div><div class="stat-value" id="pctVolume">R$ 4,2M</div><div class="stat-label">Volume Consignado</div><div class="stat-change up">↑ 18%</div></div>
       </div>
@@ -7762,7 +7762,7 @@ html, body {
                   <div class="split-label txt-blue">Fatia A — Salário Líquido</div>
                   <div class="split-desc">Pix direto → conta do funcionário (62%)</div>
                 </div>
-                <div class="split-card-value txt-blue" id="fatiaSalário">R$ —</div>
+                <div class="split-card-value txt-blue" id="fatiaSalario">R$ —</div>
               </div>
               <div class="split-card bg-green50-bc-green200">
                 <div class="split-card-icon">🏦</div>
@@ -7811,7 +7811,7 @@ html, body {
           <div class="panel-body">
             <div class="alert card-dbeafe-r8-blue">Com saldo suficiente na carteira, o RH confere os valores e clica para disparar milhares de Pix em segundos.</div>
             <div class="grid-2col-8-mb10">
-              <div class="form-group"><label>Convênio</label><select id="payConvênio" class="form-control"><option value="">Selecione...</option></select></div>
+              <div class="form-group"><label>Convênio</label><select id="payConvenio" class="form-control"><option value="">Selecione...</option></select></div>
               <div class="form-group"><label>Competência</label><input type="month" id="payCompet" class="form-control"></div>
             </div>
             <button class="btn btn-outline w-100 mb-8" onclick="simularLote()">📊 Simular Folha</button>
@@ -8216,7 +8216,7 @@ html, body {
             <div id="reconciliacaoStatus" class="mb-10"></div>
             <div class="flex-col-g6" id="reconciliacaoItens">
               <div class="row-info-sm">
-                <span>💼 Repasse salários</span><span class="fw7-green">R$ 0,00 ✅</span>
+                <span>💼 Repasse salarios</span><span class="fw7-green">R$ 0,00 ✅</span>
               </div>
               <div class="row-info-sm">
                 <span>🏦 Repasse bancos</span><span class="fw7-green">R$ 0,00 ✅</span>
@@ -8289,7 +8289,7 @@ html, body {
             </div>
             <div class="form-group">
               <label>Convênio</label>
-              <select id="iaDryRunConvênio" class="form-control"><option value="">Todos</option></select>
+              <select id="iaDryRunConvenio" class="form-control"><option value="">Todos</option></select>
             </div>
             <div class="form-group">
               <label>Competência</label>
@@ -8318,11 +8318,11 @@ html, body {
     <div class="modal-body">
       <div id="alertModalFunc"></div>
       <div class="form-grid">
-        <div class="form-group"><label>Matrícula *</label><input type="text" id="fMatrícula" placeholder="MAT001"></div>
+        <div class="form-group"><label>Matrícula *</label><input type="text" id="fMatricula" placeholder="MAT001"></div>
         <div class="form-group"><label>Nome Completo *</label><input type="text" id="fNome" placeholder="Nome do funcionário"></div>
         <div class="form-group"><label>CPF *</label><input type="text" id="fCpf" placeholder="000.000.000-00" maxlength="14" oninput="formatarCPFInput(this)"></div>
         <div class="form-group"><label>Data de Nascimento</label><input type="date" id="fNascimento"></div>
-        <div class="form-group"><label>Convênio *</label><select id="fConvênio"></select></div>
+        <div class="form-group"><label>Convênio *</label><select id="fConvenio"></select></div>
         <div class="form-group"><label>Cargo</label><input type="text" id="fCargo" placeholder="Ex: Analista"></div>
         <div class="form-group"><label>Lotação/Setor</label><input type="text" id="fLotacao" placeholder="Ex: Secretaria de Finanças"></div>
         <div class="form-group"><label>Data Admissão</label><input type="date" id="fAdmissao"></div>
@@ -8337,11 +8337,11 @@ html, body {
   </div>
 </div>
 
-<div class="modal-overlay" id="modalConvênio">
+<div class="modal-overlay" id="modalConvenio">
   <div class="modal">
     <div class="modal-header">
       <div class="modal-title">🏛️ Novo Convênio</div>
-      <button class="modal-close" onclick="fecharModal('modalConvênio')">✕</button>
+      <button class="modal-close" onclick="fecharModal('modalConvenio')">✕</button>
     </div>
     <div class="modal-body">
       <div id="alertModalConv"></div>
@@ -8372,7 +8372,7 @@ html, body {
       </div>
     </div>
     <div class="modal-footer">
-      <button class="btn btn-outline" onclick="fecharModal('modalConvênio')">Cancelar</button>
+      <button class="btn btn-outline" onclick="fecharModal('modalConvenio')">Cancelar</button>
       <button class="btn btn-primary" onclick="salvarConvenio()">💾 Salvar</button>
     </div>
   </div>
@@ -8388,7 +8388,7 @@ html, body {
       <div id="alertModalBanco"></div>
       <div class="form-grid">
         <div class="form-group"><label>Nome do Banco *</label><input type="text" id="bNome" placeholder="Ex: Banco do Brasil"></div>
-        <div class="form-group"><label>Código BACEN *</label><input type="text" id="bCódigo" placeholder="001"></div>
+        <div class="form-group"><label>Código BACEN *</label><input type="text" id="bCodigo" placeholder="001"></div>
         <div class="form-group"><label>CNPJ *</label><input type="text" id="bCnpj" placeholder="00.000.000/0001-00"></div>
         <div class="form-group"><label>Taxa de Averbação (R$)</label><input type="number" id="bTaxa" value="15.00" step="0.01"></div>
         <div class="form-group"><label>Contato Responsável</label><input type="text" id="bContato"></div>
@@ -8402,11 +8402,11 @@ html, body {
   </div>
 </div>
 
-<div class="modal-overlay" id="modalUsuário">
+<div class="modal-overlay" id="modalUsuario">
   <div class="modal">
     <div class="modal-header">
       <div class="modal-title">👤 Novo Usuário</div>
-      <button class="modal-close" onclick="fecharModal('modalUsuário')">✕</button>
+      <button class="modal-close" onclick="fecharModal('modalUsuario')">✕</button>
     </div>
     <div class="modal-body">
       <div id="alertModalUser"></div>
@@ -8422,12 +8422,12 @@ html, body {
             <option value="FUNCIONARIO">Funcionário</option>
           </select>
         </div>
-        <div class="form-group" id="grpConvênio"><label>Convênio</label><select id="uConvênio"><option value="">Selecione...</option></select></div>
+        <div class="form-group" id="grpConvenio"><label>Convênio</label><select id="uConvenio"><option value="">Selecione...</option></select></div>
         <div class="form-group" id="grpBanco"><label>Banco</label><select id="uBanco"><option value="">Selecione...</option></select></div>
       </div>
     </div>
     <div class="modal-footer">
-      <button class="btn btn-outline" onclick="fecharModal('modalUsuário')">Cancelar</button>
+      <button class="btn btn-outline" onclick="fecharModal('modalUsuario')">Cancelar</button>
       <button class="btn btn-primary" onclick="salvarUsuario()">💾 Salvar</button>
     </div>
   </div>
@@ -8644,7 +8644,7 @@ html, body {
             <button class="btn btn-sm" style="background:rgba(255,255,255,.2);color:#fff;border:1px solid rgba(255,255,255,.4)" onclick="navTo('camaleao'); return false;">Configurar →</button>
           </div>
           <div class="panel-body">
-            <p class="text-muted" style="margin-bottom:12px">Motor white-label: personalize limites de margem, bloqueios e comportamentos por convênio sem código.</p>
+            <p class="text-muted" style="margin-bottom:12px">Motor white-label: personalize limites de margem, bloqueios e comportamentos por convenio sem código.</p>
             <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:10px">
               <div style="background:#f0fdfa;border-radius:8px;padding:8px;text-align:center">
                 <div style="font-size:18px;font-weight:700;color:#0f766e">12</div>
@@ -8812,7 +8812,7 @@ html, body {
       <div class="stats-grid mb-16" id="statsControle">
         <div class="stat-card"><div class="stat-icon">🏙️</div><div class="stat-val" id="ctMunicipios">10</div><div class="stat-lbl">Municípios Ativos</div></div>
         <div class="stat-card"><div class="stat-icon">🏦</div><div class="stat-val" id="ctBancos">5</div><div class="stat-lbl">Bancos Parceiros</div></div>
-        <div class="stat-card"><div class="stat-icon">👥</div><div class="stat-val" id="ctFuncionários">–</div><div class="stat-lbl">Funcionários na Base</div></div>
+        <div class="stat-card"><div class="stat-icon">👥</div><div class="stat-val" id="ctFuncionarios">–</div><div class="stat-lbl">Funcionários na Base</div></div>
         <div class="stat-card"><div class="stat-icon">📋</div><div class="stat-val" id="ctContratos">–</div><div class="stat-lbl">Contratos Ativos</div></div>
         <div class="stat-card"><div class="stat-icon">💰</div><div class="stat-val" id="ctReceita">R$ 42,8k</div><div class="stat-lbl">Receita Total (R$)</div></div>
         <div class="stat-card"><div class="stat-icon">📈</div><div class="stat-val" id="ctTaxaAverb">15,0%</div><div class="stat-lbl">Taxa Méd. de Averbação</div></div>
@@ -9097,12 +9097,12 @@ const pageTitles = {
   averbacoes:            ['Averbações',              'Contratos e reservas de margem'],
   'nova-averbacao':      ['Nova Averbação',           'Solicitar reserva de margem'],
   // ── Administração ──────────────────────────────────────────
-  funcionários:          ['Funcionários',             'Cadastro de servidores e empregados'],
+  funcionarios:          ['Funcionários',             'Cadastro de servidores e empregados'],
   convenios:             ['Convênios',                'Prefeituras, empresas e órgãos'],
   bancos:                ['Bancos',                   'Instituições financeiras parceiras'],
   usuarios:              ['Usuários do Sistema',      'Controle de acesso e permissões'],
   // ── Módulo RH ──────────────────────────────────────────────
-  'rh-folha':            ['RH — Importar Folha',      'Sincronização mensal de salários'],
+  'rh-folha':            ['RH — Importar Folha',      'Sincronização mensal de salarios'],
   'rh-ocorrencias':      ['RH — Ocorrências',         'Demitidos, licenciados e reativações'],
   'rh-reservas':         ['RH — Validar Reservas',    'Aprovar ou recusar reservas de margem'],
   'rh-desconto':         ['RH — Arquivo de Desconto', 'Gerar e baixar arquivo de descontos'],
@@ -9122,7 +9122,7 @@ const pageTitles = {
   // ── Integrações ────────────────────────────────────────────
   integracoes:           ['Integrações — API Bancária', 'OAuth2, webhooks e fluxo técnico completo'],
   'rh-integracao':       ['RH — Integração de Sistemas', 'Conectores e sincronização com sistemas de RH'],
-  'banco-convenios':     ['Credenciamento Banco × Convênio', 'Controle de acesso de bancos por convênio'],
+  'banco-convenios':     ['Credenciamento Banco × Convênio', 'Controle de acesso de bancos por convenio'],
   esocial:               ['eSocial',                  'Integração com o sistema eSocial do governo federal'],
   portabilidade:         ['Portabilidade de Crédito', 'Transferência automática de contratos entre bancos'],
   // ── Facultativos ───────────────────────────────────────────
@@ -9349,7 +9349,7 @@ function aplicarACL(perfil) {
   const aclMap = {
     // Admin
     'nav-admin-section':   ['SUPER_ADMIN','ADMIN'],
-    'nav-funcionários':    ['SUPER_ADMIN','ADMIN','RH'],
+    'nav-funcionarios':    ['SUPER_ADMIN','ADMIN','RH'],
     'nav-convenios':       ['SUPER_ADMIN','ADMIN'],
     'nav-bancos':          ['SUPER_ADMIN','ADMIN'],
     'nav-usuarios':        ['SUPER_ADMIN','ADMIN'],
@@ -9640,7 +9640,7 @@ async function buscarFuncionarioCPF() {
   dadosAtuaisMargem = dadosMargem;
 
   document.getElementById('cardFuncionario').style.display = 'block';
-  document.getElementById('camposAverbação').style.display = 'grid';
+  document.getElementById('camposAverbacao').style.display = 'grid';
   document.getElementById('actionsNovaAverb').style.display = 'flex';
 
   const m = dadosMargem.margem;
@@ -9707,11 +9707,11 @@ async function atualizarMargemDisplay() { verificarMargem(); }
 async function limparFormAverbacao() {
   document.getElementById('cpfBusca').value = '';
   document.getElementById('cardFuncionario').style.display = 'none';
-  document.getElementById('camposAverbação').style.display = 'none';
+  document.getElementById('camposAverbacao').style.display = 'none';
   document.getElementById('actionsNovaAverb').style.display = 'none';
   document.getElementById('alertMargem').innerHTML = '';
   document.getElementById('alertNovaAverb').innerHTML = '';
-  document.getElementById('resultadoAverbação').style.display = 'none';
+  document.getElementById('resultadoAverbacao').style.display = 'none';
   dadosAtuaisFuncionario = null;
   dadosAtuaisMargem = null;
 }
@@ -9749,8 +9749,8 @@ async function confirmarAverbacao() {
     return;
   }
 
-  document.getElementById('resultadoAverbação').style.display = 'block';
-  document.getElementById('resultadoAverbação').innerHTML = `
+  document.getElementById('resultadoAverbacao').style.display = 'block';
+  document.getElementById('resultadoAverbacao').innerHTML = `
     <div class="form-card border-green2">
       <div class="p20-center">
         <div class="fs-48-mb12">🎉</div>
@@ -9783,7 +9783,7 @@ async function confirmarAverbacao() {
   `;
   toast(`Averbação ${data.codigo_averbacao} criada!`, 'success');
   document.getElementById('alertNovaAverb').innerHTML = '';
-  document.getElementById('camposAverbação').style.display = 'none';
+  document.getElementById('camposAverbacao').style.display = 'none';
   document.getElementById('actionsNovaAverb').style.display = 'none';
   document.getElementById('cardFuncionario').style.display = 'none';
   } catch(e) { console.error(e && e.message || e); }
@@ -9794,14 +9794,14 @@ async function carregarFuncionarios(page = 1) {
   try {
   funcionariosPagina = page;
   const busca = document.getElementById('searchFunc')?.value || '';
-  const situação = document.getElementById('filterSituação')?.value || '';
+  const situacao = document.getElementById('filterSituacao')?.value || '';
   let url = `/funcionarios?page=${page}&limit=15`;
   if (busca) url += `&busca=${encodeURIComponent(busca)}`;
   if (situação) url += `&situação=${situação}`;
   const resp = await apiFetch(url);
   if (!resp) return;
   const data = await resp.json();
-  const tbody = document.querySelector('#tabelaFuncionários tbody');
+  const tbody = document.querySelector('#tabelaFuncionarios tbody');
   if (!data.data?.length) { tbody.innerHTML = '<tr><td colspan="8"><div class="empty-state"><div class="icon">👥</div><h3>Nenhum funcionário encontrado</h3></div></td></tr>'; return; }
   tbody.innerHTML = data.data.map(f => `
     <tr>
@@ -9903,21 +9903,21 @@ async function carregarConvenios() {
 }
 
 async function renderConveniosList(items) {
-  const el = document.getElementById('listaConvênios');
-  const countEl = document.getElementById('countConvênios');
+  const el = document.getElementById('listaConvenios');
+  const countEl = document.getElementById('countConvenios');
   if (!items.length) {
-    el.innerHTML = '<div class="entity-empty"><div class="ei-icon">🏛️</div><p>Nenhum convênio encontrado</p></div>';
+    el.innerHTML = '<div class="entity-empty"><div class="ei-icon">🏛️</div><p>Nenhum convenio encontrado</p></div>';
     if (countEl) countEl.textContent = '';
     return;
   }
-  if (countEl) countEl.textContent = `${items.length} convênio${items.length !== 1 ? 's' : ''} encontrado${items.length !== 1 ? 's' : ''}`;
+  if (countEl) countEl.textContent = `${items.length} convenio${items.length !== 1 ? 's' : ''} encontrado${items.length !== 1 ? 's' : ''}`;
   const tipoIcon = { PUBLICO:'🏛️', MILITAR:'⭐', PRIVADO:'🏢' };
   const tipoClass = { PUBLICO:'publico', MILITAR:'militar', PRIVADO:'privado' };
   const tipoLabel = { PUBLICO:'Público', MILITAR:'Militar', PRIVADO:'Privado' };
   const badgeClass = { PUBLICO:'badge-pub', MILITAR:'badge-mil', PRIVADO:'badge-priv' };
   const isAdmin = ['SUPER_ADMIN','ADMIN'].includes(usuario?.perfil);
   el.innerHTML = items.map(c => `
-    <div class="entity-row convênio ${tipoClass[c.tipo]||'privado'} ${c.ativo ? '' : 'inativo'}">
+    <div class="entity-row convenio ${tipoClass[c.tipo]||'privado'} ${c.ativo ? '' : 'inativo'}">
       <div class="entity-icon">${tipoIcon[c.tipo]||'🏢'}</div>
       <div class="entity-main">
         <div class="entity-name">${c.nome}</div>
@@ -9949,7 +9949,7 @@ async function filtrarConvenios(busca) {
   const txt = (busca || '').toLowerCase().trim();
   const tipo = document.getElementById('filterConvenioTipo')?.value || '';
   const status = document.getElementById('filterConvenioStatus')?.value;
-  const btnClear = document.getElementById('btnClearConvênios');
+  const btnClear = document.getElementById('btnClearConvenios');
   if (btnClear) btnClear.classList.toggle('visible', txt.length > 0);
   const filtered = _conveniosCache.filter(c => {
     const matchTxt = !txt ||
@@ -9966,9 +9966,9 @@ async function filtrarConvenios(busca) {
 }
 
 async function limparBuscaConvenios() {
-  const inp = document.getElementById('searchConvênios');
+  const inp = document.getElementById('searchConvenios');
   if (inp) { inp.value = ''; inp.focus(); }
-  const btnClear = document.getElementById('btnClearConvênios');
+  const btnClear = document.getElementById('btnClearConvenios');
   if (btnClear) btnClear.classList.remove('visible');
   filtrarConvenios('');
 }
@@ -10056,7 +10056,7 @@ async function carregarUsuarios() {
   const resp = await apiFetch('/usuarios');
   if (!resp) return;
   const items = await resp.json();
-  const tbody = document.querySelector('#tabelaUsuários tbody');
+  const tbody = document.querySelector('#tabelaUsuarios tbody');
   const perfis = { SUPER_ADMIN:'👑 Super Admin', ADMIN:'🔧 Admin', RH:'🏛️ RH', BANCO:'🏦 Banco', FUNCIONARIO:'👤 Funcionário' };
   tbody.innerHTML = items.map(u => `
     <tr>
@@ -10385,13 +10385,13 @@ async function verificarCertificado(id) {
 // ===================== IMPORTAÇÕES DE FOLHA =====================
 async function carregarPaginaImportacoes() {
   try {
-  // Carregar convênios para o select
+  // Carregar convenios para o select
   const resp = await apiFetch('/convenios');
   if (!resp) return;
-  const convênios = await resp.json();
-  const sel = document.getElementById('impConvênio');
+  const convenios = await resp.json();
+  const sel = document.getElementById('impConvenio');
   if (sel) {
-    sel.innerHTML = '<option value="">Selecione um convênio...</option>' +
+    sel.innerHTML = '<option value="">Selecione um convenio...</option>' +
       convenios.filter(c => c.ativo).map(c => `<option value="${c.id}">${c.nome}</option>`).join('');
   }
   // Definir competência atual
@@ -10436,7 +10436,7 @@ async function carregarHistoricoImportacoes() {
 
 async function importarFolha() {
   const sistema = document.getElementById('impSistema').value;
-  const convenio_id = document.getElementById('impConvênio').value;
+  const convenio_id = document.getElementById('impConvenio').value;
   const competencia = document.getElementById('impCompetencia').value;
   const arquivo = document.getElementById('impArquivo').files[0];
 
@@ -10498,7 +10498,7 @@ async function importarFolha() {
         ${d.preview?.length ? `
           <div class="mt12-fs12-dark-fw7">Preview (${d.preview.length} primeiros registros):</div>
           <div class="info-scroll-sm">
-            ${d.preview.map(p => `• ${p.nome || p.NOME || ''} (${p.cpf || p.CPF || p.matrícula || ''})`).join('<br>')}
+            ${d.preview.map(p => `• ${p.nome || p.NOME || ''} (${p.cpf || p.CPF || p.matricula || p.matrícula || ''})`).join('<br>')}
           </div>
         ` : ''}
       </div>
@@ -10593,7 +10593,7 @@ async function carregarFaturamento() {
       : '<tr><td colspan="6" class="txt-center txt-muted">Nenhum ciclo no período</td></tr>';
 
     // Histórico mensal
-    const hist = d.histórico || d.historicoMensal || [];
+    const hist = d.historico || d.historicoMensal || [];
     const maxR = Math.max(...hist.map(m => m.receita || m.receita || 0), 1);
     document.getElementById('historicoFaturamento').innerHTML = hist.map(m => {
       const rec = m.receita || 0;
@@ -10834,7 +10834,7 @@ async function carregarTarifas() {
       const cData = await cResp.json();
       const convs = cData.data || cData;
       document.getElementById('tarifaConvenioId').innerHTML =
-        '<option value="">Todos os convênios</option>' +
+        '<option value="">Todos os convenios</option>' +
         convs.map(c => `<option value="${c.id}">${c.nome}</option>`).join('');
     }
 
@@ -10974,7 +10974,7 @@ async function calcularProjecao() {
     if (!resp?.ok) { div.innerHTML = '<p class="tc-danger-raw">Erro ao calcular projeção.</p>'; return; }
     const d = await resp.json();
     const resumo = d.resumo || {};
-    const hist = d.histórico || [];
+    const hist = d.historico || [];
     const proj = d.projecao12m || [];
 
     const maxR = Math.max(...proj.map(p => p.receita_mensal), 1);
@@ -11044,7 +11044,7 @@ async function carregarIntegracoes() {
     const resp = await apiFetch('/oauth2/stats');
     if (!resp || !resp.ok) return;
     const d = await resp.json();
-    document.getElementById('statsIntegrações').innerHTML = `
+    document.getElementById('statsIntegracoes').innerHTML = `
       <div class="stat-card blue"><div class="stat-icon blue">🏦</div><div class="stat-value">${d.total_clients||0}</div><div class="stat-label">Bancos Conectados</div></div>
       <div class="stat-card green"><div class="stat-icon green">🔑</div><div class="stat-value">${d.tokens_ativos||0}</div><div class="stat-label">Tokens Ativos</div></div>
       <div class="stat-card purple"><div class="stat-icon purple">📊</div><div class="stat-value">${d.requisicoes_24h||0}</div><div class="stat-label">Requisições (24h)</div></div>
@@ -11184,7 +11184,7 @@ async function apiReservarMargem() {
       <div><b>Valor:</b> ${fmtMoeda(d.valor_parcela)} × ${d.prazo_meses}m</div>
       <div><b>Total:</b> ${fmtMoeda(d.valor_total)}</div>
       <div class="tc-amber"><b>Expira às:</b> ${expira}</div>`;
-    document.getElementById('infoAverbação').innerHTML = `
+    document.getElementById('infoAverbacao').innerHTML = `
       <div class="fs11-green">Reserva <code>${idReservaAtual.slice(-8)}</code> pronta para averbar</div>`;
     document.getElementById('btnAverbar').disabled = false;
     document.getElementById('btnAverbar').style.opacity = '1';
@@ -11265,15 +11265,15 @@ async function carregarWebhooks() {
 
 // ===================== RH / FOLHA =====================
 async function carregarRHIntegracao() {
-  // Carregar convênios para os selects
+  // Carregar convenios para os selects
   try {
     const resp = await apiFetch('/convenios');
     if (!resp || !resp.ok) return;
     const convs = await resp.json();
-    const opts = '<option value="">Todos os convênios</option>' +
+    const opts = '<option value="">Todos os convenios</option>' +
       convs.filter(c => c.ativo).map(c => `<option value="${c.id}">${c.nome}</option>`).join('');
-    document.getElementById('rhConvênio').innerHTML = opts.replace('Todos', 'Selecione um');
-    document.getElementById('expConvênio').innerHTML = opts;
+    document.getElementById('rhConvenio').innerHTML = opts.replace('Todos', 'Selecione um');
+    document.getElementById('expConvenio').innerHTML = opts;
     // Set current month
     const now = new Date();
     document.getElementById('rhMes').value = now.getMonth() + 1;
@@ -11290,7 +11290,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!f) return;
       const text = await f.text();
       const lines = text.trim().split('\n').slice(0,5);
-      document.getElementById('rhPreviewFuncionários').innerHTML = `
+      document.getElementById('rhPreviewFuncionarios').innerHTML = `
         <div class="label-code">
           <b>Preview (${text.trim().split('\n').length} linhas):</b><br>
           <pre class="pre-wrap-10">${lines.join('\n')}${text.trim().split('\n').length > 5 ? '\n...' : ''}</pre>
@@ -11300,29 +11300,29 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 async function sincronizarFolhaRH() {
-  const convenio_id = document.getElementById('rhConvênio').value;
+  const convenio_id = document.getElementById('rhConvenio').value;
   const mes = parseInt(document.getElementById('rhMes').value);
   const ano = parseInt(document.getElementById('rhAno').value);
   const arqEl = document.getElementById('rhArquivo');
 
-  if (!convenio_id) { toast('Selecione um convênio', 'error'); return; }
+  if (!convenio_id) { toast('Selecione um convenio', 'error'); return; }
 
   document.getElementById('alertRHSync').innerHTML = '';
   document.getElementById('resultadoRHSync').innerHTML = '<div class="tc-muted-p20" style="text-align:center;padding:20px;color:#94a3b8">Aguardando conexão...</div>';
 
-  let funcionários = [];
+  let funcionarios = [];
   if (arqEl.files.length > 0) {
     const text = await arqEl.files[0].text();
     const linhas = text.trim().split('\n');
     const header = linhas[0].split(';').map(h => h.trim().toLowerCase());
-    funcionários = linhas.slice(1).map(l => {
+    funcionarios = linhas.slice(1).map(l => {
       const cols = l.split(';');
       const obj = {};
       header.forEach((h, i) => obj[h] = (cols[i]||'').trim());
       return {
         cpf: (obj.cpf||'').replace(/\D/g,''),
         nome: obj.nome || obj.name || '',
-        matricula: obj.matrícula || obj.mat || '',
+        matricula: obj.matricula || obj.matrícula || obj.mat || '',
         salario_bruto: parseFloat(obj.salario_bruto || obj.bruto || 0),
         salario_liquido: parseFloat(obj.salario_liquido || obj.liquido || 0),
         situacao: (obj.situação || 'ATIVO').toUpperCase()
@@ -11334,7 +11334,7 @@ async function sincronizarFolhaRH() {
   try {
     const resp = await apiFetch('/rh/sincronizar', {
       method: 'POST',
-      body: JSON.stringify({ convenio_id, competencia: competenciaStr1, funcionários })
+      body: JSON.stringify({ convenio_id, competencia: competenciaStr1, funcionarios })
     });
     if (!resp) return;
     const d = await resp.json();
@@ -11362,7 +11362,7 @@ async function sincronizarFolhaRH() {
 }
 
 async function exportarDescontosRH() {
-  const convenio_id = document.getElementById('expConvênio').value;
+  const convenio_id = document.getElementById('expConvenio').value;
   const mes = document.getElementById('expMes').value;
   const ano = document.getElementById('expAno').value;
   const formato = document.getElementById('expFormato').value;
@@ -11539,10 +11539,10 @@ async function fecharModal(id) { document.getElementById(id).classList.remove('o
 async function abrirModalNovoFuncionario() {
   try {
   const resp = await apiFetch('/convenios');
-  const convênios = await resp.json();
-  document.getElementById('fConvênio').innerHTML = '<option value="">Selecione...</option>' +
+  const convenios = await resp.json();
+  document.getElementById('fConvenio').innerHTML = '<option value="">Selecione...</option>' +
     convenios.filter(c => c.ativo).map(c => `<option value="${c.id}">${c.nome}</option>`).join('');
-  if (usuario?.convenio_id) document.getElementById('fConvênio').value = usuario.convenio_id;
+  if (usuario?.convenio_id) document.getElementById('fConvenio').value = usuario.convenio_id;
   document.getElementById('alertModalFunc').innerHTML = '';
   abrirModal('modalFuncionario');
   } catch(e) { console.error(e && e.message || e); }
@@ -11551,11 +11551,11 @@ async function abrirModalNovoFuncionario() {
 async function salvarFuncionario() {
   try {
   const body = {
-    matricula: document.getElementById('fMatrícula').value,
+    matricula: document.getElementById('fMatricula').value,
     nome: document.getElementById('fNome').value,
     cpf: document.getElementById('fCpf').value,
     data_nascimento: document.getElementById('fNascimento').value,
-    convenio_id: document.getElementById('fConvênio').value,
+    convenio_id: document.getElementById('fConvenio').value,
     cargo: document.getElementById('fCargo').value,
     lotacao: document.getElementById('fLotacao').value,
     salario_bruto: parseFloat(document.getElementById('fBruto').value),
@@ -11574,7 +11574,7 @@ async function salvarFuncionario() {
 
 async function abrirModalNovoConvenio() {
   document.getElementById('alertModalConv').innerHTML = '';
-  abrirModal('modalConvênio');
+  abrirModal('modalConvenio');
 }
 
 async function salvarConvenio() {
@@ -11595,7 +11595,7 @@ async function salvarConvenio() {
   const data = await resp.json();
   if (!resp.ok) { document.getElementById('alertModalConv').innerHTML = `<div class="alert alert-error">❌ ${data.erro}</div>`; return; }
   toast('Convênio cadastrado!', 'success');
-  fecharModal('modalConvênio');
+  fecharModal('modalConvenio');
   carregarConvenios();
   } catch(e) { console.error(e && e.message || e); }
 }
@@ -11609,7 +11609,7 @@ async function salvarBanco() {
   try {
   const body = {
     nome: document.getElementById('bNome').value,
-    codigo_bacen: document.getElementById('bCódigo').value,
+    codigo_bacen: document.getElementById('bCodigo').value,
     cnpj: document.getElementById('bCnpj').value,
     taxa_averbacao: parseFloat(document.getElementById('bTaxa').value),
     contato_responsavel: document.getElementById('bContato').value,
@@ -11628,21 +11628,21 @@ async function salvarBanco() {
 async function abrirModalNovoUsuario() {
   try {
   const [rConv, rBanc] = await Promise.all([apiFetch('/convenios'), apiFetch('/bancos')]);
-  const convênios = await rConv.json();
+  const convenios = await rConv.json();
   const bancos = await rBanc.json();
-  document.getElementById('uConvênio').innerHTML = '<option value="">Selecione...</option>' +
+  document.getElementById('uConvenio').innerHTML = '<option value="">Selecione...</option>' +
     convenios.map(c => `<option value="${c.id}">${c.nome}</option>`).join('');
   document.getElementById('uBanco').innerHTML = '<option value="">Selecione...</option>' +
     bancos.map(b => `<option value="${b.id}">${b.nome}</option>`).join('');
   document.getElementById('alertModalUser').innerHTML = '';
   toggleConvenioBanco();
-  abrirModal('modalUsuário');
+  abrirModal('modalUsuario');
   } catch(e) { console.error(e && e.message || e); }
 }
 
 async function toggleConvenioBanco() {
   const perfil = document.getElementById('uPerfil').value;
-  document.getElementById('grpConvênio').style.display = ['RH','FUNCIONARIO'].includes(perfil) ? 'flex' : 'none';
+  document.getElementById('grpConvenio').style.display = ['RH','FUNCIONARIO'].includes(perfil) ? 'flex' : 'none';
   document.getElementById('grpBanco').style.display = perfil === 'BANCO' ? 'flex' : 'none';
 }
 
@@ -11653,7 +11653,7 @@ async function salvarUsuario() {
     email: document.getElementById('uEmail').value,
     senha: document.getElementById('uSenha').value,
     perfil: document.getElementById('uPerfil').value,
-    convenio_id: document.getElementById('uConvênio').value || null,
+    convenio_id: document.getElementById('uConvenio').value || null,
     banco_id: document.getElementById('uBanco').value || null
   };
   const resp = await apiFetch('/usuarios', { method: 'POST', body: JSON.stringify(body) });
@@ -11661,7 +11661,7 @@ async function salvarUsuario() {
   const data = await resp.json();
   if (!resp.ok) { document.getElementById('alertModalUser').innerHTML = `<div class="alert alert-error">❌ ${data.erro}</div>`; return; }
   toast('Usuário criado!', 'success');
-  fecharModal('modalUsuário');
+  fecharModal('modalUsuario');
   carregarUsuarios();
   } catch(e) { console.error(e && e.message || e); }
 }
@@ -11744,12 +11744,12 @@ async function editarConvenio(id) {
   document.getElementById('cResponsavel').value = c.responsavel || '';
   document.getElementById('cTelefone').value = c.telefone || '';
   document.getElementById('alertModalConv').innerHTML = '';
-  document.querySelector('#modalConvênio .modal-title').textContent = '✏️ Editar Convênio';
+  document.querySelector('#modalConvenio .modal-title').textContent = '✏️ Editar Convênio';
   // Trocar botão salvar para atualizar
-  const btnSalvar = document.querySelector('#modalConvênio .modal-footer .btn-primary');
+  const btnSalvar = document.querySelector('#modalConvenio .modal-footer .btn-primary');
   btnSalvar.textContent = '💾 Atualizar';
   btnSalvar.onclick = () => atualizarConvenio(id);
-  abrirModal('modalConvênio');
+  abrirModal('modalConvenio');
   } catch(e) { console.error(e && e.message || e); }
 }
 
@@ -11770,9 +11770,9 @@ async function atualizarConvenio(id) {
   const data = await resp.json();
   if (!resp.ok) { document.getElementById('alertModalConv').innerHTML = `<div class="alert alert-error">❌ ${data.erro}</div>`; return; }
   toast('Convênio atualizado!', 'success');
-  fecharModal('modalConvênio');
+  fecharModal('modalConvenio');
   // Resetar botão para "Salvar"
-  const btnSalvar = document.querySelector('#modalConvênio .modal-footer .btn-primary');
+  const btnSalvar = document.querySelector('#modalConvenio .modal-footer .btn-primary');
   btnSalvar.textContent = '💾 Salvar';
   btnSalvar.onclick = salvarConvenio;
   carregarConvenios();
@@ -11781,7 +11781,7 @@ async function atualizarConvenio(id) {
 
 async function verBancosConvenio(convenioId, convenioNome) {
   try {
-  // Mostrar bancos credenciados para este convênio (via averbações)
+  // Mostrar bancos credenciados para este convenio (via averbações)
   const resp = await apiFetch('/bancos');
   if (!resp) return;
   const bancos = await resp.json();
@@ -11807,7 +11807,7 @@ async function verBancosConvenio(convenioId, convenioNome) {
 }
 
 // Override salvarConvênio reset
-const _origSalvarConvênio = salvarConvenio;
+const _origSalvarConvenio = salvarConvenio;
 // ===================== BANCOS — VERSÃO MELHORADA =====================
 async function editarBanco(id) {
   try {
@@ -11815,7 +11815,7 @@ async function editarBanco(id) {
   if (!resp) return;
   const b = await resp.json();
   document.getElementById('bNome').value = b.nome;
-  document.getElementById('bCódigo').value = b.codigo_bacen;
+  document.getElementById('bCodigo').value = b.codigo_bacen;
   document.getElementById('bCnpj').value = formatCNPJ(b.cnpj);
   document.getElementById('bTaxa').value = b.taxa_averbacao;
   document.getElementById('bContato').value = b.contato_responsavel || '';
@@ -11909,7 +11909,7 @@ async function renderSegurosLista(items) {
   const statusClass = { ATIVO:'status-ativo', SUSPENSO:'', CANCELADO:'status-inativo', PENDENTE:'', ENCERRADO:'status-inativo' };
   const isAdmin = ['SUPER_ADMIN','ADMIN','RH'].includes(usuario?.perfil);
   el.innerHTML = items.map(s => `
-    <div class="entity-row convênio privado ${s.status !== 'ATIVO' ? 'inativo' : ''}">
+    <div class="entity-row convenio privado ${s.status !== 'ATIVO' ? 'inativo' : ''}">
       <div class="entity-icon">${tipoIcon[s.tipo_produto] || '🛡️'}</div>
       <div class="entity-main">
         <div class="entity-name">${s.funcionario_nome} <span class="label-slate-11">· ${s.matricula}</span></div>
@@ -12011,7 +12011,7 @@ async function carregarSeguradoras() {
   if (!resp) return;
   _seguradorasCache = await resp.json();
   const html = _seguradorasCache.map(s => `
-    <div class="entity-row convênio publico">
+    <div class="entity-row convenio publico">
       <div class="entity-icon">🏢</div>
       <div class="entity-main">
         <div class="entity-name">${s.nome} <span class="label-slate-11">· ${s.tipo}</span></div>
@@ -12491,7 +12491,7 @@ async function abrirModalFaturaCartao() {
     <div class="alert alert-info mb-12">ℹ️ Informe os gastos do mês. O sistema valida se o total cabe na margem reservada.</div>
     <div class="form-grid form-grid-2">
       <div class="form-group"><label>Código do Cartão *</label>
-        <input type="text" id="cfCódigo" placeholder="Ex: CC-ABC123-DEF456">
+        <input type="text" id="cfCodigo" placeholder="Ex: CC-ABC123-DEF456">
         <button class="btn btn-outline btn-sm mt-4" onclick="buscarCartaoPorCodigo()">🔍 Buscar</button>
         <div id="cfCartaoInfo" class="fs12-mt4-emerald"></div>
         <input type="hidden" id="cfCartaoId">
@@ -12527,7 +12527,7 @@ async function calcTotalFatura() {
 
 async function buscarCartaoPorCodigo() {
   try {
-  const código = document.getElementById('cfCódigo')?.value;
+  const codigo = document.getElementById('cfCodigo')?.value;
   if (!codigo) return;
   const resp = await apiFetch(`/cartao?limit=100`);
   if (!resp) return;
@@ -12664,16 +12664,16 @@ let _rhConveniosCache = [];
 
 async function carregarRHFolha() {
   try {
-  // Carregar convênios para os selects
+  // Carregar convenios para os selects
   const resp = await apiFetch('/convenios');
   if (!resp) return;
   _rhConveniosCache = await resp.json();
-  const opts = '<option value="">Selecione um convênio...</option>' +
+  const opts = '<option value="">Selecione um convenio...</option>' +
     _rhConveniosCache.filter(c=>c.ativo).map(c => `<option value="${c.id}">${c.nome}</option>`).join('');
-  ['rhConvenioNew','mfConvênio'].forEach(id => {
+  ['rhConvenioNew','mfConvenio'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.innerHTML = opts;
-    if (id==='mfConvênio' && el) el.innerHTML = opts.replace('Selecione um convênio...','Selecione...');
+    if (id==='mfConvenio' && el) el.innerHTML = opts.replace('Selecione um convenio...','Selecione...');
   });
   const now = new Date();
   const mEl = document.getElementById('rhMesNew');
@@ -12703,24 +12703,24 @@ async function sincronizarFolhaRHNew() {
   const mes = parseInt(document.getElementById('rhMesNew').value);
   const ano = parseInt(document.getElementById('rhAnoNew').value);
   const arqEl = document.getElementById('rhArquivoNew');
-  if (!convenio_id) { toast('Selecione um convênio', 'error'); return; }
+  if (!convenio_id) { toast('Selecione um convenio', 'error'); return; }
   document.getElementById('alertRHSyncNew').innerHTML = '';
   document.getElementById('resultadoRHSyncNew').innerHTML = '<div class="loading"><div class="spinner"></div> Processando...</div>';
 
-  let funcionários = [];
+  let funcionarios = [];
   if (arqEl.files.length > 0) {
     const text = await arqEl.files[0].text();
     const linhas = text.trim().split('\n');
     const sep = linhas[0].includes(';') ? ';' : ',';
     const header = linhas[0].split(sep).map(h => h.trim().toLowerCase().replace(/[^a-z_]/g,''));
-    funcionários = linhas.slice(1).filter(l => l.trim()).map(l => {
+    funcionarios = linhas.slice(1).filter(l => l.trim()).map(l => {
       const cols = l.split(sep);
       const obj = {};
       header.forEach((h,i) => obj[h] = (cols[i]||'').trim());
       return {
         cpf: (obj.cpf||'').replace(/\D/g,''),
         nome: obj.nome || obj.name || '',
-        matricula: obj.matrícula || obj.mat || '',
+        matricula: obj.matricula || obj.matrícula || obj.mat || '',
         salario_bruto: parseFloat(obj.salario_bruto || obj.bruto || obj.salariob || 0),
         salario_liquido: parseFloat(obj.salario_liquido || obj.liquido || obj.salariol || 0),
         cargo: obj.cargo || '',
@@ -12734,7 +12734,7 @@ async function sincronizarFolhaRHNew() {
   try {
     const resp = await apiFetch('/rh/sincronizar', {
       method: 'POST',
-      body: JSON.stringify({ convenio_id, competencia: competenciaStr2, funcionários })
+      body: JSON.stringify({ convenio_id, competencia: competenciaStr2, funcionarios })
     });
     if (!resp) return;
     const d = await resp.json();
@@ -12754,7 +12754,7 @@ async function sincronizarFolhaRHNew() {
         </div>
         <div class="label-muted-mt8">Competência: ${String(mes).padStart(2,'0')}/${ano}</div>
       </div>`;
-    toast(`✅ ${d.total||0} funcionários processados!`, 'success');
+    toast(`✅ ${d.total||0} funcionarios processados!`, 'success');
     carregarHistoricoRHNew();
   } catch(e) {
     document.getElementById('resultadoRHSyncNew').innerHTML = '';
@@ -12786,18 +12786,18 @@ async function carregarHistoricoRHNew() {
 async function salvarFuncionarioManual() {
   try {
   const body = {
-    matricula: document.getElementById('mfMatrícula').value,
+    matricula: document.getElementById('mfMatricula').value,
     nome: document.getElementById('mfNome').value,
     cpf: document.getElementById('mfCpf').value.replace(/\D/g,''),
     data_nascimento: document.getElementById('mfNascimento').value,
-    convenio_id: document.getElementById('mfConvênio').value,
+    convenio_id: document.getElementById('mfConvenio').value,
     cargo: document.getElementById('mfCargo').value,
     lotacao: document.getElementById('mfLotacao').value,
     salario_bruto: parseFloat(document.getElementById('mfBruto').value),
     salario_liquido: parseFloat(document.getElementById('mfLiquido').value),
     data_admissao: document.getElementById('mfAdmissao').value
   };
-  if (!body.matrícula || !body.nome || !body.cpf || !body.convenio_id || !body.salario_bruto) {
+  if (!body.matricula || !body.nome || !body.cpf || !body.convenio_id || !body.salario_bruto) {
     document.getElementById('alertManualFunc').innerHTML = '<div class="alert alert-error">❌ Preencha todos os campos obrigatórios (Matrícula, Nome, CPF, Convênio, Salário Bruto)</div>';
     return;
   }
@@ -12812,7 +12812,7 @@ async function salvarFuncionarioManual() {
 }
 
 async function limparFormManual() {
-  ['mfMatrícula','mfNome','mfCpf','mfNascimento','mfCargo','mfLotacao','mfBruto','mfLiquido','mfAdmissao'].forEach(id => {
+  ['mfMatricula','mfNome','mfCpf','mfNascimento','mfCargo','mfLotacao','mfBruto','mfLiquido','mfAdmissao'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.value = '';
   });
@@ -13025,9 +13025,9 @@ async function carregarDescontoRH() {
   if (!resp) return;
   const convs = await resp.json();
   const lista = Array.isArray(convs) ? convs : (convs.data || []);
-  const opts = '<option value="">Todos os convênios</option>' +
+  const opts = '<option value="">Todos os convenios</option>' +
     lista.filter(c => c.ativo).map(c => `<option value="${c.id}">${c.nome}</option>`).join('');
-  document.getElementById('dcConvênio').innerHTML = opts;
+  document.getElementById('dcConvenio').innerHTML = opts;
   const now = new Date();
   document.getElementById('dcMes').value = now.getMonth() + 1;
   document.getElementById('dcAno').value = now.getFullYear();
@@ -13036,7 +13036,7 @@ async function carregarDescontoRH() {
 }
 
 async function carregarResumoDescontos() {
-  const convenio_id = document.getElementById('dcConvênio')?.value || '';
+  const convenio_id = document.getElementById('dcConvenio')?.value || '';
   const el = document.getElementById('resumoDescontosRH');
   el.innerHTML = '<div class="tc-muted-p20" style="text-align:center;padding:20px;color:#94a3b8">Aguardando conexão...</div>';
   try {
@@ -13059,7 +13059,7 @@ async function carregarResumoDescontos() {
           <div class="txt-sm txt-muted">Contratos</div>
         </div>
         <div class="stat-card purple p-12-center">
-          <div class="val-22">${totais.total_funcionários || 0}</div>
+          <div class="val-22">${totais.total_funcionarios || 0}</div>
           <div class="txt-sm txt-muted">Funcionários</div>
         </div>
         <div class="stat-card green p-12-center">
@@ -13089,7 +13089,7 @@ async function carregarResumoDescontos() {
 }
 
 async function gerarArquivoDescontoRH() {
-  const convenio_id = document.getElementById('dcConvênio').value;
+  const convenio_id = document.getElementById('dcConvenio').value;
   const mes = parseInt(document.getElementById('dcMes').value);
   const ano = parseInt(document.getElementById('dcAno').value);
   const formato = document.getElementById('dcFormato').value;
@@ -13463,7 +13463,7 @@ async function exportarCarteiraCSV() {
 // ===================== CREDENCIAMENTO BANCO×CONVÊNIO =====================
 async function carregarCredenciamentos() {
   try {
-  const convenio_id = document.getElementById('filterCredConvênio')?.value || '';
+  const convenio_id = document.getElementById('filterCredConvenio')?.value || '';
   const banco_id = document.getElementById('filterCredBanco')?.value || '';
   const ativo = document.getElementById('filterCredAtivo')?.value || '';
   let url = '/banco-convenios?';
@@ -13499,17 +13499,17 @@ async function carregarCredenciamentos() {
 async function abrirModalCredenciar() {
   try {
   const [rBancos, rConvenios] = await Promise.all([apiFetch('/bancos'), apiFetch('/convenios')]);
-  if (!rBancos || !rConvênios) return;
+  if (!rBancos || !rConvenios) return;
   const bancos = Array.isArray(rBancos) ? rBancos : (rBancos?.data || rBancos || []);
-  const convênios = await rConvênios.json();
+  const convenios = await rConvenios.json();
   const bancosSel = document.getElementById('credBancoSel');
   const conveniosSel = document.getElementById('credConvenioSel');
   bancosSel.innerHTML = '<option value="">Selecione o banco...</option>' +
     (bancos.data||bancos).filter(b=>b.ativo).map(b=>`<option value="${b.id}">${b.nome}</option>`).join('');
-  conveniosSel.innerHTML = '<option value="">Selecione o convênio...</option>' +
+  conveniosSel.innerHTML = '<option value="">Selecione o convenio...</option>' +
     (convenios.data||convenios).filter(c=>c.ativo).map(c=>`<option value="${c.id}">${c.nome}</option>`).join('');
   // Also populate filter selects
-  const fConv = document.getElementById('filterCredConvênio');
+  const fConv = document.getElementById('filterCredConvenio');
   if (fConv && fConv.options.length <= 1) {
     (convenios.data||convenios).forEach(c => { const o=document.createElement('option'); o.value=c.id; o.text=c.nome; fConv.appendChild(o); });
   }
@@ -13527,7 +13527,7 @@ async function salvarCredenciamento() {
   const banco_id = document.getElementById('credBancoSel').value;
   const convenio_id = document.getElementById('credConvenioSel').value;
   if (!banco_id || !convenio_id) {
-    document.getElementById('alertModalCred').innerHTML = '<div class="alert alert-error">❌ Selecione banco e convênio</div>';
+    document.getElementById('alertModalCred').innerHTML = '<div class="alert alert-error">❌ Selecione banco e convenio</div>';
     return;
   }
   const body = {
@@ -13550,7 +13550,7 @@ async function salvarCredenciamento() {
 
 async function descredenciarBanco(id, nome) {
   try {
-  if (!confirm(`Descredenciar ${nome}? O banco não poderá mais operar neste convênio.`)) return;
+  if (!confirm(`Descredenciar ${nome}? O banco não poderá mais operar neste convenio.`)) return;
   const resp = await apiFetch(`/banco-convenios/${id}`, { method:'DELETE' });
   if (!resp) return;
   if (resp.ok) { toast('Banco descredenciado', 'success'); carregarCredenciamentos(); }
@@ -13599,8 +13599,8 @@ async function carregarESocialDashboard() {
     } else if (chartEl) {
       chartEl.innerHTML = '<div class="txt-center txt-muted">Nenhum evento ainda</div>';
     }
-    // Populate convênio select
-    const esConv = document.getElementById('esConvênio');
+    // Populate convenio select
+    const esConv = document.getElementById('esConvenio');
     if (esConv && esConv.options.length <= 1) {
       const rConv = await apiFetch('/convenios');
       if (rConv && rConv.ok) {
@@ -13647,11 +13647,11 @@ async function carregarEventosESocial(page=1) {
 
 async function enviarEventoESocial() {
   try {
-  const convenio_id = document.getElementById('esConvênio').value;
+  const convenio_id = document.getElementById('esConvenio').value;
   const tipo_evento = document.getElementById('esTipoEvento').value;
   const ambiente = document.getElementById('esAmbiente').value;
   const funcionario_id = document.getElementById('esFuncionarioId').value.trim() || null;
-  if (!convenio_id) { toast('Selecione um convênio', 'error'); return; }
+  if (!convenio_id) { toast('Selecione um convenio', 'error'); return; }
   document.getElementById('alertESocial').innerHTML = '<div class="alert alert-info">⏳ Enviando evento...</div>';
   const resp = await apiFetch('/esocial/enviar', {
     method: 'POST',
@@ -13678,11 +13678,11 @@ async function enviarEventoESocial() {
 
 async function enviarLoteESocial() {
   try {
-  const convenio_id = document.getElementById('esConvênio').value;
+  const convenio_id = document.getElementById('esConvenio').value;
   const tipo_evento = document.getElementById('esTipoEvento').value;
   const ambiente = document.getElementById('esAmbiente').value;
-  if (!convenio_id) { toast('Selecione um convênio', 'error'); return; }
-  if (!confirm(`Enviar evento ${tipo_evento} para TODOS os funcionários do convênio selecionado?`)) return;
+  if (!convenio_id) { toast('Selecione um convenio', 'error'); return; }
+  if (!confirm(`Enviar evento ${tipo_evento} para TODOS os funcionarios do convenio selecionado?`)) return;
   document.getElementById('alertESocial').innerHTML = '<div class="alert alert-info">⏳ Processando lote...</div>';
   const resp = await apiFetch('/esocial/lote', { method:'POST', body: JSON.stringify({ convenio_id, tipo_evento, ambiente }) });
   if (!resp) return;
@@ -13901,7 +13901,7 @@ async function carregarScoreMargem() {
   const convs = await r.json();
   const sel = document.getElementById('scoreConvenioFiltro');
   if (sel) {
-    sel.innerHTML = '<option value="">Todos convênios</option>' +
+    sel.innerHTML = '<option value="">Todos convenios</option>' +
       (Array.isArray(convs) ? convs : convs.data || [])
         .filter(c=>c.ativo).map(c=>`<option value="${c.id}">${c.nome}</option>`).join('');
   }
@@ -14141,12 +14141,12 @@ async function rodarAnaliseIA() {
       <td class="txt-sm2">${verm?'Bloquear novas averbações':'Alertar funcionário e RH'}</td>
     </tr>`;
   }).join(''):'<tr><td colspan="5" class="tc-green-p30-fw6">✅ Nenhum alerta. Base financeiramente saudável!</td></tr>';
-  // Mapa de risco por convênio
-  const mapaEl=document.getElementById('mapaRiscoConvênio');
+  // Mapa de risco por convenio
+  const mapaEl=document.getElementById('mapaRiscoConvenio');
   if(mapaEl) {
     const mapa={};
     comps.forEach(f=>{
-      const k=f.convenio_nome||'Sem convênio';
+      const k=f.convenio_nome||'Sem convenio';
       if(!mapa[k]) mapa[k]={total:0,alerta:0,critico:0};
       mapa[k].total++;
       if(f.comprometimento>=tA) mapa[k].alerta++;
@@ -14167,7 +14167,7 @@ async function rodarAnaliseIA() {
         </div>`;
       }).join('')+'</div>';
   }
-  if(el) el.innerHTML=`<div class="alert alert-info">✅ Análise concluída — ${alertas.length} alertas em ${funcs.length} funcionários.</div>`;
+  if(el) el.innerHTML=`<div class="alert alert-info">✅ Análise concluída — ${alertas.length} alertas em ${funcs.length} funcionarios.</div>`;
   } catch(e) { console.error(e && e.message || e); }
 }
 
@@ -14208,7 +14208,7 @@ async function iniciarBiometria() {
 async function simularBiometria() {
   try {
   const cpf=document.getElementById('bioCpf')?.value?.replace(/\D/g,'')||'';
-  const operacao=document.getElementById('bioOperação')?.value||'AVERBACAO';
+  const operacao=document.getElementById('bioOperacao')?.value||'AVERBACAO';
   const el=document.getElementById('resultadoBiometria');
   const area=document.getElementById('bioVideoArea');
   if(area){area.innerHTML='⏳';area.style.borderColor='#f59e0b';}
@@ -14258,7 +14258,7 @@ async function carregarSelosOF() {
   if (!tbody) return;
   try {
     const r = await apiFetch('/funcionarios?limit=5');
-    const lista = r.funcionários || r.data || [];
+    const lista = r.funcionarios || r.data || [];
     if (!lista.length) { tbody.innerHTML='<tr><td colspan="5" class="txt-center txt-muted2">Nenhum selo emitido ainda</td></tr>'; return; }
     tbody.innerHTML = lista.map(f => `<tr>
       <td><strong>${f.nome}</strong><br><small class="txt-muted">${f.cpf||''}</small></td>
@@ -14552,7 +14552,7 @@ function editarParceiro(id) {
   document.getElementById('pDiaRepasse').value  = p.dia_repasse||10;
   document.getElementById('pRegiao').value      = p.regiao||'';
   document.getElementById('pObs').value         = p.obs||'';
-  const tit = document.getElementById('formParceiroTítulo');
+  const tit = document.getElementById('formParceiroTitulo');
   if (tit) tit.textContent = `✏️ Editar: ${p.fantasia||p.nome}`;
   document.getElementById('alertParceiro').innerHTML = '';
   // scroll form into view
@@ -14566,7 +14566,7 @@ function limparFormParceiro() {
   const pc = document.getElementById('pComissao'); if(pc) pc.value='2.5';
   const pcc = document.getElementById('pComissaoCartao'); if(pcc) pcc.value='1.0';
   const dr = document.getElementById('pDiaRepasse'); if(dr) dr.value='10';
-  const tit = document.getElementById('formParceiroTítulo');
+  const tit = document.getElementById('formParceiroTitulo');
   if (tit) tit.textContent = '➕ Novo Parceiro';
   document.getElementById('alertParceiro').innerHTML = '';
 }
@@ -14666,7 +14666,7 @@ async function carregarDesligamentos() {
   if (!tbody) return;
   try {
     const r = await apiFetch('/funcionarios?limit=5');
-    const lista = r.funcionários || r.data || [];
+    const lista = r.funcionarios || r.data || [];
     if (!lista.length) { tbody.innerHTML='<tr><td colspan="6" class="txt-center txt-muted2">Nenhum desligamento ativo</td></tr>'; return; }
     tbody.innerHTML = lista.slice(0,3).map(f => `<tr>
       <td><strong>${f.nome}</strong></td>
@@ -14720,10 +14720,10 @@ async function carregarCamaleao() {
   try {
     const r = await apiFetch('/convenios?limit=4');
     if (!r) { lista.innerHTML='<div class="empty-state"><div class="es-icon">🦎</div><h3>Sem conexão</h3><p>Configure as regras quando a conexão estiver disponível.</p></div>'; return; }
-    const convs = r.convênios || r.data || [];
-    const sel = document.getElementById('camConvênio');
+    const convs = r.convenios || r.data || [];
+    const sel = document.getElementById('camConvenio');
     if (sel) { sel.innerHTML='<option value="">Selecione...</option>' + convs.map(c=>`<option value="${c.id}">${c.nome}</option>`).join(''); }
-    if (!convs.length) { lista.innerHTML='<div class="empty-state"><div class="es-icon">🦎</div><h3>Nenhuma regra configurada</h3><p>Use o formulário abaixo para criar a primeira regra por convênio.</p></div>'; return; }
+    if (!convs.length) { lista.innerHTML='<div class="empty-state"><div class="es-icon">🦎</div><h3>Nenhuma regra configurada</h3><p>Use o formulário abaixo para criar a primeira regra por convenio.</p></div>'; return; }
     lista.innerHTML = convs.map(c => `<div class="rule-card">
       <div class="rule-card-header">
         <span class="rule-type-badge ${(c.tipo||'PRIVADO').toLowerCase()}">${c.tipo||'PRIVADO'}</span>
@@ -14744,14 +14744,14 @@ async function carregarCamaleao() {
 }
 
 async function salvarRegraCamaleao() {
-  const conv = document.getElementById('camConvênio')?.value;
-  if (!conv) { toast('Selecione um convênio', 'error'); return; }
+  const conv = document.getElementById('camConvenio')?.value;
+  if (!conv) { toast('Selecione um convenio', 'error'); return; }
   toast('Regra do Módulo Camaleão salva com sucesso!', 'success');
   carregarCamaleao();
 }
 
 async function editarRegraCamaleao(id) { toast('Carregando regra para edição...', 'info'); }
-async function novaRegraConvenio() { document.getElementById('camConvênio')?.focus(); }
+async function novaRegraConvenio() { document.getElementById('camConvenio')?.focus(); }
 
 // ===================== FGTS ANIVERSÁRIO =====================
 async function carregarFGTS() {
@@ -14803,7 +14803,7 @@ async function carregarContratosFGTS() {
   if (!tbody) return;
   try {
     const r = await apiFetch('/funcionarios?limit=5');
-    const lista = r.funcionários || r.data || [];
+    const lista = r.funcionarios || r.data || [];
     if (!lista.length) { tbody.innerHTML='<tr><td colspan="6" class="txt-center txt-muted2">Nenhum contrato FGTS ativo</td></tr>'; return; }
     tbody.innerHTML = lista.slice(0,4).map(f => {
       const saldo = (Math.random()*30000+5000).toFixed(2);
@@ -14840,7 +14840,7 @@ async function gerarQRCode() {
   if (!valor||valor<10) { div.innerHTML='<div class="alert alert-error">Valor mínimo R$ 10,00</div>'; return; }
   div.innerHTML='<div class="center-p16"><span class="loading"></span> Gerando QR Code...</div>';
   await new Promise(r => setTimeout(r, 800));
-  const código = Math.random().toString(36).substring(2,10).toUpperCase();
+  const codigo = Math.random().toString(36).substring(2,10).toUpperCase();
   // QR Code simulado com SVG
   div.innerHTML=`<div class="txt-center">
     <div class="card-qr-wrap">
@@ -14941,7 +14941,7 @@ async function testarConexaoERP(sistema) {
 async function sincronizarERP(sistema) {
   toast(`Sincronizando dados com ${sistema}...`, 'info');
   await new Promise(r => setTimeout(r, 2000));
-  toast(`✅ Sincronização com ${sistema} concluída: 284 funcionários atualizados`, 'success');
+  toast(`✅ Sincronização com ${sistema} concluída: 284 funcionarios atualizados`, 'success');
 }
 
 // ===================== ANTECIPAÇÃO DE RECEBÍVEIS =====================
@@ -15021,7 +15021,7 @@ async function carregarRankingGami() {
   if (!tbody) return;
   try {
     const r = await apiFetch('/funcionarios?limit=5');
-    const lista = r.funcionários || r.data || [];
+    const lista = r.funcionarios || r.data || [];
     if (!lista.length) { tbody.innerHTML = '<tr><td colspan="6" class="txt-center txt-muted2">Sem dados ainda</td></tr>'; return; }
     const emojis = ['🥇','🥈','🥉','4️⃣','5️⃣'];
     tbody.innerHTML = lista.map((f, i) => {
@@ -15104,10 +15104,10 @@ async function carregarOnboarding() {
       <div class="funil-label mt-6">${s.label}</div>
     </div>`).join('');
 
-  // Load real convênios for dropdown
+  // Load real convenios for dropdown
   const convs = await apiFetch('/convenios?limit=100');
-  const lista = convs?.convênios || convs?.data || [];
-  const sel = document.getElementById('payConvênio');
+  const lista = convs?.convenios || convs?.data || [];
+  const sel = document.getElementById('payConvenio');
   if(sel && lista.length) {
     sel.innerHTML = '<option value="">Selecione...</option>' +
       lista.map(c => `<option value="${c.id}">${c.nome}</option>`).join('');
@@ -15155,7 +15155,7 @@ async function parsearArquivoFolha(input) {
     el.innerHTML=`<strong>🤖 IA detectou ${lines.length-1} registros</strong><br>
       CPF: coluna ${cpfCol>=0?cpfCol+1:'?'} | Salário: coluna ${salCol>=0?salCol+1:'?'} | Matrícula: coluna ${matCol>=0?matCol+1:'?'}<br>
       <span class="val-green">✅ Pronto para importação</span>`;
-    toast(`${lines.length-1} funcionários detectados no arquivo`,'success');
+    toast(`${lines.length-1} funcionarios detectados no arquivo`,'success');
   }
 }
 
@@ -15167,7 +15167,7 @@ async function avancarOnbRH(step) {
   toast('Dados válidos — prossiga para a assinatura digital','success');
 }
 
-/* ---- RH: assinar convênio ---- */
+/* ---- RH: assinar convenio ---- */
 async function assinarConvenio() {
   toast('Redirecionando para Gov.br / DocuSign...','info');
   setTimeout(()=>toast('Assinatura confirmada com ICP-Brasil ✅','success'),1800);
@@ -15276,7 +15276,7 @@ async function simularOnbFunc() {
   const data = await apiFetch(`/funcionarios/cpf/${cpf}`);
   await new Promise(r=>setTimeout(r,800));
   const nome = data?.nome || 'João da Silva';
-  const convênio = data?.convenio_nome || 'Prefeitura SP';
+  const convenio = data?.convenio_nome || 'Prefeitura SP';
   const margem = data?.margem_disponivel?.toFixed(2) || '1.250,00';
   if(res) res.innerHTML=`<div class="card-f0-r10-p14-mb">
     <div class="selfie-box">🤳</div>
@@ -15319,10 +15319,10 @@ async function carregarPayroll() {
   document.getElementById('payStatFolha') && (document.getElementById('payStatFolha').textContent = (r.funcionarios||847).toLocaleString('pt-BR'));
   document.getElementById('payStatFee') && (document.getElementById('payStatFee').textContent = fmt(r.fee_mes||18420));
 
-  // Load convênios for dispatch dropdown
+  // Load convenios for dispatch dropdown
   const convs = await apiFetch('/convenios?limit=100');
-  const lista = (convs?.convênios || convs?.data || []);
-  const sel = document.getElementById('payConvênio');
+  const lista = (convs?.convenios || convs?.data || []);
+  const sel = document.getElementById('payConvenio');
   if(sel && lista.length) sel.innerHTML = '<option value="">Selecione...</option>' + lista.map(c=>`<option value="${c.id}">${c.nome}</option>`).join('');
 
   // Set default competência
@@ -15368,7 +15368,7 @@ function atualizarSplitFatias(bruto) {
   const fee = bruto * 0.005; // 0.5% AverbaTech
   const liquido = bruto - inss - irrf - consig - vt - fee;
   const fmt = v => 'R$ ' + Math.max(0,v).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
-  document.getElementById('fatiaSalário') && (document.getElementById('fatiaSalário').textContent = fmt(liquido));
+  document.getElementById('fatiaSalario') && (document.getElementById('fatiaSalario').textContent = fmt(liquido));
   document.getElementById('fatiaCredores') && (document.getElementById('fatiaCredores').textContent = fmt(consig));
   document.getElementById('fatiaImpostos') && (document.getElementById('fatiaImpostos').textContent = fmt(inss+irrf));
   document.getElementById('fatiaServico') && (document.getElementById('fatiaServico').textContent = fmt(fee));
@@ -15443,13 +15443,13 @@ async function calcularFolha() {
 /* ---- Simular lote ---- */
 async function simularLote() {
   try {
-  const convId = document.getElementById('payConvênio')?.value||'';
+  const convId = document.getElementById('payConvenio')?.value||'';
   const compet = document.getElementById('payCompet')?.value||'';
-  if(!convId) { toast('Selecione um convênio','error'); return; }
+  if(!convId) { toast('Selecione um convenio','error'); return; }
   const res = document.getElementById('resumoLote');
   if(res) res.innerHTML='<div class="tc-muted-p20" style="text-align:center;padding:20px;color:#94a3b8">Aguardando conexão...</div>';
   const data = await apiFetch(`/payroll/simular-lote?convenio_id=${convId}&competencia=${compet}`);
-  const r = data || {funcionários:124, volume_bruto:785000, volume_liquido:612000, consignado_total:95000, imposto_total:78000, fee_averba:3925};
+  const r = data || {funcionarios:124, volume_bruto:785000, volume_liquido:612000, consignado_total:95000, imposto_total:78000, fee_averba:3925};
   const fmt = v => 'R$ ' + (v||0).toLocaleString('pt-BR',{minimumFractionDigits:2});
   if(res) res.innerHTML=`
     <div class="grid-1x2-6-12">
@@ -15466,9 +15466,9 @@ async function simularLote() {
 
 /* ---- Disparar Pix em lote ---- */
 async function dispararPixLote() {
-  const convId = document.getElementById('payConvênio')?.value||'';
-  if(!convId) { toast('Selecione um convênio e simule primeiro','error'); return; }
-  if(!confirm('⚠️ Confirma o disparo de Pix em lote para todos os funcionários deste convênio?')) return;
+  const convId = document.getElementById('payConvenio')?.value||'';
+  if(!convId) { toast('Selecione um convenio e simule primeiro','error'); return; }
+  if(!confirm('⚠️ Confirma o disparo de Pix em lote para todos os funcionarios deste convenio?')) return;
   const res = document.getElementById('resultadoLote');
   if(res) res.innerHTML='<div class="tc-muted-p20" style="text-align:center;padding:20px;color:#94a3b8">Aguardando conexão...</div> Processando pagamentos...';
   await new Promise(r=>setTimeout(r,2500));
@@ -15629,7 +15629,7 @@ async function carregarAlertasIA() {
   if (!el) return;
   // Fetch real data
   const res = await apiFetch('/funcionarios?limit=200');
-  const funcs = res && res.funcionários ? res.funcionários : [];
+  const funcs = res && res.funcionarios ? res.funcionarios : [];
   const alertas = [];
 
   // Check for margin risk (>30%)
@@ -15680,7 +15680,7 @@ async function carregarTimelineIA() {
     { hora:'08:15', icone:'📋', msg:'Tabelas IRRF 2026 atualizadas no motor de cálculo.', cor:'#3b82f6' },
     { hora:'09:00', icone:'🧮', msg:'Provisão de pagamento gerada com base nos últimos 6 meses.', cor:'#7c3aed' },
     { hora:'09:05', icone:'🔎', msg:'Detecção de anomalias executada. 2 alertas gerados.', cor:'#f59e0b' },
-    { hora:'09:10', icone:'💳', msg:'Consulta Dataprev: 6 funcionários ativos verificados.', cor:'#10b981' },
+    { hora:'09:10', icone:'💳', msg:'Consulta Dataprev: 6 funcionarios ativos verificados.', cor:'#10b981' },
     { hora:'09:30', icone:'🧠', msg:'IA aprendeu: gratificações de vendas excluídas do cálculo de margem.', cor:'#6366f1' },
     { hora:'10:00', icone:'📊', msg:'Dry-run executado: saldo escrow suficiente para 100% da folha.', cor:'#10b981' },
     { hora:'10:15', icone:'🔔', msg:'Notificação enviada ao Banco X: campanha Dezembro ativada.', cor:'#0ea5e9' },
@@ -15779,7 +15779,7 @@ async function detectarAnomalias() {
   await new Promise(r => setTimeout(r, 1200));
 
   const res = await apiFetch('/funcionarios?limit=200');
-  const funcs = res && res.funcionários ? res.funcionários : IA_HISTORICO_MOCK;
+  const funcs = res && res.funcionarios ? res.funcionarios : IA_HISTORICO_MOCK;
   const anomalias = [];
 
   funcs.forEach(f => {
@@ -15886,14 +15886,14 @@ async function executarReconciliacao() {
 
   const payroll = await apiFetch('/payroll/resumo');
   const escrow = payroll && payroll.saldo_escrow ? payroll.saldo_escrow : 1245119.5;
-  const salários = escrow * 0.62, bancos = escrow * 0.22, impostos = escrow * 0.12, fee = escrow * 0.04;
+  const salarios = escrow * 0.62, bancos = escrow * 0.22, impostos = escrow * 0.12, fee = escrow * 0.04;
   const fmt = v => 'R$ ' + v.toLocaleString('pt-BR', { minimumFractionDigits: 2 });
 
   const reconcItems = document.getElementById('reconciliacaoItens');
   if (reconcItems) {
     reconcItems.innerHTML = `
       <div class="row-green-border">
-        <span>💼 Repasse salários</span><span class="fw7-green">${fmt(salarios)} ✅</span>
+        <span>💼 Repasse salarios</span><span class="fw7-green">${fmt(salarios)} ✅</span>
       </div>
       <div class="row-green-border">
         <span>🏦 Repasse bancos</span><span class="fw7-green">${fmt(bancos)} ✅</span>
@@ -15949,7 +15949,7 @@ async function gerarRespostaIA(pergunta) {
   try {
   const p = pergunta.toLowerCase();
   const res = await apiFetch('/funcionarios?limit=200');
-  const funcs = res && res.funcionários ? res.funcionários : [];
+  const funcs = res && res.funcionarios ? res.funcionarios : [];
 
   if (p.includes('30%') || p.includes('margem')) {
     const risco = funcs.filter(f => {
@@ -15981,7 +15981,7 @@ async function gerarRespostaIA(pergunta) {
   }
 
   if (p.includes('aviso prévio') || p.includes('desligamento')) {
-    return 'Atualmente há <strong>3 funcionários em aviso prévio</strong>. Contratos com saldo devedor de R$ 47.254,26 foram notificados aos bancos para renegociação. Bloqueio de novas averbações ativado automaticamente.';
+    return 'Atualmente há <strong>3 funcionarios em aviso prévio</strong>. Contratos com saldo devedor de R$ 47.254,26 foram notificados aos bancos para renegociação. Bloqueio de novas averbações ativado automaticamente.';
   }
 
   if (p.includes('fgts')) {
@@ -15992,7 +15992,7 @@ async function gerarRespostaIA(pergunta) {
     return '📅 Em dezembro, a margem média aumenta <strong>~15%</strong> devido ao 13º salário. A IA já enviou notificação aos 3 bancos parceiros sugerindo campanha. Previsão de R$ 320.000 em novas averbações.';
   }
 
-  return `Consultei a base: <strong>${funcs.length || 6} funcionários ativos</strong>.<br>
+  return `Consultei a base: <strong>${funcs.length || 6} funcionarios ativos</strong>.<br>
     Posso gerar relatórios de margem, detectar anomalias, listar aviso prévio ou simular campanhas.<br>
     <em>Tente: "Quais têm margem livre acima de R$ 500?" ou "Funcionários em aviso prévio".</em>`;
   } catch(e) { console.error(e && e.message || e); }
@@ -16000,11 +16000,11 @@ async function gerarRespostaIA(pergunta) {
 
 async function popularConveniosDryRun() {
   try {
-  const sel = document.getElementById('iaDryRunConvênio');
+  const sel = document.getElementById('iaDryRunConvenio');
   if (!sel) return;
   const r = await apiFetch('/convenios');
-  const lista = r && r.convênios ? r.convênios : (Array.isArray(r) ? r : []);
-  sel.innerHTML = '<option value="">Todos os convênios</option>' +
+  const lista = r && r.convenios ? r.convenios : (Array.isArray(r) ? r : []);
+  sel.innerHTML = '<option value="">Todos os convenios</option>' +
     lista.map(c => `<option value="${c.id}">${c.nome}</option>`).join('');
   } catch(e) { console.error(e && e.message || e); }
 }
@@ -16063,7 +16063,7 @@ async function carregarPainelControle() {
   const rConvs  = await apiFetch('/convenios?limit=200');
   const rBancos = await apiFetch('/bancos');
   const rFuncs  = await apiFetch('/funcionarios?limit=1');
-  const convênios = rConvs?.convênios || rConvs?.data || [];
+  const convenios = rConvs?.convenios || rConvs?.data || [];
   const bancos    = Array.isArray(rBancos) ? rBancos : (rBancos?.data || []);
   const fTotal    = rFuncs?.total || 847;
   const nConvs    = Math.max(convenios.length, 10);
@@ -16072,7 +16072,7 @@ async function carregarPainelControle() {
   const kpis = [
     {id:'pctMunicipios', val: nConvs},
     {id:'pctBancos',     val: nBancos},
-    {id:'pctFuncionários', val: fTotal.toLocaleString('pt-BR')},
+    {id:'pctFuncionarios', val: fTotal.toLocaleString('pt-BR')},
   ];
   kpis.forEach(k => { const el = document.getElementById(k.id); if(el) el.textContent = k.val; });
 
@@ -16151,7 +16151,7 @@ async function carregarPainelControle() {
     const atividades = [
       {t:'Agora',    cor:'#10b981', icon:'🏙️', msg:'São Paulo / SP entrou em Go-Live'},
       {t:'2 min',    cor:'#3b82f6', icon:'🏦', msg:'Banco Stark Bank: sandbox aprovado'},
-      {t:'5 min',    cor:'#f97316', icon:'👤', msg:'124 novos funcionários onbordados'},
+      {t:'5 min',    cor:'#f97316', icon:'👤', msg:'124 novos funcionarios onbordados'},
       {t:'12 min',   cor:'#7c3aed', icon:'📋', msg:'Matera: 38 averbações processadas'},
       {t:'18 min',   cor:'#10b981', icon:'💸', msg:'Pix em lote: R$ 483.200 disparados'},
       {t:'24 min',   cor:'#f59e0b', icon:'⚠️', msg:'Alerta: 2 contratos acima de 30% margem'},
@@ -16171,21 +16171,21 @@ async function carregarPainelControle() {
   // ── Municipalities table ──
   const municipios = convenios.length ? convenios.slice(0,10).map(c => ({
     nome: c.nome || '—',
-    funcionários: Math.floor(Math.random()*200+50),
+    funcionarios: Math.floor(Math.random()*200+50),
     margem: (Math.random()*8+22).toFixed(1)+'%',
     status: ['🟢 Ativo','🟡 Configurando','🔵 Sandbox','🟢 Ativo'][Math.floor(Math.random()*4)],
     score: Math.floor(Math.random()*20+78),
   })) : [
-    {nome:'Pref. São Paulo / SP',      funcionários:412, margem:'28.4%', status:'🟢 Ativo',        score:96},
-    {nome:'Pref. Campinas / SP',       funcionários:187, margem:'31.2%', status:'🟢 Ativo',        score:91},
-    {nome:'Pref. Santos / SP',         funcionários:134, margem:'25.8%', status:'🟢 Ativo',        score:88},
-    {nome:'Pref. Guarulhos / SP',      funcionários: 98, margem:'29.1%', status:'🟡 Configurando', score:79},
-    {nome:'Pref. São Bernardo / SP',   funcionários: 76, margem:'27.3%', status:'🟢 Ativo',        score:85},
-    {nome:'Câmara Municipal SP',       funcionários: 55, margem:'33.0%', status:'🟡 Configurando', score:72},
-    {nome:'Pref. Sorocaba / SP',       funcionários: 43, margem:'24.5%', status:'🔵 Sandbox',      score:68},
-    {nome:'Gov. Estado SP',            funcionários: 38, margem:'26.7%', status:'🔵 Sandbox',      score:65},
-    {nome:'Pref. Ribeirão Preto / SP', funcionários: 29, margem:'22.9%', status:'🟡 Configurando', score:61},
-    {nome:'Pref. Osasco / SP',         funcionários: 22, margem:'30.4%', status:'🟡 Configurando', score:58},
+    {nome:'Pref. São Paulo / SP',      funcionarios:412, margem:'28.4%', status:'🟢 Ativo',        score:96},
+    {nome:'Pref. Campinas / SP',       funcionarios:187, margem:'31.2%', status:'🟢 Ativo',        score:91},
+    {nome:'Pref. Santos / SP',         funcionarios:134, margem:'25.8%', status:'🟢 Ativo',        score:88},
+    {nome:'Pref. Guarulhos / SP',      funcionarios: 98, margem:'29.1%', status:'🟡 Configurando', score:79},
+    {nome:'Pref. São Bernardo / SP',   funcionarios: 76, margem:'27.3%', status:'🟢 Ativo',        score:85},
+    {nome:'Câmara Municipal SP',       funcionarios: 55, margem:'33.0%', status:'🟡 Configurando', score:72},
+    {nome:'Pref. Sorocaba / SP',       funcionarios: 43, margem:'24.5%', status:'🔵 Sandbox',      score:68},
+    {nome:'Gov. Estado SP',            funcionarios: 38, margem:'26.7%', status:'🔵 Sandbox',      score:65},
+    {nome:'Pref. Ribeirão Preto / SP', funcionarios: 29, margem:'22.9%', status:'🟡 Configurando', score:61},
+    {nome:'Pref. Osasco / SP',         funcionarios: 22, margem:'30.4%', status:'🟡 Configurando', score:58},
   ];
   const tbM = document.getElementById('tbodyMunicipios');
   if(tbM) tbM.innerHTML = municipios.map(m => `<tr>
@@ -16447,7 +16447,7 @@ function exportarAverbacoes() {
 
 function exportarFuncionarios() {
   toast('📥 Exportando funcionários…', 'info');
-  setTimeout(() => toast('✅ Arquivo funcionários.csv gerado com sucesso', 'success'), 1200);
+  setTimeout(() => toast('✅ Arquivo funcionarios.csv gerado com sucesso', 'success'), 1200);
 }
 
 function exportarBancos() {
@@ -16456,8 +16456,8 @@ function exportarBancos() {
 }
 
 function exportarConvenios() {
-  toast('📥 Exportando convênios…', 'info');
-  setTimeout(() => toast('✅ Arquivo convênios.csv gerado com sucesso', 'success'), 1200);
+  toast('📥 Exportando convenios…', 'info');
+  setTimeout(() => toast('✅ Arquivo convenios.csv gerado com sucesso', 'success'), 1200);
 }
 
 function exportarUsuarios() {
@@ -16652,7 +16652,7 @@ async function carregarControle() {
       apiFetch('/averbacoes?limit=1'),
     ]);
     if (funcs && funcs.total) {
-      const el = document.getElementById('ctFuncionários');
+      const el = document.getElementById('ctFuncionarios');
       if (el) el.textContent = funcs.total.toLocaleString('pt-BR');
       const elOb = document.getElementById('ctOnbFunc');
       if (elOb) elOb.textContent = funcs.total.toLocaleString('pt-BR');
@@ -16663,7 +16663,7 @@ async function carregarControle() {
     }
   } catch(e) {
     // silently fail - show placeholders
-    ['ctFuncionários','ctContratos','ctReceita','ctTaxaAverb'].forEach(id => {
+    ['ctFuncionarios','ctContratos','ctReceita','ctTaxaAverb'].forEach(id => {
       const el = document.getElementById(id);
       if (el && el.textContent === '–') el.textContent = '—';
     });
