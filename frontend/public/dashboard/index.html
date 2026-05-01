@@ -14718,6 +14718,7 @@ async function carregarCamaleao() {
   if (!lista) return;
   try {
     const r = await apiFetch('/convenios?limit=4');
+    if (!r) { lista.innerHTML='<div class="empty-state"><div class="es-icon">🦎</div><h3>Sem conexão</h3><p>Configure as regras quando a conexão estiver disponível.</p></div>'; return; }
     const convs = r.convênios || r.data || [];
     const sel = document.getElementById('camConvênio');
     if (sel) { sel.innerHTML='<option value="">Selecione...</option>' + convs.map(c=>`<option value="${c.id}">${c.nome}</option>`).join(''); }
@@ -15523,14 +15524,19 @@ const IA_HISTORICO_MOCK = [
 ];
 
 async function carregarIAPreditiva() {
+  // Render static content FIRST — não depende da API
+  const fTotal = 6;
+  const escrow = 1245119.5;
   try {
-  // Stats
-  const s = await apiFetch('/payroll/resumo');
-  const f = await apiFetch('/funcionarios?limit=1');
-  const fTotal = f && f.total ? f.total : 6;
-  const escrow = s && s.saldo_escrow ? s.saldo_escrow : 1245119.5;
+  // Stats (static defaults, override com API se disponível)
+  let s = null, f = null;
+  try { s = await apiFetch('/payroll/resumo'); } catch(e) {}
+  try { f = await apiFetch('/funcionarios?limit=1'); } catch(e) {}
+  const fTotalReal = (f && f.total) ? f.total : fTotal;
+  const escrowReal = (s && s.saldo_escrow) ? s.saldo_escrow : escrow;
 
-  document.getElementById('statsIA').innerHTML = `
+  const statsIAEl = document.getElementById('statsIA');
+  if (statsIAEl) statsIAEl.innerHTML = `
     <div class="stat-card blue">
       <div class="stat-icon blue">🧠</div>
       <div class="stat-value">${calcularConfidenceScore()}%</div>
@@ -15539,13 +15545,13 @@ async function carregarIAPreditiva() {
     </div>
     <div class="stat-card green">
       <div class="stat-icon green">👥</div>
-      <div class="stat-value">${fTotal}</div>
+      <div class="stat-value">${fTotalReal}</div>
       <div class="stat-label">Funcionários na Folha</div>
       <div class="stat-change up">Pronto para disparo</div>
     </div>
     <div class="stat-card yellow">
       <div class="stat-icon yellow">💰</div>
-      <div class="stat-value">R$ ${(escrow/1000).toLocaleString('pt-BR',{maximumFractionDigits:0})}k</div>
+      <div class="stat-value">R$ ${(escrowReal/1000).toLocaleString('pt-BR',{maximumFractionDigits:0})}k</div>
       <div class="stat-label">Saldo Escrow</div>
       <div class="stat-change up">↑ Suficiente</div>
     </div>
@@ -15563,7 +15569,7 @@ async function carregarIAPreditiva() {
   // Load all sub-panels
   await carregarAlertasIA();
   carregarTimelineIA();
-  carregarSplitPizza(escrow);
+  carregarSplitPizza(escrowReal);
   await carregarSugestaoIA();
   popularConveniosDryRun();
 
@@ -15686,7 +15692,7 @@ async function carregarTimelineIA() {
   `).join('');
 }
 
-async function carregarSplitPizza(escrow) {
+async function carregarSplitPizza(escrowReal) {
   const total = escrow || 1245119.5;
   const pct = { A: 0.62, B: 0.22, C: 0.12, D: 0.04 };
   const vals = {
