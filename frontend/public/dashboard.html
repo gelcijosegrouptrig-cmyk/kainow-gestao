@@ -3553,7 +3553,10 @@ html, body {
       </div>
       <!-- KPI Stats -->
       <div class="stats-grid" id="statsGrid">
-        <div class="loading"><div class="spinner"></div> Carregando...</div>
+        <div class="stat-card blue"><div class="stat-icon blue">📋</div><div class="stat-value" id="kpiFuncionarios">—</div><div class="stat-label">Funcionários</div></div>
+        <div class="stat-card green"><div class="stat-icon green">🏛️</div><div class="stat-value" id="kpiBancos">—</div><div class="stat-label">Bancos Ativos</div></div>
+        <div class="stat-card yellow"><div class="stat-icon yellow">📄</div><div class="stat-value" id="kpiAverbacoes">—</div><div class="stat-label">Averbações</div></div>
+        <div class="stat-card purple"><div class="stat-icon purple">💰</div><div class="stat-value" id="kpiEscrow">R$ 0</div><div class="stat-label">Saldo Escrow</div></div>
       </div>
 
       <!-- Quick-access pillar shortcuts -->
@@ -3589,7 +3592,7 @@ html, body {
             <div class="table-wrap">
               <table id="tabelaUltimasAverb">
                 <thead><tr><th>Código</th><th>Funcionário</th><th>Banco</th><th>Tipo</th><th>Parcela</th><th>Status</th></tr></thead>
-                <tbody><tr><td colspan="6"><div class="loading"><div class="spinner"></div></div></td></tr></tbody>
+                <tbody id="tbodyUltimasAverb"><tr><td colspan="6" class="tc-muted-p20">Nenhuma averbação recente</td></tr></tbody>
               </table>
             </div>
           </div>
@@ -3599,7 +3602,7 @@ html, body {
             <div class="panel-title">📈 Volume por Tipo</div>
           </div>
           <div class="panel-body" id="chartPorTipo">
-            <div class="loading"><div class="spinner"></div></div>
+            <div class="tc-muted-p20" style="text-align:center;padding:24px">📈 Carregando volume...</div>
           </div>
         </div>
       </div>
@@ -3622,7 +3625,7 @@ html, body {
         <div class="panel">
           <div class="panel-header"><div class="panel-title">🚀 Onboarding — Funil Rápido</div></div>
           <div class="panel-body" id="dashFunilMini">
-            <div class="loading"><div class="spinner"></div></div>
+            <div class="tc-muted-p20" style="text-align:center;padding:16px">🚀 Aguardando dados...</div>
           </div>
         </div>
         <!-- IA alert mini -->
@@ -3632,7 +3635,7 @@ html, body {
             <button class="btn btn-outline btn-sm" onclick="navTo('ia-preditiva')">Ver todos</button>
           </div>
           <div class="panel-body" id="dashAlertasMini">
-            <div class="loading"><div class="spinner"></div></div>
+            <div class="tc-muted-p20" style="text-align:center;padding:16px">🔔 Sem alertas recentes</div>
           </div>
         </div>
       </div>
@@ -3693,7 +3696,7 @@ html, body {
                   <th>Status</th><th>Ações</th>
                 </tr>
               </thead>
-              <tbody><tr><td colspan="10"><div class="loading"><div class="spinner"></div></div></td></tr></tbody>
+              <tbody><tr><td colspan="10"><div class="tc-muted-p20" style="text-align:center;padding:20px;color:#94a3b8">Aguardando conexão...</div></td></tr></tbody>
             </table>
           </div>
         </div>
@@ -3828,7 +3831,7 @@ html, body {
               <thead>
                 <tr><th>Matrícula</th><th>Nome</th><th>CPF</th><th>Cargo</th><th>Convênio</th><th>Salário Líquido</th><th>Margem Disponível</th><th>Situação</th><th>Ações</th></tr>
               </thead>
-              <tbody><tr><td colspan="9"><div class="loading"><div class="spinner"></div></div></td></tr></tbody>
+              <tbody><tr><td colspan="9"><div class="tc-muted-p20" style="text-align:center;padding:20px;color:#94a3b8">Aguardando conexão...</div></td></tr></tbody>
             </table>
           </div>
         </div>
@@ -3985,7 +3988,7 @@ html, body {
           <div class="table-wrap">
             <table id="tabelaUsuários">
               <thead><tr><th>Nome</th><th>E-mail</th><th>Perfil</th><th>Vínculo</th><th>Último Login</th><th>Status</th><th>Ações</th></tr></thead>
-              <tbody><tr><td colspan="7"><div class="loading"><div class="spinner"></div></div></td></tr></tbody>
+              <tbody><tr><td colspan="7"><div class="tc-muted-p20" style="text-align:center;padding:20px;color:#94a3b8">Aguardando conexão...</div></td></tr></tbody>
             </table>
           </div>
         </div>
@@ -4256,7 +4259,7 @@ html, body {
           <div class="table-wrap">
             <table id="tabelaReservasRH">
               <thead><tr><th><input type="checkbox" id="checkAllRH" onchange="toggleCheckAllRH(this)"></th><th>Código</th><th>Funcionário</th><th>CPF</th><th>Banco</th><th>Tipo</th><th>Parcela</th><th>Prazo</th><th>Competência</th><th>Status</th><th>Ações</th></tr></thead>
-              <tbody><tr><td colspan="11" class="txt-center txt-muted"><div class="loading"><div class="spinner"></div></div></td></tr></tbody>
+              <tbody><tr><td colspan="11" class="txt-center txt-muted"><div class="tc-muted-p20" style="text-align:center;padding:20px;color:#94a3b8">Aguardando conexão...</div></td></tr></tbody>
             </table>
           </div>
         </div>
@@ -4330,7 +4333,7 @@ html, body {
           <div class="panel-header"><div class="panel-title">📊 Resumo de Descontos</div></div>
           <div class="panel-body">
             <div id="resumoDescontosRH">
-              <div class="loading"><div class="spinner"></div></div>
+              <div class="tc-muted-p20" style="text-align:center;padding:20px;color:#94a3b8">Aguardando conexão...</div>
             </div>
           </div>
         </div>
@@ -4608,7 +4611,7 @@ html, body {
               <thead>
                 <tr><th>Data/Hora</th><th>Usuário</th><th>Perfil</th><th>Módulo</th><th>Ação</th><th>Entidade</th><th>IP</th><th>Resultado</th><th>Detalhes</th></tr>
               </thead>
-              <tbody><tr><td colspan="9"><div class="loading"><div class="spinner"></div></div></td></tr></tbody>
+              <tbody><tr><td colspan="9"><div class="tc-muted-p20" style="text-align:center;padding:20px;color:#94a3b8">Aguardando conexão...</div></td></tr></tbody>
             </table>
           </div>
         </div>
@@ -4690,7 +4693,7 @@ html, body {
           <div class="panel-body p-0">
             <div id="listaIncidentes" class="table-wrap">
               <table><thead><tr><th>Severidade</th><th>Ação</th><th>IP</th><th>Data</th></tr></thead>
-              <tbody><tr><td colspan="4"><div class="loading"><div class="spinner"></div></div></td></tr></tbody></table>
+              <tbody><tr><td colspan="4"><div class="tc-muted-p20" style="text-align:center;padding:20px;color:#94a3b8">Aguardando conexão...</div></td></tr></tbody></table>
             </div>
           </div>
         </div>
@@ -4704,7 +4707,7 @@ html, body {
           </div>
           <div class="panel-body p-0"><div id="tabelaEventosISO" class="table-wrap">
             <table><thead><tr><th>Categoria</th><th>Total</th><th>Falhas</th><th>%</th></tr></thead>
-            <tbody><tr><td colspan="4"><div class="loading"><div class="spinner"></div></div></td></tr></tbody></table>
+            <tbody><tr><td colspan="4"><div class="tc-muted-p20" style="text-align:center;padding:20px;color:#94a3b8">Aguardando conexão...</div></td></tr></tbody></table>
           </div></div>
         </div>
 
@@ -4994,7 +4997,7 @@ html, body {
           <div>
             <div class="form-title txt-md">📜 Certificados Ativos</div>
             <div id="listaCertificados" class="mt-12">
-              <div class="loading"><div class="spinner"></div></div>
+              <div class="tc-muted-p20" style="text-align:center;padding:20px;color:#94a3b8">Aguardando conexão...</div>
             </div>
           </div>
         </div>
@@ -5040,7 +5043,7 @@ html, body {
           <div>
             <div class="form-title txt-md">📋 Últimas Importações</div>
             <div id="listaImportacoes" class="mt-12">
-              <div class="loading"><div class="spinner"></div></div>
+              <div class="tc-muted-p20" style="text-align:center;padding:20px;color:#94a3b8">Aguardando conexão...</div>
             </div>
           </div>
         </div>
@@ -5085,13 +5088,13 @@ html, body {
             <div class="panel-body p-0">
               <div id="tabelaFaturamentoBanco" class="table-wrap">
                 <table><thead><tr><th>Banco</th><th>Modelo</th><th>Qtd</th><th>Receita</th><th>Status</th><th>Saldo Pré</th></tr></thead>
-                <tbody><tr><td colspan="6"><div class="loading"><div class="spinner"></div></div></td></tr></tbody></table>
+                <tbody id="tbodyUltimasAverb"><tr><td colspan="6" class="tc-muted-p20">Nenhuma averbação recente</td></tr></tbody></table>
               </div>
             </div>
           </div>
           <div class="panel">
             <div class="panel-header"><div class="panel-title">📈 Histórico Mensal</div></div>
-            <div class="panel-body" id="historicoFaturamento"><div class="loading"><div class="spinner"></div></div></div>
+            <div class="panel-body" id="historicoFaturamento"><div class="tc-muted-p20" style="text-align:center;padding:20px;color:#94a3b8">Aguardando conexão...</div></div>
           </div>
         </div>
         <div class="panel">
@@ -5102,7 +5105,7 @@ html, body {
           <div class="panel-body p-0">
             <div id="tabelaFaturamentoDetalhes" class="table-wrap">
               <table><thead><tr><th>Código Averb.</th><th>Funcionário</th><th>Banco</th><th>Tipo</th><th>Parcela</th><th>Taxa</th><th>Data</th><th>Comprovante</th></tr></thead>
-              <tbody><tr><td colspan="8"><div class="loading"><div class="spinner"></div></div></td></tr></tbody></table>
+              <tbody><tr><td colspan="8"><div class="tc-muted-p20" style="text-align:center;padding:20px;color:#94a3b8">Aguardando conexão...</div></td></tr></tbody></table>
             </div>
           </div>
         </div>
@@ -5128,7 +5131,7 @@ html, body {
             <div class="panel-body p-0">
               <div id="tabelaCiclos" class="table-wrap">
                 <table><thead><tr><th>Banco</th><th>Competência</th><th>Qtd</th><th>Valor</th><th>Status</th><th>Venc.</th><th>Ações</th></tr></thead>
-                <tbody><tr><td colspan="7"><div class="loading"><div class="spinner"></div></div></td></tr></tbody></table>
+                <tbody><tr><td colspan="7"><div class="tc-muted-p20" style="text-align:center;padding:20px;color:#94a3b8">Aguardando conexão...</div></td></tr></tbody></table>
               </div>
             </div>
           </div>
@@ -5159,7 +5162,7 @@ html, body {
             <div class="panel-body p-0">
               <div id="tabelaTarifas" class="table-wrap">
                 <table><thead><tr><th>Banco</th><th>Convênio</th><th>Nome</th><th>Valor</th><th>Modelo</th><th>Venc.</th><th>Ativo</th><th>Ações</th></tr></thead>
-                <tbody><tr><td colspan="8"><div class="loading"><div class="spinner"></div></div></td></tr></tbody></table>
+                <tbody><tr><td colspan="8"><div class="tc-muted-p20" style="text-align:center;padding:20px;color:#94a3b8">Aguardando conexão...</div></td></tr></tbody></table>
               </div>
             </div>
           </div>
@@ -5217,14 +5220,14 @@ html, body {
             <div class="panel-body p-0">
               <div id="tabelaSaldosPrePago" class="table-wrap">
                 <table><thead><tr><th>Banco</th><th>Saldo (R$)</th><th>Status</th></tr></thead>
-                <tbody><tr><td colspan="3"><div class="loading"><div class="spinner"></div></div></td></tr></tbody></table>
+                <tbody><tr><td colspan="3"><div class="tc-muted-p20" style="text-align:center;padding:20px;color:#94a3b8">Aguardando conexão...</div></td></tr></tbody></table>
               </div>
             </div>
             <div class="panel-header bt-gray"><div class="panel-title">📋 Histórico de Movimentações</div></div>
             <div class="panel-body p-0">
               <div id="tabelaCreditos" class="table-wrap scroll-300">
                 <table><thead><tr><th>Banco</th><th>Tipo</th><th>Valor</th><th>Saldo Após</th><th>Descrição</th><th>Data</th></tr></thead>
-                <tbody><tr><td colspan="6"><div class="loading"><div class="spinner"></div></div></td></tr></tbody></table>
+                <tbody id="tbodyUltimasAverb"><tr><td colspan="6" class="tc-muted-p20">Nenhuma averbação recente</td></tr></tbody></table>
               </div>
             </div>
           </div>
@@ -5315,7 +5318,7 @@ html, body {
           <div class="panel-body p-0">
             <div id="listaOAuthClients" class="table-wrap">
               <table><thead><tr><th>Nome</th><th>Client ID</th><th>Banco</th><th>Status</th><th>Ações</th></tr></thead>
-              <tbody><tr><td colspan="5"><div class="loading"><div class="spinner"></div></div></td></tr></tbody></table>
+              <tbody><tr><td colspan="5"><div class="tc-muted-p20" style="text-align:center;padding:20px;color:#94a3b8">Aguardando conexão...</div></td></tr></tbody></table>
             </div>
           </div>
         </div>
@@ -7786,7 +7789,7 @@ html, body {
           <div class="table-wrap scroll-300">
             <table id="tabelaTxnLog">
               <thead><tr><th>ID</th><th>Tipo</th><th>Beneficiário</th><th class="text-right">Valor</th><th>Status</th><th>End-to-End ID</th><th>Hora</th></tr></thead>
-              <tbody><tr><td colspan="7" class="txt-center txt-muted2"><div class="loading"><div class="spinner"></div></div></td></tr></tbody>
+              <tbody><tr><td colspan="7" class="txt-center txt-muted2"><div class="tc-muted-p20" style="text-align:center;padding:20px;color:#94a3b8">Aguardando conexão...</div></td></tr></tbody>
             </table>
           </div>
         </div>
@@ -8982,31 +8985,41 @@ function headers() { return { 'Content-Type': 'application/json', 'Authorization
 
 let _apiFetch401Count = 0;
 async function apiFetch(url, options = {}) {
+  // Timeout de 8s: evita que o fetch trave a UI indefinidamente
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), 8000);
   try {
-    const hdrs = headers(); const resp = await fetch(API + url, { ...options, headers: { ...hdrs, ...(options.headers || {}) } });
+    const hdrs = headers();
+    const resp = await fetch(API + url, {
+      ...options,
+      signal: ctrl.signal,
+      headers: { ...hdrs, ...(options.headers || {}) }
+    });
+    clearTimeout(timer);
     if (resp.status === 401) {
       _apiFetch401Count++;
-      // Only logout after 5 consecutive 401s to avoid false-positive on initial load
       if (_apiFetch401Count >= 5) { logout(); }
       return null;
     }
-    if (!resp.ok) { return null; } // ← any non-2xx returns null, never throws
-    _apiFetch401Count = 0; // reset on success
-    // Parse JSON once; attach .ok and stub .json() for backwards compat
+    if (!resp.ok) { return null; }
+    _apiFetch401Count = 0;
     let data = null;
     const ct = resp.headers.get('content-type') || '';
     if (ct.includes('application/json')) {
       try { data = await resp.json(); } catch(e) { data = null; }
     }
     if (data === null) return null;
-    // Make data behave like a Response: add .ok and .json()
     if (typeof data === 'object' && data !== null) {
       data.ok = resp.ok;
       data._status = resp.status;
-      data.json = () => data;  // sync — apiFetch already parsed JSON
+      data.json = () => data;
     }
     return data;
-  } catch(e) { console.error('apiFetch error:', url, e); return null; }
+  } catch(e) {
+    clearTimeout(timer);
+    if (e.name !== 'AbortError') console.warn('apiFetch:', url, e.message);
+    return null; // timeout ou erro de rede → sempre null, nunca trava
+  }
 }
 
 function logout() {
@@ -9372,131 +9385,58 @@ function aplicarACL(perfil) {
 
 // ===================== DASHBOARD =====================
 async function carregarDashboard() {
+  // Renderiza estático imediatamente — UI nunca trava
+  _atualizarKPIs({ funcionarios: '—', bancos: '—', averbacoes: '—', escrow: 'R$ 0' });
+  // Atualiza em background sem bloquear navegação
+  _carregarDashboardBackground();
+}
+
+function _atualizarKPIs({ funcionarios, bancos, averbacoes, escrow }) {
+  const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
+  set('kpiFuncionarios', funcionarios);
+  set('kpiBancos', bancos);
+  set('kpiAverbacoes', averbacoes);
+  set('kpiEscrow', escrow);
+}
+
+async function _carregarDashboardBackground() {
+  const fmt = v => new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL',notation:'compact'}).format(v||0);
+  // 1) Tenta endpoint principal (timeout 8s via apiFetch)
   try {
-    const [resumo, _grafico] = await Promise.all([
-      apiFetch('/dashboard/resumo'),
-      apiFetch('/dashboard/grafico-mensal')
-    ]);
-    if (!resumo) {
-      document.getElementById('statsGrid').innerHTML = '<div class="tc-muted-p20">Carregando dados do sistema...</div>';
-      // Fallback: load from direct endpoints
-      try {
-        const rFuncs = await apiFetch('/funcionarios?limit=1');
-        const rBancos = await apiFetch('/bancos');
-        const rConvs = await apiFetch('/convenios');
-        const funcs = rFuncs || {};
-        const bancos = rBancos || [];
-        const convs = rConvs || {};
-        const fallback = {
-          totais: { funcionários: funcs.total||0, bancos: (Array.isArray(bancos)?bancos:bancos.data||[]).length, convenios: convs.total||0 },
-          averbacoes_mes: { aprovadas:0, reservadas:0, volume_parcelas:0, receita_averbacao:0 },
-          ultimas: [], por_tipo: []
-        };
-        renderStats(fallback);
-        renderUltimasAverb([]);
-        renderChartTipo([]);
-        carregarDashboardExtras();
-      } catch(e2) { console.error('Fallback dash error:', e2); }
+    const resumo = await apiFetch('/dashboard/resumo');
+    if (resumo) {
+      const av = resumo.averbacoes_mes || {};
+      const tot = resumo.totais || {};
+      _atualizarKPIs({
+        funcionarios: (tot.funcionarios||0).toLocaleString('pt-BR'),
+        bancos: tot.bancos||0,
+        averbacoes: av.aprovadas||0,
+        escrow: fmt(av.volume_parcelas||0)
+      });
+      renderStats(resumo);
+      renderUltimasAverb(resumo.ultimas || []);
+      renderChartTipo(resumo.por_tipo || []);
+      carregarDashboardExtras();
       return;
     }
-    renderStats(resumo);
-    renderUltimasAverb(resumo.ultimas || []);
-    renderChartTipo(resumo.por_tipo || []);
-    carregarDashboardExtras();
-    // BI: Ranking de bancos
-    try {
-      const rRanking = await apiFetch('/faturamento/relatorio-banco');
-      if (rRanking && rRanking.ok) {
-        const d = await rRanking.json();
-        if (d.bancos && d.bancos.length) {
-          const container = document.getElementById('chartPorTipo');
-          if (container) {
-            const ranking = d.bancos.slice(0,5);
-            const maxVal = Math.max(...ranking.map(b=>b.receita_total||0), 1);
-            container.innerHTML += `<div class="mt20-bt-f1-pt16"><div class="lbl-dark mb-12">🏆 Ranking de Bancos</div>${ranking.map((b,i)=>`<div class="flex-ac-10-mb10"><div style="width:24px;height:24px;background:${['#fbbf24','#9ca3af','#cd7c3a','#3b82f6','#8b5cf6'][i]};border-radius:6px;display:flex;align-items:center;justify-content:center;font-size: var(--fs-xs);font-weight:800;color:white;">${i+1}</div><div class="flex-1"><div class="txt-sm2 txt-bold">${b.banco_nome||'—'}</div><div class="progress-sm"><div style="height:100%;background:linear-gradient(90deg,#1e40af,#0ea5e9);width:${Math.round((b.receita_total||0)/maxVal*100)}%;border-radius:4px;"></div></div></div><div class="fs12-fw7-blue800">${b.total_averbacoes||0} avs</div></div>`).join('')}</div>`;
-          }
-        }
-      }
-    } catch(e) {}
-  } catch(e) { console.error('Dashboard error:', e); }
+  } catch(e) { /* timeout ou erro — continua com fallbacks */ }
+
+  // 2) Fallbacks independentes — cada um tem seu próprio try/catch
+  try {
+    const rFuncs = await apiFetch('/funcionarios?limit=1');
+    if (rFuncs) _atualizarKPIs({ funcionarios: (rFuncs.total||0).toLocaleString('pt-BR'), bancos: '—', averbacoes: '—', escrow: 'R$ 0' });
+  } catch(e) {}
+  try {
+    const rBancos = await apiFetch('/bancos');
+    if (rBancos) {
+      const n = Array.isArray(rBancos) ? rBancos.length : (rBancos.data||[]).length;
+      const el = document.getElementById('kpiBancos'); if (el) el.textContent = n;
+    }
+  } catch(e) {}
+  try { carregarDashboardExtras(); } catch(e) {}
 }
 
-async function renderStats(resumo) {
-  const av = resumo.averbacoes_mes || {};
-  const fmt = v => new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'}).format(v||0);
-  const html = `
-    <div class="stat-card blue">
-      <div class="stat-icon blue">👥</div>
-      <div class="stat-value">${(resumo.totais?.funcionarios||0).toLocaleString('pt-BR')}</div>
-      <div class="stat-label">Funcionários Ativos</div>
-    </div>
-    <div class="stat-card green">
-      <div class="stat-icon green">✅</div>
-      <div class="stat-value">${av.aprovadas||0}</div>
-      <div class="stat-label">Averbações Aprovadas (Mês)</div>
-      <div class="stat-change up">↑ ${av.reservadas||0} Reservadas</div>
-    </div>
-    <div class="stat-card yellow">
-      <div class="stat-icon yellow">💰</div>
-      <div class="stat-value">${fmt(av.volume_parcelas)}</div>
-      <div class="stat-label">Volume em Parcelas (Mês)</div>
-    </div>
-    <div class="stat-card purple">
-      <div class="stat-icon purple">💵</div>
-      <div class="stat-value">${fmt(av.receita_averbacao)}</div>
-      <div class="stat-label">Receita de Averbação (Mês)</div>
-    </div>
-    <div class="stat-card red">
-      <div class="stat-icon red">🏦</div>
-      <div class="stat-value">${resumo.totais?.bancos||0}</div>
-      <div class="stat-label">Bancos Parceiros</div>
-    </div>
-    <div class="stat-card blue">
-      <div class="stat-icon blue">🏛️</div>
-      <div class="stat-value">${resumo.totais?.convenios||0}</div>
-      <div class="stat-label">Convênios Ativos</div>
-    </div>
-  `;
-  document.getElementById('statsGrid').innerHTML = html;
-}
 
-async function renderUltimasAverb(items) {
-  const tbody = document.querySelector('#tabelaUltimasAverb tbody');
-  if (!items.length) { tbody.innerHTML = '<tr><td colspan="6"><div class="empty-state"><div class="icon">📋</div><p>Nenhuma averbação ainda</p></div></td></tr>'; return; }
-  tbody.innerHTML = items.map(a => `
-    <tr>
-      <td><span class="cod-averbacao">${a.codigo_averbacao}</span></td>
-      <td style="max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${a.funcionario_nome||''}">${a.funcionario_nome||'-'}</td>
-      <td style="max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${a.banco_nome||''}">${a.banco_nome||'-'}</td>
-      <td><span class="tipo-badge tipo-${(a.tipo||'').toLowerCase()}">${tipoLabel(a.tipo)}</span></td>
-      <td style="text-align:right"><strong>${fmtMoeda(a.valor_parcela)}</strong></td>
-      <td><span class="status ${(a.status||'').toLowerCase()}">${a.status}</span></td>
-    </tr>
-  `).join('');
-}
-
-async function renderChartTipo(items) {
-  const el = document.getElementById('chartPorTipo');
-  if (!items.length) { el.innerHTML = '<div class="empty-state"><div class="icon">📊</div><p>Sem dados</p></div>'; return; }
-  const total = items.reduce((s, i) => s + (i.volume||0), 0);
-  const colors = { EMPRESTIMO: '#1e40af', CARTAO: '#7c3aed', BENEFICIO: '#059669', REFINANCIAMENTO: '#d97706' };
-  el.innerHTML = items.map(i => {
-    const pct = total > 0 ? Math.round((i.volume/total)*100) : 0;
-    return `
-      <div class="margem-bar-container">
-        <div class="margem-bar-label">
-          <span class="label">${tipoLabel(i.tipo)}</span>
-          <span class="values">${i.total} contratos · ${fmtMoeda(i.volume)}</span>
-        </div>
-        <div class="margem-bar">
-          <div class="margem-bar-fill" style="width:${pct}%;background:${colors[i.tipo]||'#64748b'}"></div>
-        </div>
-      </div>
-    `;
-  }).join('');
-}
-
-// ===================== AVERBAÇÕES =====================
 async function carregarAverbacoes(page = 1) {
   try {
   averbacoesPagina = page;
@@ -10726,7 +10666,7 @@ async function carregarCiclos() {
 
 async function verDetalheCiclo(id) {
   const div = document.getElementById('detalheCiclo');
-  div.innerHTML = '<div class="loading"><div class="spinner"></div></div>';
+  div.innerHTML = '<div class="tc-muted-p20" style="text-align:center;padding:20px;color:#94a3b8">Aguardando conexão...</div>';
   try {
     const resp = await apiFetch(`/faturamento/ciclos/${id}`);
     if (!resp?.ok) { div.innerHTML = '<p class="tc-danger-raw">Erro ao carregar ciclo.</p>'; return; }
@@ -10973,7 +10913,7 @@ async function calcularProjecao() {
   const vidas = parseInt(document.getElementById('projVidas').value) || 1000;
   const taxa  = parseFloat(document.getElementById('projTaxa').value)  || 20;
   const div   = document.getElementById('painelProjecao');
-  div.innerHTML = '<div class="loading"><div class="spinner"></div></div>';
+  div.innerHTML = '<div class="tc-muted-p20" style="text-align:center;padding:20px;color:#94a3b8">Aguardando conexão...</div>';
   try {
     const resp = await apiFetch(`/faturamento/projecao?vidas=${vidas}&taxa=${taxa}`);
     if (!resp?.ok) { div.innerHTML = '<p class="tc-danger-raw">Erro ao calcular projeção.</p>'; return; }
@@ -11119,7 +11059,7 @@ async function apiConsultarMargem() {
   const cpf = document.getElementById('apiCpf').value.replace(/\D/g,'');
   if (cpf.length !== 11) { toast('CPF inválido', 'error'); return; }
   document.getElementById('alertConsultaMargem').innerHTML = '';
-  document.getElementById('resultadoConsultaMargem').innerHTML = '<div class="loading"><div class="spinner"></div></div>';
+  document.getElementById('resultadoConsultaMargem').innerHTML = '<div class="tc-muted-p20" style="text-align:center;padding:20px;color:#94a3b8">Aguardando conexão...</div>';
   try {
     const resp = await fetch('/v1/margem/consultar', {
       method: 'POST',
@@ -11313,7 +11253,7 @@ async function sincronizarFolhaRH() {
   if (!convenio_id) { toast('Selecione um convênio', 'error'); return; }
 
   document.getElementById('alertRHSync').innerHTML = '';
-  document.getElementById('resultadoRHSync').innerHTML = '<div class="loading"><div class="spinner"></div></div>';
+  document.getElementById('resultadoRHSync').innerHTML = '<div class="tc-muted-p20" style="text-align:center;padding:20px;color:#94a3b8">Aguardando conexão...</div>';
 
   let funcionários = [];
   if (arqEl.files.length > 0) {
@@ -11373,7 +11313,7 @@ async function exportarDescontosRH() {
   const formato = document.getElementById('expFormato').value;
 
   document.getElementById('alertRHExport').innerHTML = '';
-  document.getElementById('resultadoExport').innerHTML = '<div class="loading"><div class="spinner"></div></div>';
+  document.getElementById('resultadoExport').innerHTML = '<div class="tc-muted-p20" style="text-align:center;padding:20px;color:#94a3b8">Aguardando conexão...</div>';
 
   let url = `/rh/exportar-descontos?mes=${mes}&ano=${ano}&formato=${formato}`;
   if (convenio_id) url += `&convenio_id=${convenio_id}`;
@@ -12944,7 +12884,7 @@ async function reativarFuncionario(id, nome) {
 // ===================== RH — VALIDAR RESERVAS =====================
 async function carregarReservasRH() {
   const tbody = document.querySelector('#tabelaReservasRH tbody');
-  tbody.innerHTML = '<tr><td colspan="9" class="center-p20"><div class="loading"><div class="spinner"></div></div></td></tr>';
+  tbody.innerHTML = '<tr><td colspan="9" class="center-p20"><div class="tc-muted-p20" style="text-align:center;padding:20px;color:#94a3b8">Aguardando conexão...</div></td></tr>';
 
   try {
     const resp = await apiFetch('/rh/reservas?limit=100');
@@ -13043,7 +12983,7 @@ async function carregarDescontoRH() {
 async function carregarResumoDescontos() {
   const convenio_id = document.getElementById('dcConvênio')?.value || '';
   const el = document.getElementById('resumoDescontosRH');
-  el.innerHTML = '<div class="loading"><div class="spinner"></div></div>';
+  el.innerHTML = '<div class="tc-muted-p20" style="text-align:center;padding:20px;color:#94a3b8">Aguardando conexão...</div>';
   try {
     let url = '/rh/resumo-descontos';
     if (convenio_id) url += `?convenio_id=${convenio_id}`;
@@ -15199,7 +15139,7 @@ async function finalizarOnbRH() {
     }
   };
   const res = document.getElementById('resultadoOnbRH');
-  if(res) res.innerHTML='<div class="loading"><div class="spinner"></div></div>';
+  if(res) res.innerHTML='<div class="tc-muted-p20" style="text-align:center;padding:20px;color:#94a3b8">Aguardando conexão...</div>';
   const data = await apiFetch('/onboarding/rh', {method:'POST', body:JSON.stringify(payload)});
   if(res) {
     if(data && !data.erro) {
@@ -15234,7 +15174,7 @@ async function credenciarBanco() {
   const taxa = document.getElementById('onbTaxaBanco')?.value||'1.80';
   if(!ispb || !nome) { toast('ISPB e Nome são obrigatórios','error'); return; }
   const res = document.getElementById('resultadoOnbBanco');
-  if(res) res.innerHTML='<div class="loading"><div class="spinner"></div></div>';
+  if(res) res.innerHTML='<div class="tc-muted-p20" style="text-align:center;padding:20px;color:#94a3b8">Aguardando conexão...</div>';
   const data = await apiFetch('/onboarding/banco', {method:'POST', body:JSON.stringify({ispb, nome, taxa_juros:parseFloat(taxa)})});
   const clientId = 'atb_test_' + Math.random().toString(36).slice(2,18);
   const clientSecret = 'sk_test_' + Math.random().toString(36).slice(2,20);
@@ -15277,7 +15217,7 @@ async function simularOnbFunc() {
   const cpf = (document.getElementById('onbFuncCPF')?.value||'').replace(/\D/g,'');
   if(cpf.length!==11) { toast('CPF inválido','error'); return; }
   const res = document.getElementById('resultadoOnbFunc');
-  if(res) res.innerHTML='<div class="loading"><div class="spinner"></div></div>';
+  if(res) res.innerHTML='<div class="tc-muted-p20" style="text-align:center;padding:20px;color:#94a3b8">Aguardando conexão...</div>';
   const data = await apiFetch(`/funcionarios/cpf/${cpf}`);
   await new Promise(r=>setTimeout(r,800));
   const nome = data?.nome || 'João da Silva';
@@ -15352,7 +15292,7 @@ async function depositarEscrow() {
   const val = parseFloat(document.getElementById('payAporte')?.value||0);
   if(val < 1000) { toast('Valor mínimo: R$ 1.000','error'); return; }
   const res = document.getElementById('resultadoAporte');
-  if(res) res.innerHTML='<div class="loading"><div class="spinner"></div></div>';
+  if(res) res.innerHTML='<div class="tc-muted-p20" style="text-align:center;padding:20px;color:#94a3b8">Aguardando conexão...</div>';
   await new Promise(r=>setTimeout(r,1000));
   _saldoEscrow += val;
   const fmt = v => 'R$ ' + v.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
@@ -15452,7 +15392,7 @@ async function simularLote() {
   const compet = document.getElementById('payCompet')?.value||'';
   if(!convId) { toast('Selecione um convênio','error'); return; }
   const res = document.getElementById('resumoLote');
-  if(res) res.innerHTML='<div class="loading"><div class="spinner"></div></div>';
+  if(res) res.innerHTML='<div class="tc-muted-p20" style="text-align:center;padding:20px;color:#94a3b8">Aguardando conexão...</div>';
   const data = await apiFetch(`/payroll/simular-lote?convenio_id=${convId}&competencia=${compet}`);
   const r = data || {funcionários:124, volume_bruto:785000, volume_liquido:612000, consignado_total:95000, imposto_total:78000, fee_averba:3925};
   const fmt = v => 'R$ ' + (v||0).toLocaleString('pt-BR',{minimumFractionDigits:2});
@@ -15475,7 +15415,7 @@ async function dispararPixLote() {
   if(!convId) { toast('Selecione um convênio e simule primeiro','error'); return; }
   if(!confirm('⚠️ Confirma o disparo de Pix em lote para todos os funcionários deste convênio?')) return;
   const res = document.getElementById('resultadoLote');
-  if(res) res.innerHTML='<div class="loading"><div class="spinner"></div></div> Processando pagamentos...';
+  if(res) res.innerHTML='<div class="tc-muted-p20" style="text-align:center;padding:20px;color:#94a3b8">Aguardando conexão...</div> Processando pagamentos...';
   await new Promise(r=>setTimeout(r,2500));
   const n = 124;
   if(res) res.innerHTML=`<div class="alert bg-green-soft">
