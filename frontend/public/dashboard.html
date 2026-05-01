@@ -3214,7 +3214,6 @@ h2 { font-size: var(--fs-lg); font-weight: 700; letter-spacing: -0.2px; margin-b
 .topbar-right { flex-shrink: 0; white-space: nowrap; overflow: visible; }
 
 /* ── page-section: padding bottom ajustado ────────────────────── */
-.page-section.active { padding-bottom: 16px; }
 
 
 /* ── PATCH: rule-card components ─────────────────────────────────────── */
@@ -3338,49 +3337,81 @@ html { scroll-behavior: auto !important; }
 
 </style>
 <style id="layout-override">
-/* ═══ LAYOUT OVERRIDE FINAL ═══ */
-html, body { margin:0; padding:0; height:100%; overflow:hidden; }
+/* ═══════════════════════════════════════════════════════
+   LAYOUT OVERRIDE — AverbaTech Dashboard (web-only)
+   Sidebar fixa 256px | Main ocupa resto | Content scrolla
+   ═══════════════════════════════════════════════════════ */
 
-.sidebar {
-  position: fixed !important;
-  top: 0; left: 0;
-  width: 256px !important;
+/* Reset base */
+html, body {
+  margin: 0 !important;
+  padding: 0 !important;
   height: 100vh !important;
-  overflow-y: auto;
-  overflow-x: hidden;
-  z-index: 200;
-}
-
-.main {
-  margin-left: 256px !important;
-  width: calc(100vw - 256px) !important;
-  min-width: 0 !important;
-  height: 100vh !important;
-  display: flex !important;
-  flex-direction: column !important;
   overflow: hidden !important;
 }
 
+/* ── Sidebar ── */
+.sidebar {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 256px !important;
+  height: 100vh !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  z-index: 300 !important;
+}
+
+/* ── Área principal (tudo à direita da sidebar) ── */
+.main {
+  position: fixed !important;
+  top: 0 !important;
+  left: 256px !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  width: auto !important;
+  min-width: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+  margin: 0 !important;
+}
+
+/* ── Topbar ── */
 .topbar {
-  flex-shrink: 0 !important;
+  flex: 0 0 64px !important;
   height: 64px !important;
   min-height: 64px !important;
   max-height: 64px !important;
+  z-index: 100 !important;
 }
 
+/* ── Área de conteúdo (scrollável) ── */
 .content {
   flex: 1 1 0% !important;
   min-height: 0 !important;
   overflow-y: auto !important;
   overflow-x: hidden !important;
   padding: 20px 24px 32px !important;
+  box-sizing: border-box !important;
 }
 
-.page-section { display: none !important; }
+/* ── Seções de página ── */
+.page-section {
+  display: none !important;
+}
 .page-section.active {
   display: block !important;
   margin: 0 !important;
-  padding: 0 0 16px !important;
+  padding: 0 !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+}
+
+/* ── Garantir que elementos filhos não overflow ── */
+.content > * {
+  max-width: 100% !important;
+  min-width: 0 !important;
 }
 </style>
 </head>
