@@ -3331,52 +3331,54 @@ html { scroll-behavior: auto !important; }
 </style>
 <style id="layout-override">
 /* ═══════════════════════════════════════════════════════════════════
-   LAYOUT OVERRIDE — AverbaTech Dashboard  (versão definitiva)
-   Regra de ouro: sidebar SEMPRE 256px fixa; main SEMPRE à direita.
-   Este bloco é o ÚLTIMO estilo do <head> — vence qualquer cascade.
+   LAYOUT OVERRIDE — AverbaTech Dashboard  (versão definitiva v3)
+   Regra de ouro: sidebar 256px fixa | main à direita | topbar 64px
+   Usa 100dvh (dynamic viewport) para corrigir mobile Chrome/Safari
    ═══════════════════════════════════════════════════════════════════ */
 
-/* ── 0. Reset base ── */
+/* ── 0. Reset base — dvh corrige barra de endereço mobile ── */
 html, body {
   margin:   0 !important;
   padding:  0 !important;
-  width:    100vw !important;
+  width:    100% !important;
+  /* 100dvh = viewport sem barra de endereço (Chrome/Safari mobile) */
+  height:   100dvh !important;
+  /* fallback para browsers sem suporte a dvh */
   height:   100vh !important;
+  height:   100dvh !important;
   overflow: hidden !important;
   box-sizing: border-box !important;
 }
 
-/* ── 1. SIDEBAR: posição fixa, sempre visível, sem transform ── */
+/* ── 1. SIDEBAR: sempre visível, 256px fixos ── */
 .sidebar {
-  position:   fixed !important;
-  top:        0 !important;
-  left:       0 !important;
-  width:      256px !important;
-  min-width:  256px !important;
-  max-width:  256px !important;
-  height:     100vh !important;
-  min-height: 100vh !important;
-  overflow-y: auto !important;
-  overflow-x: hidden !important;
-  z-index:    400 !important;
-  /* anula qualquer transform (inclusive o do @media 768px) */
-  transform:           none !important;
-  -webkit-transform:   none !important;
-  visibility:          visible !important;
-  opacity:             1 !important;
-  display:             flex !important;
-  flex-direction:      column !important;
-  pointer-events:      all !important;
+  position:          fixed !important;
+  top:               0 !important;
+  left:              0 !important;
+  width:             256px !important;
+  min-width:         256px !important;
+  max-width:         256px !important;
+  height:            100% !important;
+  height:            100dvh !important;
+  overflow-y:        auto !important;
+  overflow-x:        hidden !important;
+  z-index:           400 !important;
+  transform:         none !important;
+  -webkit-transform: none !important;
+  visibility:        visible !important;
+  opacity:           1 !important;
+  display:           flex !important;
+  flex-direction:    column !important;
 }
 
-/* ── 2. MAIN: ocupa todo o espaço à direita da sidebar ── */
+/* ── 2. MAIN: ocupa exatamente o espaço à direita ── */
 .main {
   position:       fixed !important;
   top:            0 !important;
   left:           256px !important;
   right:          0 !important;
   bottom:         0 !important;
-  width:          calc(100vw - 256px) !important;
+  width:          calc(100% - 256px) !important;
   min-width:      0 !important;
   margin:         0 !important;
   padding:        0 !important;
@@ -3387,49 +3389,55 @@ html, body {
   box-sizing:     border-box !important;
 }
 
-/* ── 3. TOPBAR: barra superior fixa de 64px ── */
+/* ── 3. TOPBAR: 64px no topo, nunca some ── */
 .topbar {
-  flex:         0 0 64px !important;
-  height:       64px !important;
-  min-height:   64px !important;
-  max-height:   64px !important;
-  width:        100% !important;
-  display:      flex !important;
-  align-items:  center !important;
-  z-index:      200 !important;
-  box-sizing:   border-box !important;
-  overflow:     hidden !important;
+  flex:            0 0 64px !important;
+  height:          64px !important;
+  min-height:      64px !important;
+  max-height:      64px !important;
+  width:           100% !important;
+  display:         flex !important;
+  align-items:     center !important;
+  justify-content: space-between !important;
+  padding:         0 20px !important;
+  background:      #ffffff !important;
+  border-bottom:   2px solid #e2e8f0 !important;
+  box-shadow:      0 1px 8px rgba(0,0,0,.07) !important;
+  z-index:         200 !important;
+  box-sizing:      border-box !important;
+  overflow:        hidden !important;
+  flex-shrink:     0 !important;
 }
 
-/* ── 4. CONTENT: única zona scrollável ── */
+/* ── 4. CONTENT: única zona scrollável, ocupa resto ── */
 .content {
-  flex:         1 1 0% !important;
-  min-height:   0 !important;
-  overflow-y:   auto !important;
-  overflow-x:   hidden !important;
-  padding:      20px 24px 32px !important;
-  box-sizing:   border-box !important;
-}
-
-/* ── 5. PAGE-SECTIONS: controle de visibilidade ── */
-.page-section          { display: none  !important; }
-.page-section.active   {
-  display:    block     !important;
-  margin:     0         !important;
-  padding:    0         !important;
-  min-width:  0         !important;
-  max-width:  100%      !important;
+  flex:       1 1 0% !important;
+  min-height: 0 !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  padding:    20px 24px 32px !important;
   box-sizing: border-box !important;
 }
 
-/* ── 6. Filhos do .content não causam overflow horizontal ── */
+/* ── 5. PAGE-SECTIONS ── */
+.page-section        { display: none  !important; }
+.page-section.active {
+  display:    block !important;
+  margin:     0     !important;
+  padding:    0     !important;
+  min-width:  0     !important;
+  max-width:  100%  !important;
+  box-sizing: border-box !important;
+}
+
+/* ── 6. Sem overflow horizontal nos filhos ── */
 .content > * {
   max-width:  100% !important;
   min-width:  0   !important;
   box-sizing: border-box !important;
 }
 
-/* ── 7. Garantia extra: anular quaisquer media queries que movam sidebar/main ── */
+/* ── 7. Anular todo @media que mova sidebar/main ── */
 @media (max-width: 9999px) {
   .sidebar {
     transform:  none    !important;
@@ -3439,9 +3447,9 @@ html, body {
     display:    flex    !important;
   }
   .main {
-    left:   256px !important;
-    width:  calc(100vw - 256px) !important;
-    margin: 0     !important;
+    left:   256px                  !important;
+    width:  calc(100% - 256px)     !important;
+    margin: 0                      !important;
   }
 }
 </style>

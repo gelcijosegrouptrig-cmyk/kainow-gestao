@@ -1,5 +1,5 @@
 FROM node:20-slim
-# cache-bust 1777604069
+# cache-bust 1777605127
 
 RUN apt-get update && apt-get install -y \
     python3 \
@@ -16,7 +16,7 @@ COPY backend/package.json backend/package-lock.json ./
 # Install dependencies (compiles better-sqlite3 natively for Node 20)
 RUN npm ci
 
-# Copy backend source — bust 1777604069
+# Copy backend source — bust 1777605127
 COPY backend/ .
 
 # Copy frontend static files into backend/public so Express can serve them
