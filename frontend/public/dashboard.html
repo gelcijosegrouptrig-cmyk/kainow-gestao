@@ -246,10 +246,11 @@ h1,h2,h3,h4,h5,h6 { color: var(--c-dark); }
   border-left-color: rgba(255,255,255,.1);
 }
 .nav-item.active {
-  background: linear-gradient(90deg, rgba(37,99,235,.3) 0%, rgba(37,99,235,.08) 100%);
-  color: #93c5fd;
+  background: linear-gradient(90deg, rgba(37,99,235,.25) 0%, rgba(37,99,235,.07) 100%);
+  color: #bfdbfe;
   border-left-color: var(--blue-400);
-  font-weight: 600;
+  font-weight: 700;
+  box-shadow: inset 3px 0 0 var(--blue-400);
 }
 
 /* Sidebar footer */
@@ -1447,13 +1448,7 @@ h2 { font-size: var(--fs-lg); font-weight: 700; letter-spacing: -0.2px; margin-b
 .stats-grid.mb-20 { margin-bottom: 20px; }
 .stats-grid.mb-16 { margin-bottom: 16px; }
 
-/* Sidebar active item — sharper indicator */
-.nav-item.active {
-  background: linear-gradient(90deg, rgba(37,99,235,.22) 0%, rgba(37,99,235,.06) 100%);
-  color: #bfdbfe;
-  border-left-color: var(--blue-400);
-  font-weight: 700;
-}
+/* Sidebar active item — absorbed into primary rule */
 
 /* Form label — slightly larger for legibility */
 .form-group label {
@@ -3429,9 +3424,9 @@ html, body {
   </div>
   <nav class="sidebar-nav">
     <div class="nav-section">Principal</div>
-    <a class="nav-item active" href="javascript:void(0)" data-page="dashboard" onclick="navTo('dashboard'); return false;"><span class="icon">📊</span> Dashboard</a>
-    <a class="nav-item" href="javascript:void(0)" data-page="averbacoes" onclick="navTo('averbacoes'); return false;"><span class="icon">📋</span> Averbações</a>
-    <a class="nav-item" href="javascript:void(0)" data-page="nova-averbacao" onclick="navTo('nova-averbacao'); return false;"><span class="icon">➕</span> Nova Averbação</a>
+    <a class="nav-item active" id="nav-dashboard" href="javascript:void(0)" data-page="dashboard" onclick="navTo('dashboard'); return false;"><span class="icon">📊</span> Dashboard</a>
+    <a class="nav-item" id="nav-averbacoes" href="javascript:void(0)" data-page="averbacoes" onclick="navTo('averbacoes'); return false;"><span class="icon">📋</span> Averbações</a>
+    <a class="nav-item" id="nav-nova-averbacao" href="javascript:void(0)" data-page="nova-averbacao" onclick="navTo('nova-averbacao'); return false;"><span class="icon">➕</span> Nova Averbação</a>
 
     <div class="nav-section" id="nav-admin-section">Administração</div>
     <a class="nav-item" id="nav-funcionários" href="javascript:void(0)" data-page="funcionários" onclick="navTo('funcionários'); return false;"><span class="icon">👥</span> Funcionários</a>
@@ -9374,24 +9369,27 @@ function aplicarACL(perfil) {
     'nav-section-ia':               ['SUPER_ADMIN','ADMIN'],
     'nav-section-nextlevel':        ['SUPER_ADMIN','ADMIN','RH'],
     'nav-section-plataforma':       ['SUPER_ADMIN','ADMIN','RH'],
-    // Items sem restrição: consultar-margem, calculadora
+    'nav-section-inovacao':         ['SUPER_ADMIN','ADMIN','RH','BANCO'],
+    // Items sem restrição: sempre visíveis
+    'nav-dashboard':            ['SUPER_ADMIN','ADMIN','RH','BANCO','FUNCIONARIO'],
+    'nav-averbacoes':           ['SUPER_ADMIN','ADMIN','RH','BANCO'],
+    'nav-nova-averbacao':       ['SUPER_ADMIN','ADMIN','RH'],
+    'nav-consulta-margem':      ['SUPER_ADMIN','ADMIN','RH','BANCO','FUNCIONARIO'],
+    'nav-calculadora':          ['SUPER_ADMIN','ADMIN','RH','BANCO','FUNCIONARIO'],
+    'nav-nextlevel':            ['SUPER_ADMIN','ADMIN','RH'],
+    'nav-plataforma':           ['SUPER_ADMIN','ADMIN','RH'],
+    'nav-controle':             ['SUPER_ADMIN','ADMIN'],
   };
   Object.entries(aclMap).forEach(([id, permitidos]) => {
     const el = document.getElementById(id);
     if (el) el.style.display = permitidos.includes(perfil) ? '' : 'none';
   });
-  // FUNCIONÁRIO: só vê Dashboard e Consultar Margem
+  // FUNCIONÁRIO: só vê Dashboard, Consultar Margem e Calculadora
   if (perfil === 'FUNCIONARIO') {
-    document.querySelectorAll('.nav-item, .nav-section').forEach(el => {
-      el.style.display = 'none';
-    });
-    // reabrir os itens básicos
-    ['nav-consulta-margem','nav-calculadora'].forEach(id => {
-      const el = document.getElementById(id);
-      if (el) el.style.display = '';
-    });
-    document.querySelectorAll('[onclick="navTo(\'dashboard\')"], [onclick="navTo(\'consulta-margem\')"], [onclick="navTo(\'calculadora\')"]').forEach(el => {
-      el.style.display = '';
+    // O aclMap já cuida de esconder/mostrar por ID.
+    // Garantir que nav-sections não controladas pelo aclMap fiquem ocultas
+    document.querySelectorAll('.nav-section').forEach(el => {
+      if (!el.id) el.style.display = 'none';
     });
   }
 }
