@@ -309,9 +309,7 @@
     if (tok) { window.location.replace('/dashboard/'); }
   } catch(e) {}
 })();
-const API = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
-  ? '/api'
-  : 'https://averba-api-proxy.gelci-jose-grouptrig.workers.dev/api';
+const API = '/api'; // URL relativa — funciona em localhost e produção (averbatech.com.br)
 
 function preencherDemo(e, s) {
   document.getElementById('email').value = e;

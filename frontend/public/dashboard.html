@@ -9192,14 +9192,7 @@ window.onerror = function(msg, src, line, col, err) {
   return true; // suppress default
 };
 
-const API = (function() {
-  const h = window.location.hostname;
-  // Usa /api relativo para: localhost, 127.0.0.1, e qualquer domínio sandbox novita.ai / genspark
-  if (h === 'localhost' || h === '127.0.0.1' || h.includes('novita.ai') || h.includes('genspark') || h.includes('sandbox')) {
-    return '/api';
-  }
-  return 'https://averba-api-proxy.gelci-jose-grouptrig.workers.dev/api';
-})();
+const API = '/api'; // URL relativa — funciona em localhost e produção (averbatech.com.br)
 let usuario = null;
 let dadosAtuaisFuncionario = null;
 let dadosAtuaisMargem = null;

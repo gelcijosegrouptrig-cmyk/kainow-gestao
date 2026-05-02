@@ -210,19 +210,60 @@ h1,h2,h3,h4,h5,h6 { color: var(--c-dark); }
   flex: 1;
   padding: 10px 0 16px;
   overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(99,102,241,.45) transparent;
 }
-.sidebar-nav::-webkit-scrollbar { width: 3px; }
-.sidebar-nav::-webkit-scrollbar-thumb { background: rgba(255,255,255,.06); }
+.sidebar-nav::-webkit-scrollbar { width: 4px; }
+.sidebar-nav::-webkit-scrollbar-track { background: transparent; }
+.sidebar-nav::-webkit-scrollbar-thumb {
+  background: rgba(99,102,241,.45);
+  border-radius: 99px;
+}
+.sidebar-nav::-webkit-scrollbar-thumb:hover { background: rgba(99,102,241,.75); }
+
+/* ── Accordion nav-group ───────────────────────────────────── */
+.nav-group { overflow: hidden; }
 
 .nav-section {
-  padding: 14px 18px 4px;
+  padding: 10px 12px 10px 18px;
   font-size: var(--fs-2xs);
   font-weight: 700;
-  color: rgba(100,116,139,.7);
+  color: rgba(148,163,184,.85);
   text-transform: uppercase;
-  letter-spacing: 1.4px;
+  letter-spacing: 1.2px;
   margin-top: 2px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 6px;
+  margin-left: 6px;
+  margin-right: 10px;
+  transition: background var(--t-fast), color var(--t-fast);
+  user-select: none;
 }
+.nav-section:hover {
+  background: rgba(255,255,255,.05);
+  color: rgba(203,213,225,.9);
+}
+.nav-section.open { color: rgba(191,219,254,.9); }
+.nav-section .nav-arrow {
+  font-size: 9px;
+  opacity: .6;
+  transition: transform .25s ease;
+  flex-shrink: 0;
+}
+.nav-section.open .nav-arrow { transform: rotate(180deg); opacity: 1; }
+
+/* Grupo de itens expansível */
+.nav-group-items {
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height .3s ease;
+}
+
+.nav-group-items.open { max-height: 1200px; }
 
 .nav-item {
   display: flex;
@@ -3331,17 +3372,19 @@ html { scroll-behavior: auto !important; }
 </style>
 <style id="layout-override">
 /* ═══════════════════════════════════════════════════════════════════
-   LAYOUT OVERRIDE v5 — AverbaTech Dashboard — MOBILE RESPONSIVE
+   LAYOUT OVERRIDE v5 — AverbaTech Dashboard
    Desktop: sidebar fixa 256px + margin-left no .main
-   Mobile (≤768px): sidebar oculta, abre com hamburger
+   Mobile (≤768px): sidebar oculta por padrão, abre com hamburger
    ═══════════════════════════════════════════════════════════════════ */
 
+/* ── 0. Variáveis ── */
 :root {
   --sidebar-w:      256px !important;
   --content-start:  256px !important;
   --topbar-h:        64px !important;
 }
 
+/* ── 1. Reset base ── */
 html, body {
   margin:   0 !important;
   padding:  0 !important;
@@ -3352,6 +3395,7 @@ html, body {
   box-sizing: border-box !important;
 }
 
+/* ── 2. SIDEBAR: fixa, 256px ── */
 .sidebar {
   position:   fixed !important;
   top:        0     !important;
@@ -3374,6 +3418,7 @@ html, body {
   transition: transform 0.3s ease !important;
 }
 
+/* ── 3. MAIN: margin-left 256px (desktop) ── */
 .main {
   margin-left:    256px !important;
   width:          calc(100% - 256px) !important;
@@ -3388,6 +3433,7 @@ html, body {
   transition:     margin-left 0.3s ease, width 0.3s ease !important;
 }
 
+/* ── 4. TOPBAR ── */
 .topbar {
   flex:        0 0 64px !important;
   height:      64px     !important;
@@ -3407,6 +3453,7 @@ html, body {
   flex-shrink: 0        !important;
 }
 
+/* ── 5. CONTENT ── */
 .content {
   flex:        1 1 0% !important;
   min-height:  0      !important;
@@ -3416,22 +3463,25 @@ html, body {
   box-sizing:  border-box !important;
 }
 
+/* ── 6. PAGE-SECTIONS ── */
 .page-section        { display: none !important; }
 .page-section.active {
   display:    block !important;
   margin:     0     !important;
-  padding:    16px 0 32px !important;
+  padding:    0     !important;
   min-width:  0     !important;
   max-width:  100%  !important;
   box-sizing: border-box !important;
 }
 
+/* ── 7. Filhos sem overflow ── */
 .content > * {
   max-width:  100% !important;
   min-width:  0    !important;
   box-sizing: border-box !important;
 }
 
+/* ── 8. Hamburger button (oculto no desktop) ── */
 #hamburgerBtn {
   display:     none !important;
   align-items: center !important;
@@ -3446,8 +3496,10 @@ html, body {
   flex-shrink: 0 !important;
   padding:     0 !important;
 }
+#hamburgerBtn svg { display: block; }
 #hamburgerBtn:hover { background: #f1f5f9 !important; }
 
+/* ── 9. Overlay escuro (mobile) ── */
 #sidebarOverlay {
   display:    none !important;
   position:   fixed !important;
@@ -3457,7 +3509,9 @@ html, body {
 }
 #sidebarOverlay.active { display: block !important; }
 
+/* ══ MOBILE ≤ 768px ══════════════════════════════════════════════════ */
 @media (max-width: 768px) {
+  /* Sidebar: oculta para fora pelo lado esquerdo */
   .sidebar {
     transform:  translateX(-100%) !important;
     -webkit-transform: translateX(-100%) !important;
@@ -3466,17 +3520,29 @@ html, body {
     max-width:  280px !important;
     z-index:    500 !important;
   }
+  /* Sidebar aberta (classe adicionada pelo JS) */
   .sidebar.mobile-open {
     transform:  translateX(0) !important;
     -webkit-transform: translateX(0) !important;
   }
+  /* Main ocupa 100% da tela */
   .main {
     margin-left: 0 !important;
     width:       100% !important;
   }
-  #hamburgerBtn { display: flex !important; }
-  .topbar { padding: 0 12px !important; }
-  .content { padding: 12px 14px 24px !important; }
+  /* Mostrar hamburger */
+  #hamburgerBtn {
+    display: flex !important;
+  }
+  /* Topbar menor padding */
+  .topbar {
+    padding: 0 12px !important;
+  }
+  /* Content padding menor */
+  .content {
+    padding: 12px 14px 24px !important;
+  }
+  /* Grids responsivos */
   .stats-grid { grid-template-columns: repeat(2, 1fr) !important; }
   .grid-2, .grid-2-mb, .grid-left, .grid-right { grid-template-columns: 1fr !important; }
   .grid-3, .grid-3-mb { grid-template-columns: 1fr 1fr !important; }
@@ -3503,83 +3569,187 @@ html, body {
       <div class="sidebar-sub">Consignado Inteligente</div>
     </div>
   </div>
-  <nav class="sidebar-nav">
-    <div class="nav-section">Principal</div>
-    <a class="nav-item active" id="nav-dashboard" href="javascript:void(0)" data-page="dashboard" onclick="navTo('dashboard'); return false;"><span class="icon">📊</span> Dashboard</a>
-    <a class="nav-item" id="nav-averbacoes" href="javascript:void(0)" data-page="averbacoes" onclick="navTo('averbacoes'); return false;"><span class="icon">📋</span> Averbações</a>
-    <a class="nav-item" id="nav-nova-averbacao" href="javascript:void(0)" data-page="nova-averbacao" onclick="navTo('nova-averbacao'); return false;"><span class="icon">➕</span> Nova Averbação</a>
+  <nav class="sidebar-nav" id="sidebarNav">
 
-    <div class="nav-section" id="nav-admin-section">Administração</div>
-    <a class="nav-item" id="nav-funcionarios" href="javascript:void(0)" data-page="funcionarios" onclick="navTo('funcionarios'); return false;"><span class="icon">👥</span> Funcionários</a>
-    <a class="nav-item" id="nav-convenios" href="javascript:void(0)" data-page="convenios" onclick="navTo('convenios'); return false;"><span class="icon">🏛️</span> Convênios</a>
-    <a class="nav-item" id="nav-bancos" href="javascript:void(0)" data-page="bancos" onclick="navTo('bancos'); return false;"><span class="icon">🏦</span> Bancos</a>
-    <a class="nav-item" id="nav-usuarios" href="javascript:void(0)" data-page="usuarios" onclick="navTo('usuarios'); return false;"><span class="icon">👤</span> Usuários</a>
+    <!-- ── Principal (sempre aberto) ─────────────────────────────── -->
+    <div class="nav-group" data-group="principal">
+      <div class="nav-section open" onclick="toggleNavGroup('principal')">
+        Principal <span class="nav-arrow">▼</span>
+      </div>
+      <div class="nav-group-items open">
+        <a class="nav-item active" id="nav-dashboard"      data-page="dashboard"      onclick="navTo('dashboard');      return false;" href="javascript:void(0)"><span class="icon">📊</span> Dashboard</a>
+        <a class="nav-item"        id="nav-averbacoes"     data-page="averbacoes"     onclick="navTo('averbacoes');     return false;" href="javascript:void(0)"><span class="icon">📋</span> Averbações</a>
+        <a class="nav-item"        id="nav-nova-averbacao" data-page="nova-averbacao" onclick="navTo('nova-averbacao'); return false;" href="javascript:void(0)"><span class="icon">➕</span> Nova Averbação</a>
+      </div>
+    </div>
 
-    <div class="nav-section" id="nav-section-rh">Módulo RH</div>
-    <a class="nav-item" id="nav-rh-folha" href="javascript:void(0)" data-page="rh-folha" onclick="navTo('rh-folha'); return false;"><span class="icon">📋</span> Folha / Sincronizar</a>
-    <a class="nav-item" id="nav-rh-ocorrencias" href="javascript:void(0)" data-page="rh-ocorrencias" onclick="navTo('rh-ocorrencias'); return false;"><span class="icon">⚠️</span> Ocorrências</a>
-    <a class="nav-item" id="nav-rh-reservas" href="javascript:void(0)" data-page="rh-reservas" onclick="navTo('rh-reservas'); return false;"><span class="icon">🔒</span> Validar Reservas</a>
-    <a class="nav-item" id="nav-rh-desconto" href="javascript:void(0)" data-page="rh-desconto" onclick="navTo('rh-desconto'); return false;"><span class="icon">📤</span> Arquivo Desconto</a>
+    <!-- ── Administração ──────────────────────────────────────────── -->
+    <div class="nav-group" data-group="admin">
+      <div class="nav-section" id="nav-admin-section" onclick="toggleNavGroup('admin')">
+        Administração <span class="nav-arrow">▼</span>
+      </div>
+      <div class="nav-group-items">
+        <a class="nav-item" id="nav-funcionarios" data-page="funcionarios" onclick="navTo('funcionarios'); return false;" href="javascript:void(0)"><span class="icon">👥</span> Funcionários</a>
+        <a class="nav-item" id="nav-convenios"    data-page="convenios"    onclick="navTo('convenios');    return false;" href="javascript:void(0)"><span class="icon">🏛️</span> Convênios</a>
+        <a class="nav-item" id="nav-bancos"       data-page="bancos"       onclick="navTo('bancos');       return false;" href="javascript:void(0)"><span class="icon">🏦</span> Bancos</a>
+        <a class="nav-item" id="nav-usuarios"     data-page="usuarios"     onclick="navTo('usuarios');     return false;" href="javascript:void(0)"><span class="icon">👤</span> Usuários</a>
+      </div>
+    </div>
 
-    <div class="nav-section" id="nav-section-banco">Painel Banco</div>
-    <a class="nav-item" id="nav-banco-margem" href="javascript:void(0)" data-page="banco-margem" onclick="navTo('banco-margem'); return false;"><span class="icon">💰</span> Consultar Margem</a>
-    <a class="nav-item" id="nav-banco-reserva" href="javascript:void(0)" data-page="banco-reserva" onclick="navTo('banco-reserva'); return false;"><span class="icon">📝</span> Nova Reserva</a>
-    <a class="nav-item" id="nav-banco-carteira" href="javascript:void(0)" data-page="banco-carteira" onclick="navTo('banco-carteira'); return false;"><span class="icon">📁</span> Carteira Contratos</a>
+    <!-- ── Módulo RH ──────────────────────────────────────────────── -->
+    <div class="nav-group" data-group="rh">
+      <div class="nav-section" id="nav-section-rh" onclick="toggleNavGroup('rh')">
+        Módulo RH <span class="nav-arrow">▼</span>
+      </div>
+      <div class="nav-group-items">
+        <a class="nav-item" id="nav-rh-folha"       data-page="rh-folha"       onclick="navTo('rh-folha');       return false;" href="javascript:void(0)"><span class="icon">📋</span> Folha / Sincronizar</a>
+        <a class="nav-item" id="nav-rh-ocorrencias"  data-page="rh-ocorrencias"  onclick="navTo('rh-ocorrencias');  return false;" href="javascript:void(0)"><span class="icon">⚠️</span> Ocorrências</a>
+        <a class="nav-item" id="nav-rh-reservas"     data-page="rh-reservas"     onclick="navTo('rh-reservas');     return false;" href="javascript:void(0)"><span class="icon">🔒</span> Validar Reservas</a>
+        <a class="nav-item" id="nav-rh-desconto"     data-page="rh-desconto"     onclick="navTo('rh-desconto');     return false;" href="javascript:void(0)"><span class="icon">📤</span> Arquivo Desconto</a>
+      </div>
+    </div>
 
-    <div class="nav-section">Compliance &amp; Segurança</div>
-    <a class="nav-item" id="nav-auditoria" href="javascript:void(0)" data-page="auditoria" onclick="navTo('auditoria'); return false;"><span class="icon">🔍</span> Auditoria</a>
-    <a class="nav-item" id="nav-iso27001" href="javascript:void(0)" data-page="iso27001" onclick="navTo('iso27001'); return false;"><span class="icon">🛡️</span> ISO 27001</a>
-    <a class="nav-item" id="nav-consulta-margem" href="javascript:void(0)" data-page="consulta-margem" onclick="navTo('consulta-margem'); return false;"><span class="icon">🔎</span> Consultar Margem</a>
-    <a class="nav-item" id="nav-calculadora" href="javascript:void(0)" data-page="calculadora" onclick="navTo('calculadora'); return false;"><span class="icon">🧮</span> Calculadora</a>
+    <!-- ── Painel Banco ───────────────────────────────────────────── -->
+    <div class="nav-group" data-group="banco">
+      <div class="nav-section" id="nav-section-banco" onclick="toggleNavGroup('banco')">
+        Painel Banco <span class="nav-arrow">▼</span>
+      </div>
+      <div class="nav-group-items">
+        <a class="nav-item" id="nav-banco-margem"   data-page="banco-margem"   onclick="navTo('banco-margem');   return false;" href="javascript:void(0)"><span class="icon">💰</span> Consultar Margem</a>
+        <a class="nav-item" id="nav-banco-reserva"  data-page="banco-reserva"  onclick="navTo('banco-reserva');  return false;" href="javascript:void(0)"><span class="icon">📝</span> Nova Reserva</a>
+        <a class="nav-item" id="nav-banco-carteira" data-page="banco-carteira" onclick="navTo('banco-carteira'); return false;" href="javascript:void(0)"><span class="icon">📁</span> Carteira Contratos</a>
+      </div>
+    </div>
 
-    <div class="nav-section" id="nav-section-modulos">Módulos Avançados</div>
-    <a class="nav-item" id="nav-certificados" href="javascript:void(0)" data-page="certificados" onclick="navTo('certificados'); return false;"><span class="icon">🔐</span> Cert. Digital</a>
-    <a class="nav-item" id="nav-importacoes" href="javascript:void(0)" data-page="importacoes" onclick="navTo('importacoes'); return false;"><span class="icon">📂</span> Importar Folha</a>
-    <a class="nav-item" id="nav-faturamento" href="javascript:void(0)" data-page="faturamento" onclick="navTo('faturamento'); return false;"><span class="icon">💵</span> Faturamento</a>
-    <div class="nav-section" id="nav-section-integracoes">Integrações</div>
-    <a class="nav-item" id="nav-integracoes" href="javascript:void(0)" data-page="integracoes" onclick="navTo('integracoes'); return false;"><span class="icon">🔌</span> API Bancos</a>
-    <a class="nav-item" id="nav-rh-integracao" href="javascript:void(0)" data-page="rh-integracao" onclick="navTo('rh-integracao'); return false;"><span class="icon">🗂️</span> RH / Folha</a>
-    <a class="nav-item" id="nav-banco-convenios" href="javascript:void(0)" data-page="banco-convenios" onclick="navTo('banco-convenios'); return false;"><span class="icon">🤝</span> Credenciamento</a>
-    <a class="nav-item" id="nav-esocial" href="javascript:void(0)" data-page="esocial" onclick="navTo('esocial'); return false;"><span class="icon">📡</span> eSocial</a>
-    <a class="nav-item" id="nav-portabilidade" href="javascript:void(0)" data-page="portabilidade" onclick="navTo('portabilidade'); return false;"><span class="icon">🔄</span> Portabilidade</a>
-    <div class="nav-section" id="nav-section-facultativos">Facultativos</div>
-    <a class="nav-item" id="nav-seguros" href="javascript:void(0)" data-page="seguros" onclick="navTo('seguros'); return false;"><span class="icon">🛡️</span> Seguros</a>
-    <a class="nav-item" id="nav-cartao-consignado" href="javascript:void(0)" data-page="cartao-consignado" onclick="navTo('cartao-consignado'); return false;"><span class="icon">💳</span> Cartão Consignado</a>
-    <a class="nav-item" id="nav-faturamento-recorrente" href="javascript:void(0)" data-page="faturamento-recorrente" onclick="navTo('faturamento-recorrente'); return false;"><span class="icon">🔁</span> Cobrança Recorrente</a>
+    <!-- ── Compliance ─────────────────────────────────────────────── -->
+    <div class="nav-group" data-group="compliance">
+      <div class="nav-section" onclick="toggleNavGroup('compliance')">
+        Compliance &amp; Segurança <span class="nav-arrow">▼</span>
+      </div>
+      <div class="nav-group-items">
+        <a class="nav-item" id="nav-auditoria"      data-page="auditoria"      onclick="navTo('auditoria');      return false;" href="javascript:void(0)"><span class="icon">🔍</span> Auditoria</a>
+        <a class="nav-item" id="nav-iso27001"       data-page="iso27001"       onclick="navTo('iso27001');       return false;" href="javascript:void(0)"><span class="icon">🛡️</span> ISO 27001</a>
+        <a class="nav-item" id="nav-consulta-margem" data-page="consulta-margem" onclick="navTo('consulta-margem'); return false;" href="javascript:void(0)"><span class="icon">🔎</span> Consultar Margem</a>
+        <a class="nav-item" id="nav-calculadora"    data-page="calculadora"    onclick="navTo('calculadora');    return false;" href="javascript:void(0)"><span class="icon">🧮</span> Calculadora</a>
+      </div>
+    </div>
 
-    <div class="nav-section" id="nav-section-inovacao">🚀 Diferenciais</div>
-    <a class="nav-item" id="nav-score-margem" href="javascript:void(0)" data-page="score-margem" onclick="navTo('score-margem'); return false;"><span class="icon">🧠</span> Score de Margem</a>
-    <a class="nav-item" id="nav-antecipacao" href="javascript:void(0)" data-page="antecipacao" onclick="navTo('antecipacao'); return false;"><span class="icon">⚡</span> Antecipação Salarial</a>
-    <a class="nav-item" id="nav-superendividamento" href="javascript:void(0)" data-page="superendividamento" onclick="navTo('superendividamento'); return false;"><span class="icon">🛡️</span> IA Anti-Endividamento</a>
-    <a class="nav-item" id="nav-biometria" href="javascript:void(0)" data-page="biometria" onclick="navTo('biometria'); return false;"><span class="icon">🪪</span> Biometria Facial</a>
+    <!-- ── Módulos Avançados ──────────────────────────────────────── -->
+    <div class="nav-group" data-group="modulos">
+      <div class="nav-section" id="nav-section-modulos" onclick="toggleNavGroup('modulos')">
+        Módulos Avançados <span class="nav-arrow">▼</span>
+      </div>
+      <div class="nav-group-items">
+        <a class="nav-item" id="nav-certificados"  data-page="certificados"  onclick="navTo('certificados');  return false;" href="javascript:void(0)"><span class="icon">🔐</span> Cert. Digital</a>
+        <a class="nav-item" id="nav-importacoes"   data-page="importacoes"   onclick="navTo('importacoes');   return false;" href="javascript:void(0)"><span class="icon">📂</span> Importar Folha</a>
+        <a class="nav-item" id="nav-faturamento"   data-page="faturamento"   onclick="navTo('faturamento');   return false;" href="javascript:void(0)"><span class="icon">💵</span> Faturamento</a>
+      </div>
+    </div>
 
-    <div class="nav-section" id="nav-section-nextlevel">💎 Next Level</div>
-    <a class="nav-item nav-overview" id="nav-nextlevel" href="javascript:void(0)" data-page="nextlevel" onclick="navTo('nextlevel'); return false;"><span class="icon">💎</span> Visão Geral Next Level</a>
-    <a class="nav-item" id="nav-open-finance" href="javascript:void(0)" data-page="open-finance" onclick="navTo('open-finance'); return false;"><span class="icon">🌐</span> Open Finance</a>
-    <a class="nav-item" id="nav-cashback" href="javascript:void(0)" data-page="cashback" onclick="navTo('cashback'); return false;"><span class="icon">🎁</span> Cashback</a>
-    <a class="nav-item" id="nav-leilao" href="javascript:void(0)" data-page="leilao" onclick="navTo('leilao'); return false;"><span class="icon">🔨</span> Leilão Reverso</a>
-    <a class="nav-item" id="nav-marketplace" href="javascript:void(0)" data-page="marketplace" onclick="navTo('marketplace'); return false;"><span class="icon">🛒</span> Marketplace</a>
-    <a class="nav-item" id="nav-parceiros" href="javascript:void(0)" data-page="parceiros" onclick="navTo('parceiros'); return false;"><span class="icon">🤝</span> Cadastro de Parceiros</a>
-    <a class="nav-item" id="nav-desligamento" href="javascript:void(0)" data-page="desligamento" onclick="navTo('desligamento'); return false;"><span class="icon">🛡️</span> Desligamento Seguro</a>
+    <!-- ── Integrações ────────────────────────────────────────────── -->
+    <div class="nav-group" data-group="integracoes">
+      <div class="nav-section" id="nav-section-integracoes" onclick="toggleNavGroup('integracoes')">
+        Integrações <span class="nav-arrow">▼</span>
+      </div>
+      <div class="nav-group-items">
+        <a class="nav-item" id="nav-integracoes"     data-page="integracoes"     onclick="navTo('integracoes');     return false;" href="javascript:void(0)"><span class="icon">🔌</span> API Bancos</a>
+        <a class="nav-item" id="nav-rh-integracao"   data-page="rh-integracao"   onclick="navTo('rh-integracao');   return false;" href="javascript:void(0)"><span class="icon">🗂️</span> RH / Folha</a>
+        <a class="nav-item" id="nav-banco-convenios" data-page="banco-convenios" onclick="navTo('banco-convenios'); return false;" href="javascript:void(0)"><span class="icon">🤝</span> Credenciamento</a>
+        <a class="nav-item" id="nav-esocial"         data-page="esocial"         onclick="navTo('esocial');         return false;" href="javascript:void(0)"><span class="icon">📡</span> eSocial</a>
+        <a class="nav-item" id="nav-portabilidade"   data-page="portabilidade"   onclick="navTo('portabilidade');   return false;" href="javascript:void(0)"><span class="icon">🔄</span> Portabilidade</a>
+      </div>
+    </div>
 
-    <div class="nav-section" id="nav-section-plataforma">🏗️ Plataforma</div>
-    <a class="nav-item nav-overview" id="nav-plataforma" href="javascript:void(0)" data-page="plataforma" onclick="navTo('plataforma'); return false;"><span class="icon">🏗️</span> Visão Geral Plataforma</a>
-    <a class="nav-item" id="nav-camaleao" href="javascript:void(0)" data-page="camaleao" onclick="navTo('camaleao'); return false;"><span class="icon">🦎</span> Módulo Camaleão</a>
-    <a class="nav-item" id="nav-fgts" href="javascript:void(0)" data-page="fgts" onclick="navTo('fgts'); return false;"><span class="icon">💼</span> FGTS Aniversário</a>
-    <a class="nav-item" id="nav-carteira-digital" href="javascript:void(0)" data-page="carteira-digital" onclick="navTo('carteira-digital'); return false;"><span class="icon">📲</span> Carteira Digital</a>
-    <a class="nav-item" id="nav-gamificacao" href="javascript:void(0)" data-page="gamificacao" onclick="navTo('gamificacao'); return false;"><span class="icon">🎮</span> Educação Financeira</a>
-    <a class="nav-item" id="nav-erp" href="javascript:void(0)" data-page="erp" onclick="navTo('erp'); return false;"><span class="icon">🔌</span> Conectores ERP</a>
-    <a class="nav-item" id="nav-antecipacao-recebiveis" href="javascript:void(0)" data-page="antecipacao-recebiveis" onclick="navTo('antecipacao-recebiveis'); return false;"><span class="icon">🏭</span> Antecip. Recebíveis</a>
+    <!-- ── Facultativos ───────────────────────────────────────────── -->
+    <div class="nav-group" data-group="facultativos">
+      <div class="nav-section" id="nav-section-facultativos" onclick="toggleNavGroup('facultativos')">
+        Facultativos <span class="nav-arrow">▼</span>
+      </div>
+      <div class="nav-group-items">
+        <a class="nav-item" id="nav-seguros"               data-page="seguros"               onclick="navTo('seguros');               return false;" href="javascript:void(0)"><span class="icon">🛡️</span> Seguros</a>
+        <a class="nav-item" id="nav-cartao-consignado"     data-page="cartao-consignado"     onclick="navTo('cartao-consignado');     return false;" href="javascript:void(0)"><span class="icon">💳</span> Cartão Consignado</a>
+        <a class="nav-item" id="nav-faturamento-recorrente" data-page="faturamento-recorrente" onclick="navTo('faturamento-recorrente'); return false;" href="javascript:void(0)"><span class="icon">🔁</span> Cobrança Recorrente</a>
+      </div>
+    </div>
 
-    <div class="nav-section" id="nav-section-controle">📊 Controle</div>
-    <a class="nav-item nav-overview" id="nav-controle" href="javascript:void(0)" data-page="controle" onclick="navTo('controle'); return false;"><span class="icon">📊</span> Visão Geral Controle</a>
-    <a class="nav-item" id="nav-painel-controle" href="javascript:void(0)" data-page="painel-controle" onclick="navTo('painel-controle'); return false;"><span class="icon">🎛️</span> Painel de Controle</a>
-    <div class="nav-section" id="nav-section-fintech">⚡ Fintech &amp; Onboarding</div>
-    <a class="nav-item" id="nav-onboarding" href="javascript:void(0)" data-page="onboarding" onclick="navTo('onboarding'); return false;"><span class="icon">🚀</span> Onboarding Digital</a>
-    <a class="nav-item" id="nav-payroll" href="javascript:void(0)" data-page="payroll" onclick="navTo('payroll'); return false;"><span class="icon">💸</span> Motor de Folha</a>
-    <a class="nav-item" id="nav-payment-flow" href="javascript:void(0)" data-page="payment-flow" onclick="navTo('payment-flow'); return false;"><span class="icon">🔄</span> Fluxo de Pagamento</a>
-    <div class="nav-section" id="nav-section-ia">🤖 IA Preditiva</div>
-    <a class="nav-item" id="nav-ia-preditiva" href="javascript:void(0)" data-page="ia-preditiva" onclick="navTo('ia-preditiva'); return false;"><span class="icon">🧠</span> Motor IA Preditiva</a>
+    <!-- ── Diferenciais ───────────────────────────────────────────── -->
+    <div class="nav-group" data-group="inovacao">
+      <div class="nav-section" id="nav-section-inovacao" onclick="toggleNavGroup('inovacao')">
+        🚀 Diferenciais <span class="nav-arrow">▼</span>
+      </div>
+      <div class="nav-group-items">
+        <a class="nav-item" id="nav-score-margem"      data-page="score-margem"      onclick="navTo('score-margem');      return false;" href="javascript:void(0)"><span class="icon">🧠</span> Score de Margem</a>
+        <a class="nav-item" id="nav-antecipacao"       data-page="antecipacao"       onclick="navTo('antecipacao');       return false;" href="javascript:void(0)"><span class="icon">⚡</span> Antecipação Salarial</a>
+        <a class="nav-item" id="nav-superendividamento" data-page="superendividamento" onclick="navTo('superendividamento'); return false;" href="javascript:void(0)"><span class="icon">🛡️</span> IA Anti-Endividamento</a>
+        <a class="nav-item" id="nav-biometria"         data-page="biometria"         onclick="navTo('biometria');         return false;" href="javascript:void(0)"><span class="icon">🪪</span> Biometria Facial</a>
+      </div>
+    </div>
+
+    <!-- ── 💎 Next Level ─────────────────────────────────────────── -->
+    <div class="nav-group" data-group="nextlevel">
+      <div class="nav-section" id="nav-section-nextlevel" onclick="toggleNavGroup('nextlevel')">
+        💎 Next Level <span class="nav-arrow">▼</span>
+      </div>
+      <div class="nav-group-items">
+        <a class="nav-item nav-overview" id="nav-nextlevel"   data-page="nextlevel"   onclick="navTo('nextlevel');   return false;" href="javascript:void(0)"><span class="icon">💎</span> Visão Geral</a>
+        <a class="nav-item"              id="nav-open-finance" data-page="open-finance" onclick="navTo('open-finance'); return false;" href="javascript:void(0)"><span class="icon">🌐</span> Open Finance</a>
+        <a class="nav-item"              id="nav-cashback"    data-page="cashback"    onclick="navTo('cashback');    return false;" href="javascript:void(0)"><span class="icon">🎁</span> Cashback</a>
+        <a class="nav-item"              id="nav-leilao"      data-page="leilao"      onclick="navTo('leilao');      return false;" href="javascript:void(0)"><span class="icon">🔨</span> Leilão Reverso</a>
+        <a class="nav-item"              id="nav-marketplace" data-page="marketplace" onclick="navTo('marketplace'); return false;" href="javascript:void(0)"><span class="icon">🛒</span> Marketplace</a>
+        <a class="nav-item"              id="nav-parceiros"   data-page="parceiros"   onclick="navTo('parceiros');   return false;" href="javascript:void(0)"><span class="icon">🤝</span> Cadastro de Parceiros</a>
+        <a class="nav-item"              id="nav-desligamento" data-page="desligamento" onclick="navTo('desligamento'); return false;" href="javascript:void(0)"><span class="icon">🛡️</span> Desligamento Seguro</a>
+      </div>
+    </div>
+
+    <!-- ── 🏗️ Plataforma ─────────────────────────────────────────── -->
+    <div class="nav-group" data-group="plataforma">
+      <div class="nav-section" id="nav-section-plataforma" onclick="toggleNavGroup('plataforma')">
+        🏗️ Plataforma <span class="nav-arrow">▼</span>
+      </div>
+      <div class="nav-group-items">
+        <a class="nav-item nav-overview" id="nav-plataforma"           data-page="plataforma"           onclick="navTo('plataforma');           return false;" href="javascript:void(0)"><span class="icon">🏗️</span> Visão Geral</a>
+        <a class="nav-item"              id="nav-camaleao"             data-page="camaleao"             onclick="navTo('camaleao');             return false;" href="javascript:void(0)"><span class="icon">🦎</span> Módulo Camaleão</a>
+        <a class="nav-item"              id="nav-fgts"                 data-page="fgts"                 onclick="navTo('fgts');                 return false;" href="javascript:void(0)"><span class="icon">💼</span> FGTS Aniversário</a>
+        <a class="nav-item"              id="nav-carteira-digital"     data-page="carteira-digital"     onclick="navTo('carteira-digital');     return false;" href="javascript:void(0)"><span class="icon">📲</span> Carteira Digital</a>
+        <a class="nav-item"              id="nav-gamificacao"          data-page="gamificacao"          onclick="navTo('gamificacao');          return false;" href="javascript:void(0)"><span class="icon">🎮</span> Educação Financeira</a>
+        <a class="nav-item"              id="nav-erp"                  data-page="erp"                  onclick="navTo('erp');                  return false;" href="javascript:void(0)"><span class="icon">🔌</span> Conectores ERP</a>
+        <a class="nav-item"              id="nav-antecipacao-recebiveis" data-page="antecipacao-recebiveis" onclick="navTo('antecipacao-recebiveis'); return false;" href="javascript:void(0)"><span class="icon">🏭</span> Antecip. Recebíveis</a>
+      </div>
+    </div>
+
+    <!-- ── 📊 Controle ────────────────────────────────────────────── -->
+    <div class="nav-group" data-group="controle">
+      <div class="nav-section" id="nav-section-controle" onclick="toggleNavGroup('controle')">
+        📊 Controle <span class="nav-arrow">▼</span>
+      </div>
+      <div class="nav-group-items">
+        <a class="nav-item nav-overview" id="nav-controle"       data-page="controle"       onclick="navTo('controle');       return false;" href="javascript:void(0)"><span class="icon">📊</span> Visão Geral</a>
+        <a class="nav-item"              id="nav-painel-controle" data-page="painel-controle" onclick="navTo('painel-controle'); return false;" href="javascript:void(0)"><span class="icon">🎛️</span> Painel de Controle</a>
+      </div>
+    </div>
+
+    <!-- ── ⚡ Fintech & Onboarding ─────────────────────────────────── -->
+    <div class="nav-group" data-group="fintech">
+      <div class="nav-section" id="nav-section-fintech" onclick="toggleNavGroup('fintech')">
+        ⚡ Fintech &amp; Onboarding <span class="nav-arrow">▼</span>
+      </div>
+      <div class="nav-group-items">
+        <a class="nav-item" id="nav-onboarding"    data-page="onboarding"    onclick="navTo('onboarding');    return false;" href="javascript:void(0)"><span class="icon">🚀</span> Onboarding Digital</a>
+        <a class="nav-item" id="nav-payroll"       data-page="payroll"       onclick="navTo('payroll');       return false;" href="javascript:void(0)"><span class="icon">💸</span> Motor de Folha</a>
+        <a class="nav-item" id="nav-payment-flow"  data-page="payment-flow"  onclick="navTo('payment-flow');  return false;" href="javascript:void(0)"><span class="icon">🔄</span> Fluxo de Pagamento</a>
+      </div>
+    </div>
+
+    <!-- ── 🤖 IA Preditiva ────────────────────────────────────────── -->
+    <div class="nav-group" data-group="ia">
+      <div class="nav-section" id="nav-section-ia" onclick="toggleNavGroup('ia')">
+        🤖 IA Preditiva <span class="nav-arrow">▼</span>
+      </div>
+      <div class="nav-group-items">
+        <a class="nav-item" id="nav-ia-preditiva" data-page="ia-preditiva" onclick="navTo('ia-preditiva'); return false;" href="javascript:void(0)"><span class="icon">🧠</span> Motor IA Preditiva</a>
+      </div>
+    </div>
+
   </nav>
   <div class="sidebar-footer">
     <div class="user-info mb-12">
@@ -3593,12 +3763,13 @@ html, body {
   </div>
 </aside>
 
-<!-- Overlay mobile -->
-<div id="sidebarOverlay" onclick="closeMobileSidebar()"></div>
-
 <!-- MAIN -->
 <div class="main">
+  <!-- Overlay mobile para fechar sidebar ao clicar fora -->
+  <div id="sidebarOverlay" onclick="closeMobileSidebar()"></div>
+
   <div class="topbar">
+    <!-- Botão hamburguer (visível apenas no mobile) -->
     <button id="hamburgerBtn" onclick="toggleMobileSidebar()" aria-label="Menu" title="Abrir menu">
       <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
         <rect y="3" width="22" height="2.2" rx="1.1" fill="#334155"/>
@@ -3627,6 +3798,7 @@ html, body {
         </div>
       </div>
     </div>
+  </div>
 
   <div class="content">
 
@@ -6398,7 +6570,6 @@ html, body {
       </div>
     </div>
 
-
     <!-- ===================== OPEN FINANCE ===================== -->
     <div class="page-section" id="section-open-finance">
       <div class="page-header">
@@ -6470,9 +6641,9 @@ html, body {
           </div>
         </div>
       </div>
+    </div>
 
     <!-- ===================== CASHBACK ===================== -->
-    </div>
     <div class="page-section" id="section-cashback">
       <div class="page-header">
         <div class="page-header-icon">🎁</div>
@@ -6548,9 +6719,9 @@ html, body {
           </div>
         </div>
       </div>
+    </div>
 
     <!-- ===================== LEILÃO REVERSO ===================== -->
-    </div>
     <div class="page-section" id="section-leilao">
       <div class="page-header">
         <div class="page-header-icon">🔨</div>
@@ -6628,9 +6799,9 @@ html, body {
           </div>
         </div>
       </div>
+    </div>
 
     <!-- ===================== MARKETPLACE ===================== -->
-    </div>
     <div class="page-section" id="section-marketplace">
       <div class="page-header">
         <div class="page-header-icon">🛒</div>
@@ -6696,9 +6867,9 @@ html, body {
           </div>
         </div>
       </div>
+    </div>
 
     <!-- ===================== DESLIGAMENTO SEGURO ===================== -->
-    </div>
     <div class="page-section" id="section-parceiros">
       <div class="page-header">
         <div class="page-header-icon">🤝</div>
@@ -6962,10 +7133,10 @@ html, body {
         </div>
       </div>
 
+    </div>
     <!-- /section-parceiros -->
 
     <!-- ===================== MÓDULO CAMALEÃO ===================== -->
-    </div>
     <div class="page-section" id="section-desligamento">
       <div class="page-header">
         <div class="page-header-icon">🛡️</div>
@@ -7055,10 +7226,10 @@ html, body {
           </div>
         </div>
       </div>
+    </div>
 
 
     <!-- ===================== CADASTRO DE PARCEIROS ===================== -->
-    </div>
     <div class="page-section" id="section-camaleao">
       <div class="page-header">
         <div class="page-header-icon">🦎</div>
@@ -7116,9 +7287,9 @@ html, body {
           <div class="form-actions"><button class="btn btn-primary" onclick="salvarRegraCamaleao()">💾 Salvar Regra</button></div>
         </div>
       </div>
+    </div>
 
     <!-- ===================== FGTS ANIVERSÁRIO ===================== -->
-    </div>
     <div class="page-section" id="section-fgts">
       <div class="page-header">
         <div class="page-header-icon">💼</div>
@@ -7183,9 +7354,9 @@ html, body {
           </div>
         </div>
       </div>
+    </div>
 
     <!-- ===================== CARTEIRA DIGITAL ===================== -->
-    </div>
     <div class="page-section" id="section-carteira-digital">
       <div class="page-header">
         <div class="page-header-icon">📲</div>
@@ -7248,9 +7419,9 @@ html, body {
           </div>
         </div>
       </div>
+    </div>
 
     <!-- ===================== EDUCAÇÃO FINANCEIRA GAMIFICADA ===================== -->
-    </div>
     <div class="page-section" id="section-gamificacao">
       <div class="page-header">
         <div class="page-header-icon">🎮</div>
@@ -7310,9 +7481,9 @@ html, body {
           </div>
         </div>
       </div>
+    </div>
 
     <!-- ===================== CONECTORES ERP ===================== -->
-    </div>
     <div class="page-section" id="section-erp">
       <div class="page-header">
         <div class="page-header-icon">🔌</div>
@@ -7393,9 +7564,9 @@ html, body {
           <button class="btn btn-primary" onclick="salvarSplit()">💾 Salvar Split</button>
         </div>
       </div>
+    </div>
 
     <!-- ===================== ANTECIPAÇÃO DE RECEBÍVEIS ===================== -->
-    </div>
     <div class="page-section" id="section-antecipacao-recebiveis">
       <div class="page-header">
         <div class="page-header-icon">🏭</div>
@@ -7468,10 +7639,10 @@ html, body {
           </div>
         </div>
       </div>
+    </div>
 
 
     <!-- ===================== PAINEL DE CONTROLE ===================== -->
-    </div>
     <div class="page-section" id="section-painel-controle">
       <div class="page-header">
         <div class="page-header-icon">🎛️</div>
@@ -7599,9 +7770,9 @@ html, body {
           </div>
         </div>
       </div>
+    </div>
 
     <!-- ===================== ONBOARDING DIGITAL ===================== -->
-    </div>
     <div class="page-section" id="section-onboarding">
       <div class="page-header">
         <div class="page-header-icon">🚀</div>
@@ -7611,12 +7782,12 @@ html, body {
         </div>
       </div>
       <div class="stats-grid mb-14" id="statsOnboarding">
-        <div class="stat-card"><div class="stat-icon">🏛️</div><div class="stat-value" id="onbRH">10</div><div class="stat-label">RH Onboarded</div></div>
-        <div class="stat-card"><div class="stat-icon">🏦</div><div class="stat-value" id="onbBanco">5</div><div class="stat-label">Bancos Credenciados</div></div>
-        <div class="stat-card"><div class="stat-icon">👤</div><div class="stat-value" id="onbFunc">–</div><div class="stat-label">Funcionários Cadastrados</div></div>
-        <div class="stat-card"><div class="stat-icon">⏱️</div><div class="stat-value">4 min</div><div class="stat-label">Tempo Médio Onboarding</div></div>
-        <div class="stat-card"><div class="stat-icon">✅</div><div class="stat-value">94%</div><div class="stat-label">Taxa de Conclusão</div></div>
-        <div class="stat-card"><div class="stat-icon">📱</div><div class="stat-value">100%</div><div class="stat-label">Auto-Cadastro Digital</div></div>
+        <div class="stat-card"><div class="stat-icon">🏛️</div><div class="stat-val" id="onbRH">10</div><div class="stat-lbl">RH Onboarded</div></div>
+        <div class="stat-card"><div class="stat-icon">🏦</div><div class="stat-val" id="onbBanco">5</div><div class="stat-lbl">Bancos Credenciados</div></div>
+        <div class="stat-card"><div class="stat-icon">👤</div><div class="stat-val" id="onbFunc">–</div><div class="stat-lbl">Funcionários Cadastrados</div></div>
+        <div class="stat-card"><div class="stat-icon">⏱️</div><div class="stat-val">4 min</div><div class="stat-lbl">Tempo Médio Onboarding</div></div>
+        <div class="stat-card"><div class="stat-icon">✅</div><div class="stat-val">94%</div><div class="stat-lbl">Taxa de Conclusão</div></div>
+        <div class="stat-card"><div class="stat-icon">📱</div><div class="stat-val">100%</div><div class="stat-lbl">Auto-Cadastro Digital</div></div>
       </div>
       <!-- Funil -->
       <div class="panel mb-14">
@@ -7756,9 +7927,9 @@ html, body {
           </div>
         </div>
       </div>
+    </div>
 
     <!-- ===================== MOTOR DE FOLHA (PAYROLL ENGINE) ===================== -->
-    </div>
     <div class="page-section" id="section-payroll">
       <div class="page-header">
         <div class="page-header-icon">💸</div>
@@ -7768,12 +7939,12 @@ html, body {
         </div>
       </div>
       <div class="stats-grid mb-14" id="statsPayroll">
-        <div class="stat-card"><div class="stat-icon">💰</div><div class="stat-value" id="payStatEscrow">R$ 0</div><div class="stat-label">Saldo Escrow Total</div></div>
-        <div class="stat-card"><div class="stat-icon">⚡</div><div class="stat-value" id="payStatPix">0</div><div class="stat-label">Pix Enviados Hoje</div></div>
-        <div class="stat-card"><div class="stat-icon">🔀</div><div class="stat-value" id="payStatSplit">0</div><div class="stat-label">Splits Processados</div></div>
-        <div class="stat-card"><div class="stat-icon">🏦</div><div class="stat-value" id="payStatBancos">5</div><div class="stat-label">Bancos Conectados</div></div>
-        <div class="stat-card"><div class="stat-icon">✅</div><div class="stat-value">99,8%</div><div class="stat-label">Uptime Escrow</div></div>
-        <div class="stat-card"><div class="stat-icon">⏱️</div><div class="stat-value">&lt;2s</div><div class="stat-label">Tempo Médio Pix</div></div>
+        <div class="stat-card"><div class="stat-icon">💰</div><div class="stat-val" id="payStatEscrow">R$ 0</div><div class="stat-lbl">Saldo Escrow Total</div></div>
+        <div class="stat-card"><div class="stat-icon">⚡</div><div class="stat-val" id="payStatPix">0</div><div class="stat-lbl">Pix Enviados Hoje</div></div>
+        <div class="stat-card"><div class="stat-icon">🔀</div><div class="stat-val" id="payStatSplit">0</div><div class="stat-lbl">Splits Processados</div></div>
+        <div class="stat-card"><div class="stat-icon">🏦</div><div class="stat-val" id="payStatBancos">5</div><div class="stat-lbl">Bancos Conectados</div></div>
+        <div class="stat-card"><div class="stat-icon">✅</div><div class="stat-val">99,8%</div><div class="stat-lbl">Uptime Escrow</div></div>
+        <div class="stat-card"><div class="stat-icon">⏱️</div><div class="stat-val">&lt;2s</div><div class="stat-lbl">Tempo Médio Pix</div></div>
       </div>
       <div class="grid-asym-1-13-mb14">
         <!-- Wallet da empresa -->
@@ -7880,10 +8051,10 @@ html, body {
           </div>
         </div>
       </div>
+    </div>
 
 
     <!-- ===================== FLUXO DE PAGAMENTO INTEGRADO ===================== -->
-    </div>
     <div class="page-section" id="section-payment-flow">
       <div class="page-header">
         <div class="page-header-icon">🔄</div>
@@ -8094,9 +8265,9 @@ html, body {
           </div>
         </div>
       </div>
+    </div>
 
     <!-- ===================== MOTOR IA PREDITIVA ===================== -->
-    </div>
     <div class="page-section" id="section-ia-preditiva">
       <div class="page-header">
         <div class="page-header-icon">🤖</div>
@@ -8351,6 +8522,7 @@ html, body {
 
 
 
+    <!-- ===================== 💎 NEXT LEVEL ===================== -->
     <!-- ===================== 💎 NEXT LEVEL (overview) ===================== -->
     <div class="page-section" id="section-nextlevel">
       <div class="page-header">
@@ -8363,12 +8535,12 @@ html, body {
 
       <!-- KPI Row -->
       <div class="stats-grid mb-16" id="statsNextLevel">
-        <div class="stat-card"><div class="stat-icon">🌐</div><div class="stat-value" id="nlOpenFinance">3</div><div class="stat-label">Open Finance Conectados</div></div>
-        <div class="stat-card"><div class="stat-icon">🎁</div><div class="stat-value" id="nlCashback">R$ 12,4k</div><div class="stat-label">Cashback Acumulado</div></div>
-        <div class="stat-card"><div class="stat-icon">🔨</div><div class="stat-value" id="nlLeiloes">7</div><div class="stat-label">Leilões Ativos</div></div>
-        <div class="stat-card"><div class="stat-icon">🛒</div><div class="stat-value" id="nlProdutos">42</div><div class="stat-label">Produtos no Marketplace</div></div>
-        <div class="stat-card"><div class="stat-icon">🤝</div><div class="stat-value" id="nlParceiros">18</div><div class="stat-label">Parceiros Cadastrados</div></div>
-        <div class="stat-card"><div class="stat-icon">🛡️</div><div class="stat-value" id="nlDesligamentos">23</div><div class="stat-label">Desligamentos Seguros</div></div>
+        <div class="stat-card"><div class="stat-icon">🌐</div><div class="stat-val" id="nlOpenFinance">3</div><div class="stat-lbl">Open Finance Conectados</div></div>
+        <div class="stat-card"><div class="stat-icon">🎁</div><div class="stat-val" id="nlCashback">R$ 12,4k</div><div class="stat-lbl">Cashback Acumulado</div></div>
+        <div class="stat-card"><div class="stat-icon">🔨</div><div class="stat-val" id="nlLeiloes">7</div><div class="stat-lbl">Leilões Ativos</div></div>
+        <div class="stat-card"><div class="stat-icon">🛒</div><div class="stat-val" id="nlProdutos">42</div><div class="stat-lbl">Produtos no Marketplace</div></div>
+        <div class="stat-card"><div class="stat-icon">🤝</div><div class="stat-val" id="nlParceiros">18</div><div class="stat-lbl">Parceiros Cadastrados</div></div>
+        <div class="stat-card"><div class="stat-icon">🛡️</div><div class="stat-val" id="nlDesligamentos">23</div><div class="stat-lbl">Desligamentos Seguros</div></div>
       </div>
 
       <!-- 6 module cards -->
@@ -8533,6 +8705,7 @@ html, body {
       </div>
     </div>
 
+    <!-- ===================== 🏗️ PLATAFORMA ===================== -->
 <!-- ===================== 🏗️ PLATAFORMA (overview) ===================== -->
     <div class="page-section" id="section-plataforma">
       <div class="page-header">
@@ -8545,12 +8718,12 @@ html, body {
 
       <!-- KPI Row -->
       <div class="stats-grid mb-16" id="statsPlataforma">
-        <div class="stat-card"><div class="stat-icon">🦎</div><div class="stat-value" id="plCamaleao">12</div><div class="stat-label">Regras Camaleão Ativas</div></div>
-        <div class="stat-card"><div class="stat-icon">💼</div><div class="stat-value" id="plFgts">156</div><div class="stat-label">Contratos FGTS Ativos</div></div>
-        <div class="stat-card"><div class="stat-icon">📲</div><div class="stat-value" id="plCarteira">843</div><div class="stat-label">Carteiras Digitais</div></div>
-        <div class="stat-card"><div class="stat-icon">🎮</div><div class="stat-value" id="plGamificacao">2.140</div><div class="stat-label">Alunos na Plataforma</div></div>
-        <div class="stat-card"><div class="stat-icon">🔌</div><div class="stat-value" id="plErp">4</div><div class="stat-label">Conectores ERP Ativos</div></div>
-        <div class="stat-card"><div class="stat-icon">🏭</div><div class="stat-value" id="plRecebiveis">R$ 1,8M</div><div class="stat-label">Recebíveis Antecipados</div></div>
+        <div class="stat-card"><div class="stat-icon">🦎</div><div class="stat-val" id="plCamaleao">12</div><div class="stat-lbl">Regras Camaleão Ativas</div></div>
+        <div class="stat-card"><div class="stat-icon">💼</div><div class="stat-val" id="plFgts">156</div><div class="stat-lbl">Contratos FGTS Ativos</div></div>
+        <div class="stat-card"><div class="stat-icon">📲</div><div class="stat-val" id="plCarteira">843</div><div class="stat-lbl">Carteiras Digitais</div></div>
+        <div class="stat-card"><div class="stat-icon">🎮</div><div class="stat-val" id="plGamificacao">2.140</div><div class="stat-lbl">Alunos na Plataforma</div></div>
+        <div class="stat-card"><div class="stat-icon">🔌</div><div class="stat-val" id="plErp">4</div><div class="stat-lbl">Conectores ERP Ativos</div></div>
+        <div class="stat-card"><div class="stat-icon">🏭</div><div class="stat-val" id="plRecebiveis">R$ 1,8M</div><div class="stat-lbl">Recebíveis Antecipados</div></div>
       </div>
 
       <!-- 6 module cards -->
@@ -8717,6 +8890,7 @@ html, body {
       </div>
     </div>
 
+    <!-- ===================== 📊 CONTROLE ===================== -->
 <!-- ===================== 📊 CONTROLE (overview) ===================== -->
     <div class="page-section" id="section-controle">
       <div class="page-header">
@@ -8729,12 +8903,12 @@ html, body {
 
       <!-- KPI Row -->
       <div class="stats-grid mb-16" id="statsControle">
-        <div class="stat-card"><div class="stat-icon">🏙️</div><div class="stat-value" id="ctMunicipios">10</div><div class="stat-label">Municípios Ativos</div></div>
-        <div class="stat-card"><div class="stat-icon">🏦</div><div class="stat-value" id="ctBancos">5</div><div class="stat-label">Bancos Parceiros</div></div>
-        <div class="stat-card"><div class="stat-icon">👥</div><div class="stat-value" id="ctFuncionarios">–</div><div class="stat-label">Funcionários na Base</div></div>
-        <div class="stat-card"><div class="stat-icon">📋</div><div class="stat-value" id="ctContratos">–</div><div class="stat-label">Contratos Ativos</div></div>
-        <div class="stat-card"><div class="stat-icon">💰</div><div class="stat-value" id="ctReceita">R$ 42,8k</div><div class="stat-label">Receita Total (R$)</div></div>
-        <div class="stat-card"><div class="stat-icon">📈</div><div class="stat-value" id="ctTaxaAverb">15,0%</div><div class="stat-label">Taxa Méd. de Averbação</div></div>
+        <div class="stat-card"><div class="stat-icon">🏙️</div><div class="stat-val" id="ctMunicipios">10</div><div class="stat-lbl">Municípios Ativos</div></div>
+        <div class="stat-card"><div class="stat-icon">🏦</div><div class="stat-val" id="ctBancos">5</div><div class="stat-lbl">Bancos Parceiros</div></div>
+        <div class="stat-card"><div class="stat-icon">👥</div><div class="stat-val" id="ctFuncionarios">–</div><div class="stat-lbl">Funcionários na Base</div></div>
+        <div class="stat-card"><div class="stat-icon">📋</div><div class="stat-val" id="ctContratos">–</div><div class="stat-lbl">Contratos Ativos</div></div>
+        <div class="stat-card"><div class="stat-icon">💰</div><div class="stat-val" id="ctReceita">R$ 42,8k</div><div class="stat-lbl">Receita Total (R$)</div></div>
+        <div class="stat-card"><div class="stat-icon">📈</div><div class="stat-val" id="ctTaxaAverb">15,0%</div><div class="stat-lbl">Taxa Méd. de Averbação</div></div>
       </div>
 
       <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:16px;margin-bottom:20px">
@@ -8855,7 +9029,13 @@ html, body {
 
   </div><!-- /content -->
 </div><!-- /main -->
+
 <!-- MODALS -->
+
+<!-- ==================== SECTIONS MOVED FOR BROWSER COMPAT ==================== -->
+
+<!-- ===================== END MOVED SECTIONS ===================== -->
+
 <div class="modal-overlay" id="modalFuncionario">
   <div class="modal">
     <div class="modal-header">
@@ -8949,6 +9129,7 @@ html, body {
   </div>
 </div>
 
+
 <div class="modal-overlay" id="modalUsuario">
   <div class="modal">
     <div class="modal-header">
@@ -8992,6 +9173,11 @@ html, body {
   </div>
 </div>
 
+<!-- ===================== NEXT LEVEL / PLATAFORMA / CONTROLE ===================== -->
+
+
+
+
 <div id="toast-container"></div>
 
 <script>
@@ -9006,14 +9192,7 @@ window.onerror = function(msg, src, line, col, err) {
   return true; // suppress default
 };
 
-const API = (function() {
-  const h = window.location.hostname;
-  // Usa /api relativo para: localhost, 127.0.0.1, e qualquer domínio sandbox novita.ai / genspark
-  if (h === 'localhost' || h === '127.0.0.1' || h.includes('novita.ai') || h.includes('genspark') || h.includes('sandbox')) {
-    return '/api';
-  }
-  return 'https://averba-api-proxy.gelci-jose-grouptrig.workers.dev/api';
-})();
+const API = '/api'; // URL relativa — funciona em localhost e produção (averbatech.com.br)
 let usuario = null;
 let dadosAtuaisFuncionario = null;
 let dadosAtuaisMargem = null;
@@ -9115,7 +9294,8 @@ function toggleMobileSidebar() {
   const sidebar = document.querySelector('.sidebar');
   const overlay = document.getElementById('sidebarOverlay');
   if (!sidebar) return;
-  if (sidebar.classList.contains('mobile-open')) { closeMobileSidebar(); } else { openMobileSidebar(); }
+  const isOpen = sidebar.classList.contains('mobile-open');
+  if (isOpen) { closeMobileSidebar(); } else { openMobileSidebar(); }
 }
 function openMobileSidebar() {
   const sidebar = document.querySelector('.sidebar');
@@ -9231,6 +9411,56 @@ const pageTitles = {
   controle:              ['📊 Controle',               'Painel Executivo · KPIs · Funil de Onboarding · Metas · Mapa de Expansão'],
 };
 
+// ── Mapa: page → grupo da sidebar ────────────────────────────────────────────
+const _pageGroup = {
+  'dashboard':'principal','averbacoes':'principal','nova-averbacao':'principal',
+  'funcionarios':'admin','convenios':'admin','bancos':'admin','usuarios':'admin',
+  'rh-folha':'rh','rh-ocorrencias':'rh','rh-reservas':'rh','rh-desconto':'rh',
+  'banco-margem':'banco','banco-reserva':'banco','banco-carteira':'banco',
+  'auditoria':'compliance','iso27001':'compliance','consulta-margem':'compliance','calculadora':'compliance',
+  'certificados':'modulos','importacoes':'modulos','faturamento':'modulos',
+  'integracoes':'integracoes','rh-integracao':'integracoes','banco-convenios':'integracoes','esocial':'integracoes','portabilidade':'integracoes',
+  'seguros':'facultativos','cartao-consignado':'facultativos','faturamento-recorrente':'facultativos',
+  'score-margem':'inovacao','antecipacao':'inovacao','superendividamento':'inovacao','biometria':'inovacao',
+  'nextlevel':'nextlevel','open-finance':'nextlevel','cashback':'nextlevel','leilao':'nextlevel','marketplace':'nextlevel','parceiros':'nextlevel','desligamento':'nextlevel',
+  'plataforma':'plataforma','camaleao':'plataforma','fgts':'plataforma','carteira-digital':'plataforma','gamificacao':'plataforma','erp':'plataforma','antecipacao-recebiveis':'plataforma',
+  'controle':'controle','painel-controle':'controle',
+  'onboarding':'fintech','payroll':'fintech','payment-flow':'fintech',
+  'ia-preditiva':'ia'
+};
+
+// ── Accordion: abre/fecha grupo ───────────────────────────────────────────────
+function toggleNavGroup(groupId, forceOpen) {
+  const group = document.querySelector('.nav-group[data-group="' + groupId + '"]');
+  if (!group) return;
+  const header = group.querySelector('.nav-section');
+  const items  = group.querySelector('.nav-group-items');
+  if (!header || !items) return;
+  const isOpen = items.classList.contains('open');
+  if (forceOpen === true && isOpen) return; // já aberto, não fechar
+  const open = forceOpen === true ? true : !isOpen;
+  items.classList.toggle('open', open);
+  header.classList.toggle('open', open);
+}
+
+// ── Abre grupo da sidebar que contém a page ───────────────────────────────────
+function openGroupForPage(page) {
+  const gid = _pageGroup[page];
+  if (!gid) return;
+  toggleNavGroup(gid, true);
+  // Scroll suave até o item ativo dentro da sidebar-nav
+  requestAnimationFrame(() => {
+    const nav    = document.querySelector('.sidebar-nav');
+    const active = document.querySelector('.nav-item.active');
+    if (nav && active) {
+      const navTop    = nav.getBoundingClientRect().top;
+      const itemTop   = active.getBoundingClientRect().top;
+      const scrollTo  = nav.scrollTop + (itemTop - navTop) - 60;
+      nav.scrollTo({ top: Math.max(0, scrollTo), behavior: 'smooth' });
+    }
+  });
+}
+
 function navTo(page) {
   // 1. Esconder todas as seções e nav
   document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
@@ -9240,9 +9470,10 @@ function navTo(page) {
   const sec = document.getElementById('section-' + page);
   if (sec) sec.classList.add('active');
 
-  // 3. Ativar nav-item (seletor corrigido — sem espaço extra)
+  // 3. Ativar nav-item e abrir grupo do accordion
   const nav = document.querySelector('[data-page="' + page + '"]');
   if (nav) nav.classList.add('active');
+  openGroupForPage(page);
 
   // 4. Atualizar título topbar
   const [title, sub] = pageTitles[page] || [page, ''];
@@ -9268,7 +9499,7 @@ function navTo(page) {
     });
   });
 
-  // Fechar sidebar no mobile ao navegar
+  // 6. Fechar sidebar no mobile ao navegar
   if (isMobile()) closeMobileSidebar();
 
   loadPageData(page);
@@ -9342,6 +9573,33 @@ async function loadPageData(page) {
 
 // ===================== INIT =====================
 window.addEventListener('DOMContentLoaded', async () => {
+  // ── FIX DOM: Blink parser coloca seções dentro de #modalUsuario — mover para .main ──
+  // Fix já executado pelo script inline antes do </body> — garantia extra
+  (function fixMisplacedSections() {
+    const content = document.querySelector('.content');
+    const mu = document.getElementById('modalUsuario');
+    const ALL_SECTIONS = [
+      'section-open-finance','section-cashback','section-leilao',
+      'section-marketplace','section-parceiros','section-desligamento',
+      'section-camaleao','section-fgts','section-carteira-digital',
+      'section-gamificacao','section-erp','section-antecipacao-recebiveis',
+      'section-painel-controle','section-onboarding','section-payroll',
+      'section-payment-flow','section-ia-preditiva',
+      'section-nextlevel','section-plataforma','section-controle'
+    ];
+    if (content) {
+      ALL_SECTIONS.forEach(function(id) {
+        const el = document.getElementById(id);
+        if (el && !content.contains(el)) content.appendChild(el);
+      });
+    }
+    if (mu) {
+      ['modalDetalheAverb','toast-container'].forEach(function(id) {
+        const el = document.getElementById(id);
+        if (el && mu.contains(el)) document.body.appendChild(el);
+      });
+    }
+  })();
   // ── PASSO 1: Extrair token do hash OU query string ANTES de qualquer coisa ─
   let _hashTok = '', _hashUsr = '';
   // 1a: query string (?t=TOKEN)
@@ -9405,7 +9663,7 @@ window.addEventListener('DOMContentLoaded', async () => {
   document.getElementById('userRoleSidebar').textContent = txt;
 
   // ===================== ACL — Controle de Acesso por Perfil =====================
-  aplicarACL(u.perfil);
+  aplicarACL(u.perfil || 'SUPER_ADMIN');
 
   // Competência padrão
   const hoje = new Date();
@@ -9413,26 +9671,14 @@ window.addEventListener('DOMContentLoaded', async () => {
   const el = document.getElementById('competenciaInicio');
   if (el) el.value = comp;
 
-  // ── Fix: Chromium misplaces sections outside .content due to HTML5 parser quirks ──
-  (function fixMisplacedSections() {
-    var content = document.querySelector('.content');
-    if (!content) return;
-    var allSections = document.querySelectorAll('.page-section');
-    var moved = 0;
-    allSections.forEach(function(sec) {
-      if (sec.parentElement !== content) {
-        content.appendChild(sec);
-        moved++;
-      }
-    });
-    if (moved > 0) console.log('[StructureFix] Moved ' + moved + ' sections back into .content');
-  })();
-  // ────────────────────────────────────────────────────────────────────────────
-
   navTo('dashboard');
 });
 
 function aplicarACL(perfil) {
+  // Fallback: se perfil inválido/undefined, mostrar tudo (SUPER_ADMIN)
+  if (!perfil || !['SUPER_ADMIN','ADMIN','RH','BANCO','FUNCIONARIO'].includes(perfil)) {
+    perfil = 'SUPER_ADMIN';
+  }
   // Mapa: id do nav → perfis que podem ver
   const aclMap = {
     // Admin
@@ -16788,24 +17034,161 @@ function applyFontScale(scale) {
 
 </script>
 <style>
-/* EMERGENCY LAYOUT FIX v5 — MOBILE RESPONSIVE */
+/* ══ LAYOUT FIX v6 — SIDEBAR SCROLL + MOBILE DRAWER ══════════════════════ */
 :root{--sidebar-w:256px!important;--topbar-h:64px!important}
 html,body{margin:0!important;padding:0!important;overflow:hidden!important;height:100vh!important;height:100dvh!important;width:100%!important;box-sizing:border-box!important}
-.sidebar{position:fixed!important;top:0!important;left:0!important;width:256px!important;min-width:256px!important;max-width:256px!important;height:100vh!important;height:100dvh!important;z-index:400!important;transform:none!important;-webkit-transform:none!important;visibility:visible!important;opacity:1!important;display:flex!important;flex-direction:column!important;overflow-y:auto!important;overflow-x:hidden!important;flex-shrink:0!important;transition:transform .3s ease!important}
+
+/* ── DESKTOP: sidebar fixa com scroll interno ─────────────────────────── */
+.sidebar{
+  position:fixed!important;top:0!important;left:0!important;
+  width:256px!important;min-width:256px!important;max-width:256px!important;
+  height:100vh!important;height:100dvh!important;
+  display:flex!important;flex-direction:column!important;
+  overflow:hidden!important; /* NAO scroll no container — só no .sidebar-nav */
+  flex-shrink:0!important;
+  z-index:400!important;
+  transform:none!important;-webkit-transform:none!important;
+  visibility:visible!important;opacity:1!important;
+  transition:transform .3s cubic-bezier(.4,0,.2,1)!important;
+}
+/* O nav (lista de itens) rola internamente */
+.sidebar-nav{
+  flex:1 1 0%!important;
+  min-height:0!important;
+  overflow-y:auto!important;
+  overflow-x:hidden!important;
+  -webkit-overflow-scrolling:touch!important;
+  overscroll-behavior:contain!important;
+  padding:8px 0 12px!important;
+}
+.sidebar-nav::-webkit-scrollbar{width:3px!important}
+.sidebar-nav::-webkit-scrollbar-thumb{background:rgba(255,255,255,.12)!important;border-radius:99px!important}
+/* Header e footer ficam fixos, não rolam */
+.sidebar-header{flex-shrink:0!important}
+.sidebar-footer{flex-shrink:0!important}
+
 .main{margin-left:256px!important;width:calc(100% - 256px)!important;min-width:0!important;height:100vh!important;height:100dvh!important;display:flex!important;flex-direction:column!important;overflow:hidden!important;box-sizing:border-box!important;position:relative!important;transition:margin-left .3s ease,width .3s ease!important}
 .topbar{flex:0 0 64px!important;height:64px!important;min-height:64px!important;max-height:64px!important;width:100%!important;display:flex!important;align-items:center!important;justify-content:space-between!important;background:#fff!important;border-bottom:2px solid #e2e8f0!important;padding:0 20px!important;box-sizing:border-box!important;flex-shrink:0!important;overflow:hidden!important;z-index:200!important}
-.content{flex:1 1 0%!important;min-height:0!important;overflow-y:auto!important;overflow-x:hidden!important;padding:20px 24px 32px!important;box-sizing:border-box!important}
+.content{flex:1 1 0%!important;min-height:0!important;overflow-y:auto!important;overflow-x:hidden!important;padding:20px 24px 32px!important;box-sizing:border-box!important;-webkit-overflow-scrolling:touch!important}
 .page-section{display:none!important}
-.page-section.active{display:block!important;margin:0!important;padding:16px 0 32px!important;max-width:100%!important;box-sizing:border-box!important}
+.page-section.active{display:block!important;margin:0!important;padding:0!important;max-width:100%!important;box-sizing:border-box!important}
+
+/* ── MOBILE ≤ 768px: sidebar drawer compacta com scroll interno ─────── */
 @media(max-width:768px){
-  .sidebar{transform:translateX(-100%)!important;-webkit-transform:translateX(-100%)!important;width:280px!important;min-width:280px!important;max-width:280px!important;z-index:500!important}
-  .sidebar.mobile-open{transform:translateX(0)!important;-webkit-transform:translateX(0)!important}
+  /* Sidebar escondida à esquerda — drawer */
+  .sidebar{
+    transform:translateX(-100%)!important;
+    -webkit-transform:translateX(-100%)!important;
+    width:240px!important;          /* fixo 240px — deixa conteúdo visível */
+    min-width:0!important;
+    max-width:240px!important;
+    z-index:500!important;
+    box-shadow:4px 0 28px rgba(0,0,0,.5)!important;
+  }
+  /* Sidebar aberta — desliza */
+  .sidebar.mobile-open{
+    transform:translateX(0)!important;
+    -webkit-transform:translateX(0)!important;
+  }
+  /* Nav: compacto + scroll touch */
+  .sidebar-nav{
+    -webkit-overflow-scrolling:touch!important;
+    overscroll-behavior:contain!important;
+  }
+  /* Itens compactos — caber mais na tela */
+  .nav-item{
+    padding:8px 14px!important;
+    font-size:12.5px!important;
+    line-height:1.3!important;
+    gap:8px!important;
+  }
+  .nav-item .icon{font-size:14px!important}
+  .nav-section{
+    padding:8px 14px 2px!important;
+    font-size:9.5px!important;
+    letter-spacing:1px!important;
+    margin-top:0!important;
+  }
+  /* Header da sidebar compacto */
+  .sidebar-header{
+    padding:14px 14px 12px!important;
+  }
+  .sidebar-logo-wrap{width:34px!important;height:34px!important;font-size:15px!important}
+  .sidebar-title{font-size:14px!important}
+  .sidebar-sub{font-size:10px!important}
+  /* Footer compacto */
+  .sidebar-footer{padding:10px 14px!important}
+  .btn-logout{padding:7px 10px!important;font-size:12px!important}
+  /* Main 100% */
   .main{margin-left:0!important;width:100%!important}
-  #hamburgerBtn{display:flex!important}
   .topbar{padding:0 12px!important}
   .content{padding:12px 14px 24px!important}
+  #hamburgerBtn{display:flex!important}
+  /* Grids */
+  .stats-grid{grid-template-columns:repeat(2,1fr)!important}
+  .grid-2,.grid-2-mb,.grid-left,.grid-right{grid-template-columns:1fr!important}
+  .grid-3,.grid-3-mb{grid-template-columns:1fr 1fr!important}
+  .grid-4,.grid-5{grid-template-columns:1fr 1fr!important}
 }
-@media(max-width:480px){.content{padding:10px 10px 24px!important}}
+@media(max-width:480px){
+  .sidebar{width:220px!important;max-width:220px!important}
+  .nav-item{padding:7px 12px!important;font-size:12px!important}
+  .nav-section{padding:7px 12px 2px!important;font-size:9px!important}
+  .content{padding:10px 10px 24px!important}
+  .stats-grid{grid-template-columns:1fr!important}
+  .grid-3,.grid-3-mb,.grid-4,.grid-5{grid-template-columns:1fr!important}
+  .form-grid-2,.form-grid-3{grid-template-columns:1fr!important}
+}
 </style>
+<script>
+// ── FIX DEFINITIVO: reposicionar TODAS as page-sections deslocadas pelo parser ─
+// O Blink joga 17 seções para <body> (div desbalanceado em section-biometria)
+// e 3 seções para #modalUsuario. Este script corrige AMBOS os casos.
+(function fixAllMisplacedSections() {
+  var ALL_SECTION_IDS = [
+    'section-open-finance','section-cashback','section-leilao',
+    'section-marketplace','section-parceiros','section-desligamento',
+    'section-camaleao','section-fgts','section-carteira-digital',
+    'section-gamificacao','section-erp','section-antecipacao-recebiveis',
+    'section-painel-controle','section-onboarding','section-payroll',
+    'section-payment-flow','section-ia-preditiva',
+    'section-nextlevel','section-plataforma','section-controle'
+  ];
+  var MISC_IDS = ['modalDetalheAverb','toast-container'];
+
+  function doFix() {
+    var content = document.querySelector('.content');
+    var main    = document.querySelector('.main') || document.body;
+    var mu      = document.getElementById('modalUsuario');
+
+    // 1. Mover todas as page-sections deslocadas para dentro do .content
+    if (content) {
+      ALL_SECTION_IDS.forEach(function(id) {
+        var el = document.getElementById(id);
+        if (!el) return;
+        // Só mover se não estiver já dentro do .content
+        if (!content.contains(el)) {
+          content.appendChild(el);
+        }
+      });
+    }
+
+    // 2. Liberar elementos auxiliares que o parser prendeu dentro do modalUsuario
+    if (mu) {
+      MISC_IDS.forEach(function(id) {
+        var el = document.getElementById(id);
+        if (el && mu.contains(el)) {
+          document.body.appendChild(el);
+        }
+      });
+    }
+  }
+
+  // Executar AGORA (parser já passou pelo </body>)
+  doFix();
+  // Executar novamente após DOMContentLoaded por segurança
+  document.addEventListener('DOMContentLoaded', doFix);
+})();
+</script>
 </body>
 </html>
