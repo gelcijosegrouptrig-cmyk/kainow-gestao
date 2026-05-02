@@ -6357,9 +6357,6 @@ html, body {
       </div>
     </div>
 
-      </div>
-    </div>
-
     <!-- ===================== OPEN FINANCE ===================== -->
     <div class="page-section" id="section-open-finance">
       <div class="page-header">
@@ -8310,132 +8307,6 @@ html, body {
 
     <!-- ===================== INTEGRAÇÕES BANCÁRIAS ===================== -->
 
-  </div><!-- /content -->
-</div><!-- /main -->
-
-<!-- MODALS -->
-<div class="modal-overlay" id="modalFuncionario">
-  <div class="modal">
-    <div class="modal-header">
-      <div class="modal-title">👥 Novo Funcionário</div>
-      <button class="modal-close" onclick="fecharModal('modalFuncionario')">✕</button>
-    </div>
-    <div class="modal-body">
-      <div id="alertModalFunc"></div>
-      <div class="form-grid">
-        <div class="form-group"><label>Matrícula *</label><input type="text" id="fMatricula" placeholder="MAT001"></div>
-        <div class="form-group"><label>Nome Completo *</label><input type="text" id="fNome" placeholder="Nome do funcionário"></div>
-        <div class="form-group"><label>CPF *</label><input type="text" id="fCpf" placeholder="000.000.000-00" maxlength="14" oninput="formatarCPFInput(this)"></div>
-        <div class="form-group"><label>Data de Nascimento</label><input type="date" id="fNascimento"></div>
-        <div class="form-group"><label>Convênio *</label><select id="fConvenio"></select></div>
-        <div class="form-group"><label>Cargo</label><input type="text" id="fCargo" placeholder="Ex: Analista"></div>
-        <div class="form-group"><label>Lotação/Setor</label><input type="text" id="fLotacao" placeholder="Ex: Secretaria de Finanças"></div>
-        <div class="form-group"><label>Data Admissão</label><input type="date" id="fAdmissao"></div>
-        <div class="form-group"><label>Salário Bruto (R$) *</label><input type="number" id="fBruto" placeholder="0,00" step="0.01"></div>
-        <div class="form-group"><label>Salário Líquido (R$) *</label><input type="number" id="fLiquido" placeholder="0,00" step="0.01"></div>
-      </div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-outline" onclick="fecharModal('modalFuncionario')">Cancelar</button>
-      <button class="btn btn-primary" onclick="salvarFuncionario()">💾 Salvar</button>
-    </div>
-  </div>
-</div>
-
-<div class="modal-overlay" id="modalConvenio">
-  <div class="modal">
-    <div class="modal-header">
-      <div class="modal-title">🏛️ Novo Convênio</div>
-      <button class="modal-close" onclick="fecharModal('modalConvenio')">✕</button>
-    </div>
-    <div class="modal-body">
-      <div id="alertModalConv"></div>
-      <div class="form-grid">
-        <div class="form-group"><label>Nome do Convênio *</label><input type="text" id="cNome" placeholder="Ex: Prefeitura de São Paulo"></div>
-        <div class="form-group"><label>CNPJ *</label><input type="text" id="cCnpj" placeholder="00.000.000/0001-00"></div>
-        <div class="form-group"><label>Tipo *</label>
-          <select id="cTipo">
-            <option value="PUBLICO">Público</option>
-            <option value="PRIVADO">Privado</option>
-            <option value="MILITAR">Militar</option>
-          </select>
-        </div>
-        <div class="form-group"><label>Sistema de Folha</label>
-          <select id="cSistema">
-            <option value="MANUAL">Manual</option>
-            <option value="TOTVS">TOTVS</option>
-            <option value="SAP">SAP</option>
-            <option value="SENIOR">Senior</option>
-            <option value="GOVBR">Gov.BR</option>
-          </select>
-        </div>
-        <div class="form-group"><label>% Empréstimo</label><input type="number" id="cPctEmp" value="35" step="0.1"></div>
-        <div class="form-group"><label>% Cartão</label><input type="number" id="cPctCart" value="5" step="0.1"></div>
-        <div class="form-group"><label>% Benefício</label><input type="number" id="cPctBenef" value="5" step="0.1"></div>
-        <div class="form-group"><label>Responsável</label><input type="text" id="cResponsavel" placeholder="Nome do responsável"></div>
-        <div class="form-group"><label>Telefone</label><input type="text" id="cTelefone" placeholder="(00) 0000-0000"></div>
-      </div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-outline" onclick="fecharModal('modalConvenio')">Cancelar</button>
-      <button class="btn btn-primary" onclick="salvarConvenio()">💾 Salvar</button>
-    </div>
-  </div>
-</div>
-
-<div class="modal-overlay" id="modalBanco">
-  <div class="modal">
-    <div class="modal-header">
-      <div class="modal-title">🏦 Novo Banco</div>
-      <button class="modal-close" onclick="fecharModal('modalBanco')">✕</button>
-    </div>
-    <div class="modal-body">
-      <div id="alertModalBanco"></div>
-      <div class="form-grid">
-        <div class="form-group"><label>Nome do Banco *</label><input type="text" id="bNome" placeholder="Ex: Banco do Brasil"></div>
-        <div class="form-group"><label>Código BACEN *</label><input type="text" id="bCodigo" placeholder="001"></div>
-        <div class="form-group"><label>CNPJ *</label><input type="text" id="bCnpj" placeholder="00.000.000/0001-00"></div>
-        <div class="form-group"><label>Taxa de Averbação (R$)</label><input type="number" id="bTaxa" value="15.00" step="0.01"></div>
-        <div class="form-group"><label>Contato Responsável</label><input type="text" id="bContato"></div>
-        <div class="form-group"><label>Email Operacional</label><input type="email" id="bEmail"></div>
-      </div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-outline" onclick="fecharModal('modalBanco')">Cancelar</button>
-      <button class="btn btn-primary" onclick="salvarBanco()">💾 Salvar</button>
-    </div>
-  </div>
-</div>
-
-<div class="modal-overlay" id="modalUsuario">
-  <div class="modal">
-    <div class="modal-header">
-      <div class="modal-title">👤 Novo Usuário</div>
-      <button class="modal-close" onclick="fecharModal('modalUsuario')">✕</button>
-    </div>
-    <div class="modal-body">
-      <div id="alertModalUser"></div>
-      <div class="form-grid">
-        <div class="form-group"><label>Nome *</label><input type="text" id="uNome" placeholder="Nome completo"></div>
-        <div class="form-group"><label>Email *</label><input type="email" id="uEmail"></div>
-        <div class="form-group"><label>Senha *</label><input type="password" id="uSenha" placeholder="Mín. 8 caracteres"></div>
-        <div class="form-group"><label>Perfil *</label>
-          <select id="uPerfil" onchange="toggleConvenioBanco()">
-            <option value="ADMIN">Administrador</option>
-            <option value="RH">RH</option>
-            <option value="BANCO">Banco</option>
-            <option value="FUNCIONARIO">Funcionário</option>
-          </select>
-        </div>
-        <div class="form-group" id="grpConvenio"><label>Convênio</label><select id="uConvenio"><option value="">Selecione...</option></select></div>
-        <div class="form-group" id="grpBanco"><label>Banco</label><select id="uBanco"><option value="">Selecione...</option></select></div>
-      </div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-outline" onclick="fecharModal('modalUsuario')">Cancelar</button>
-      <button class="btn btn-primary" onclick="salvarUsuario()">💾 Salvar</button>
-    </div>
-  </div>
 
     <!-- ===================== 💎 NEXT LEVEL (overview) ===================== -->
     <div class="page-section" id="section-nextlevel">
@@ -8619,7 +8490,7 @@ html, body {
       </div>
     </div>
 
-<!-- ===================== 🏗️ PLATAFORMA (overview) ===================== -->
+    <!-- ===================== 🏗️ PLATAFORMA (overview) ===================== -->
     <div class="page-section" id="section-plataforma">
       <div class="page-header">
         <div class="page-header-icon">🏗️</div>
@@ -8803,7 +8674,7 @@ html, body {
       </div>
     </div>
 
-<!-- ===================== 📊 CONTROLE (overview) ===================== -->
+    <!-- ===================== 📊 CONTROLE (overview) ===================== -->
     <div class="page-section" id="section-controle">
       <div class="page-header">
         <div class="page-header-icon">📊</div>
@@ -8939,7 +8810,135 @@ html, body {
       </div>
     </div>
 
+  </div><!-- /content -->
+</div><!-- /main -->
 
+<!-- MODALS -->
+<div class="modal-overlay" id="modalFuncionario">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">👥 Novo Funcionário</div>
+      <button class="modal-close" onclick="fecharModal('modalFuncionario')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div id="alertModalFunc"></div>
+      <div class="form-grid">
+        <div class="form-group"><label>Matrícula *</label><input type="text" id="fMatricula" placeholder="MAT001"></div>
+        <div class="form-group"><label>Nome Completo *</label><input type="text" id="fNome" placeholder="Nome do funcionário"></div>
+        <div class="form-group"><label>CPF *</label><input type="text" id="fCpf" placeholder="000.000.000-00" maxlength="14" oninput="formatarCPFInput(this)"></div>
+        <div class="form-group"><label>Data de Nascimento</label><input type="date" id="fNascimento"></div>
+        <div class="form-group"><label>Convênio *</label><select id="fConvenio"></select></div>
+        <div class="form-group"><label>Cargo</label><input type="text" id="fCargo" placeholder="Ex: Analista"></div>
+        <div class="form-group"><label>Lotação/Setor</label><input type="text" id="fLotacao" placeholder="Ex: Secretaria de Finanças"></div>
+        <div class="form-group"><label>Data Admissão</label><input type="date" id="fAdmissao"></div>
+        <div class="form-group"><label>Salário Bruto (R$) *</label><input type="number" id="fBruto" placeholder="0,00" step="0.01"></div>
+        <div class="form-group"><label>Salário Líquido (R$) *</label><input type="number" id="fLiquido" placeholder="0,00" step="0.01"></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="fecharModal('modalFuncionario')">Cancelar</button>
+      <button class="btn btn-primary" onclick="salvarFuncionario()">💾 Salvar</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modalConvenio">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">🏛️ Novo Convênio</div>
+      <button class="modal-close" onclick="fecharModal('modalConvenio')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div id="alertModalConv"></div>
+      <div class="form-grid">
+        <div class="form-group"><label>Nome do Convênio *</label><input type="text" id="cNome" placeholder="Ex: Prefeitura de São Paulo"></div>
+        <div class="form-group"><label>CNPJ *</label><input type="text" id="cCnpj" placeholder="00.000.000/0001-00"></div>
+        <div class="form-group"><label>Tipo *</label>
+          <select id="cTipo">
+            <option value="PUBLICO">Público</option>
+            <option value="PRIVADO">Privado</option>
+            <option value="MILITAR">Militar</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Sistema de Folha</label>
+          <select id="cSistema">
+            <option value="MANUAL">Manual</option>
+            <option value="TOTVS">TOTVS</option>
+            <option value="SAP">SAP</option>
+            <option value="SENIOR">Senior</option>
+            <option value="GOVBR">Gov.BR</option>
+          </select>
+        </div>
+        <div class="form-group"><label>% Empréstimo</label><input type="number" id="cPctEmp" value="35" step="0.1"></div>
+        <div class="form-group"><label>% Cartão</label><input type="number" id="cPctCart" value="5" step="0.1"></div>
+        <div class="form-group"><label>% Benefício</label><input type="number" id="cPctBenef" value="5" step="0.1"></div>
+        <div class="form-group"><label>Responsável</label><input type="text" id="cResponsavel" placeholder="Nome do responsável"></div>
+        <div class="form-group"><label>Telefone</label><input type="text" id="cTelefone" placeholder="(00) 0000-0000"></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="fecharModal('modalConvenio')">Cancelar</button>
+      <button class="btn btn-primary" onclick="salvarConvenio()">💾 Salvar</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modalBanco">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">🏦 Novo Banco</div>
+      <button class="modal-close" onclick="fecharModal('modalBanco')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div id="alertModalBanco"></div>
+      <div class="form-grid">
+        <div class="form-group"><label>Nome do Banco *</label><input type="text" id="bNome" placeholder="Ex: Banco do Brasil"></div>
+        <div class="form-group"><label>Código BACEN *</label><input type="text" id="bCodigo" placeholder="001"></div>
+        <div class="form-group"><label>CNPJ *</label><input type="text" id="bCnpj" placeholder="00.000.000/0001-00"></div>
+        <div class="form-group"><label>Taxa de Averbação (R$)</label><input type="number" id="bTaxa" value="15.00" step="0.01"></div>
+        <div class="form-group"><label>Contato Responsável</label><input type="text" id="bContato"></div>
+        <div class="form-group"><label>Email Operacional</label><input type="email" id="bEmail"></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="fecharModal('modalBanco')">Cancelar</button>
+      <button class="btn btn-primary" onclick="salvarBanco()">💾 Salvar</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modalUsuario">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">👤 Novo Usuário</div>
+      <button class="modal-close" onclick="fecharModal('modalUsuario')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div id="alertModalUser"></div>
+      <div class="form-grid">
+        <div class="form-group"><label>Nome *</label><input type="text" id="uNome" placeholder="Nome completo"></div>
+        <div class="form-group"><label>Email *</label><input type="email" id="uEmail"></div>
+        <div class="form-group"><label>Senha *</label><input type="password" id="uSenha" placeholder="Mín. 8 caracteres"></div>
+        <div class="form-group"><label>Perfil *</label>
+          <select id="uPerfil" onchange="toggleConvenioBanco()">
+            <option value="ADMIN">Administrador</option>
+            <option value="RH">RH</option>
+            <option value="BANCO">Banco</option>
+            <option value="FUNCIONARIO">Funcionário</option>
+          </select>
+        </div>
+        <div class="form-group" id="grpConvenio"><label>Convênio</label><select id="uConvenio"><option value="">Selecione...</option></select></div>
+        <div class="form-group" id="grpBanco"><label>Banco</label><select id="uBanco"><option value="">Selecione...</option></select></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="fecharModal('modalUsuario')">Cancelar</button>
+      <button class="btn btn-primary" onclick="salvarUsuario()">💾 Salvar</button>
+    </div>
+  </div>
+</div><!-- /modalUsuario -->
+
+    <!-- ===================== 💎 NEXT LEVEL (overview) ===================== -->
 <div class="modal-overlay" id="modalDetalheAverb">
   <div class="modal table-700">
     <div class="modal-header">

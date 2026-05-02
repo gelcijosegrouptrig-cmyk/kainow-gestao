@@ -4,8 +4,9 @@ const { gerarId, gerarCodigoAverbacao } = require('./utils/helpers');
 const { calcularMargens, gerarCompetencia } = require('./services/margemEngine');
 
 function seedDatabase() {
-  const existe = db.prepare("SELECT COUNT(*) as c FROM usuarios").get();
-  if (existe.c > 0) return;
+  // Verificar se os usuários principais já existem (não apenas qualquer usuário)
+  const adminExiste = db.prepare("SELECT COUNT(*) as c FROM usuarios WHERE email = 'admin@averba.tech'").get();
+  if (adminExiste.c > 0) return;
 
   console.log('🌱 Populando banco de dados com dados iniciais...');
 
@@ -116,7 +117,7 @@ function seedDatabase() {
 
   console.log('✅ Dados iniciais inseridos com sucesso!');
   console.log('\n📋 CREDENCIAIS DE ACESSO:');
-  console.log('   👑 Super Admin: admin@averba.tech / Admin@2024');
+  console.log('   👑 Super Admin:  admin@averba.tech / Admin@2024');
   console.log('   🏛️  RH Prefeitura: rh@prefeitura.sp.gov.br / RH@12345');
   console.log('   🏦 Banco do Brasil: operador@bb.com.br / Banco@123\n');
 }

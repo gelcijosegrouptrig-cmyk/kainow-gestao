@@ -114,7 +114,7 @@ router.post('/banco', autenticar, autorizar(['SUPER_ADMIN','ADMIN']), (req, res)
 });
 
 // ── GET /api/onboarding/painel ────────────────────────────────────────────
-router.get('/painel', autenticar, autorizar(['SUPER_ADMIN','ADMIN']), (req, res) => {
+router.get('/painel', autenticar, (req, res) => {
   try {
     const convenios = db.prepare(`SELECT COUNT(*) as v FROM convenios WHERE ativo=1`).get().v;
     const bancos    = db.prepare(`SELECT COUNT(*) as v FROM bancos WHERE ativo=1`).get().v;

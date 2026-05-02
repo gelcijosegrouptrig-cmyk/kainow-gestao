@@ -173,6 +173,29 @@ router.post('/', auth, adminBanco, (req, res) => {
   } catch (e) { res.status(500).json({ erro: e.message }); }
 });
 
+// GET /api/cartao/faturas — listar faturas (DEVE ficar antes de /:id para não conflitar)
+router.get('/faturas', auth, (req, res) => {
+  try {
+    const { competencia, banco_id, cartao_id, status } = req.query;
+    const comp = competencia || competenciaAtual();
+    let sql = `SELECT cf.*, cc.codigo_cartao, cc.tipo AS tipo_cartao, cc.margem_reservada,
+        f.nome AS funcionario_nome, f.matricula, f.cpf,
+        b.nome AS banco_nome
+      FROM cartoes_faturas cf
+      JOIN cartoes_consignados cc ON cc.id=cf.cartao_id
+      JOIN funcionarios f ON f.id=cf.funcionario_id
+      JOIN bancos b ON b.id=cf.banco_id
+      WHERE cf.competencia=?`;
+    const params = [comp];
+    if (banco_id) { sql += ' AND cf.banco_id=?';  params.push(banco_id); }
+    if (cartao_id){ sql += ' AND cf.cartao_id=?'; params.push(cartao_id); }
+    if (status)   { sql += ' AND cf.status=?';    params.push(status); }
+    if (req.usuario?.perfil === 'BANCO' && req.usuario?.banco_id)
+      { sql += ' AND cf.banco_id=?'; params.push(req.usuario.banco_id); }
+    res.json(db.prepare(sql + ' ORDER BY cf.criado_em DESC').all(...params));
+  } catch (e) { res.status(500).json({ erro: e.message }); }
+});
+
 // GET /api/cartao/:id
 router.get('/:id', auth, (req, res) => {
   try {

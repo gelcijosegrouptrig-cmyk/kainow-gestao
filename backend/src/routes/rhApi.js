@@ -769,4 +769,19 @@ function atualizarMargens(funcionarioId, salarioBruto, salarioLiquido, convenio)
   } catch (e) { console.error('atualizarMargens:', e.message); }
 }
 
+// ─── ALIAS: GET /api/rh/historico-sincronizacoes → mesma lógica de /sincronizacoes ──────
+router.get('/historico-sincronizacoes', autenticar, autorizar('SUPER_ADMIN', 'ADMIN', 'RH'), (req, res) => {
+  const { convenio_id, limit = 50 } = req.query;
+  let query = `
+    SELECT s.*, c.nome as convenio_nome
+    FROM sincronizacoes_folha s
+    JOIN convenios c ON c.id = s.convenio_id
+  `;
+  const params = [];
+  if (convenio_id) { query += ` WHERE s.convenio_id = ?`; params.push(convenio_id); }
+  query += ` ORDER BY s.criado_em DESC LIMIT ?`;
+  params.push(parseInt(limit));
+  res.json(db.prepare(query).all(...params));
+});
+
 module.exports = router;

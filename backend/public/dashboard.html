@@ -3331,19 +3331,17 @@ html { scroll-behavior: auto !important; }
 </style>
 <style id="layout-override">
 /* ═══════════════════════════════════════════════════════════════════
-   LAYOUT OVERRIDE v4 — AverbaTech Dashboard
-   Estratégia: margin-left (mesmo do design original) + CSS vars fixas
-   Sidebar: position fixed 256px | Main: margin-left 256px height 100dvh
+   LAYOUT OVERRIDE v5 — AverbaTech Dashboard — MOBILE RESPONSIVE
+   Desktop: sidebar fixa 256px + margin-left no .main
+   Mobile (≤768px): sidebar oculta, abre com hamburger
    ═══════════════════════════════════════════════════════════════════ */
 
-/* ── 0. Forçar variável CSS --sidebar-w = 256px sempre ── */
 :root {
   --sidebar-w:      256px !important;
   --content-start:  256px !important;
   --topbar-h:        64px !important;
 }
 
-/* ── 1. Reset base ── */
 html, body {
   margin:   0 !important;
   padding:  0 !important;
@@ -3354,7 +3352,6 @@ html, body {
   box-sizing: border-box !important;
 }
 
-/* ── 2. SIDEBAR: posição fixa, 256px, sempre visível ── */
 .sidebar {
   position:   fixed !important;
   top:        0     !important;
@@ -3374,9 +3371,9 @@ html, body {
   display:    flex    !important;
   flex-direction: column !important;
   flex-shrink: 0 !important;
+  transition: transform 0.3s ease !important;
 }
 
-/* ── 3. MAIN: margin-left 256px (igual ao design original) ── */
 .main {
   margin-left:    256px !important;
   width:          calc(100% - 256px) !important;
@@ -3387,11 +3384,10 @@ html, body {
   flex-direction: column !important;
   overflow:       hidden !important;
   box-sizing:     border-box !important;
-  /* REMOVER position:fixed para não conflitar com margin-left */
   position:       relative !important;
+  transition:     margin-left 0.3s ease, width 0.3s ease !important;
 }
 
-/* ── 4. TOPBAR: 64px, fixo no topo via flexbox ── */
 .topbar {
   flex:        0 0 64px !important;
   height:      64px     !important;
@@ -3411,7 +3407,6 @@ html, body {
   flex-shrink: 0        !important;
 }
 
-/* ── 5. CONTENT: ocupa o resto, scroll vertical ── */
 .content {
   flex:        1 1 0% !important;
   min-height:  0      !important;
@@ -3421,41 +3416,78 @@ html, body {
   box-sizing:  border-box !important;
 }
 
-/* ── 6. PAGE-SECTIONS ── */
 .page-section        { display: none !important; }
 .page-section.active {
   display:    block !important;
   margin:     0     !important;
-  padding:    0     !important;
+  padding:    16px 0 32px !important;
   min-width:  0     !important;
   max-width:  100%  !important;
   box-sizing: border-box !important;
 }
 
-/* ── 7. Filhos sem overflow horizontal ── */
 .content > * {
   max-width:  100% !important;
   min-width:  0    !important;
   box-sizing: border-box !important;
 }
 
-/* ── 8. Anular QUALQUER @media que mova sidebar/main ── */
-@media (max-width: 9999px) {
-  :root { --sidebar-w: 256px !important; }
+#hamburgerBtn {
+  display:     none !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width:       40px !important;
+  height:      40px !important;
+  border:      none !important;
+  background:  transparent !important;
+  cursor:      pointer !important;
+  border-radius: 8px !important;
+  margin-right: 8px !important;
+  flex-shrink: 0 !important;
+  padding:     0 !important;
+}
+#hamburgerBtn:hover { background: #f1f5f9 !important; }
+
+#sidebarOverlay {
+  display:    none !important;
+  position:   fixed !important;
+  inset:      0 !important;
+  background: rgba(0,0,0,.55) !important;
+  z-index:    390 !important;
+}
+#sidebarOverlay.active { display: block !important; }
+
+@media (max-width: 768px) {
   .sidebar {
-    transform:   none    !important;
-    left:        0       !important;
-    width:       256px   !important;
-    min-width:   256px   !important;
-    visibility:  visible !important;
-    display:     flex    !important;
-    opacity:     1       !important;
+    transform:  translateX(-100%) !important;
+    -webkit-transform: translateX(-100%) !important;
+    width:      280px !important;
+    min-width:  280px !important;
+    max-width:  280px !important;
+    z-index:    500 !important;
+  }
+  .sidebar.mobile-open {
+    transform:  translateX(0) !important;
+    -webkit-transform: translateX(0) !important;
   }
   .main {
-    margin-left: 256px              !important;
-    width:       calc(100% - 256px) !important;
-    position:    relative           !important;
+    margin-left: 0 !important;
+    width:       100% !important;
   }
+  #hamburgerBtn { display: flex !important; }
+  .topbar { padding: 0 12px !important; }
+  .content { padding: 12px 14px 24px !important; }
+  .stats-grid { grid-template-columns: repeat(2, 1fr) !important; }
+  .grid-2, .grid-2-mb, .grid-left, .grid-right { grid-template-columns: 1fr !important; }
+  .grid-3, .grid-3-mb { grid-template-columns: 1fr 1fr !important; }
+  .grid-4, .grid-5 { grid-template-columns: 1fr 1fr !important; }
+}
+
+@media (max-width: 480px) {
+  .stats-grid { grid-template-columns: 1fr !important; }
+  .grid-3, .grid-3-mb, .grid-4, .grid-5 { grid-template-columns: 1fr !important; }
+  .form-grid-2, .form-grid-3 { grid-template-columns: 1fr !important; }
+  .content { padding: 10px 10px 24px !important; }
 }
 </style>
 </head>
@@ -3561,9 +3593,19 @@ html, body {
   </div>
 </aside>
 
+<!-- Overlay mobile -->
+<div id="sidebarOverlay" onclick="closeMobileSidebar()"></div>
+
 <!-- MAIN -->
 <div class="main">
   <div class="topbar">
+    <button id="hamburgerBtn" onclick="toggleMobileSidebar()" aria-label="Menu" title="Abrir menu">
+      <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect y="3" width="22" height="2.2" rx="1.1" fill="#334155"/>
+        <rect y="9.9" width="22" height="2.2" rx="1.1" fill="#334155"/>
+        <rect y="16.8" width="22" height="2.2" rx="1.1" fill="#334155"/>
+      </svg>
+    </button>
     <div class="topbar-title-wrap">
       <div class="page-title" id="pageTitle">Dashboard</div>
       <div class="page-subtitle" id="pageSubtitle">Visão geral do sistema</div>
@@ -3585,7 +3627,6 @@ html, body {
         </div>
       </div>
     </div>
-  </div>
 
   <div class="content">
 
@@ -6357,8 +6398,6 @@ html, body {
       </div>
     </div>
 
-      </div>
-    </div>
 
     <!-- ===================== OPEN FINANCE ===================== -->
     <div class="page-section" id="section-open-finance">
@@ -6431,9 +6470,9 @@ html, body {
           </div>
         </div>
       </div>
-    </div>
 
     <!-- ===================== CASHBACK ===================== -->
+    </div>
     <div class="page-section" id="section-cashback">
       <div class="page-header">
         <div class="page-header-icon">🎁</div>
@@ -6509,9 +6548,9 @@ html, body {
           </div>
         </div>
       </div>
-    </div>
 
     <!-- ===================== LEILÃO REVERSO ===================== -->
+    </div>
     <div class="page-section" id="section-leilao">
       <div class="page-header">
         <div class="page-header-icon">🔨</div>
@@ -6589,9 +6628,9 @@ html, body {
           </div>
         </div>
       </div>
-    </div>
 
     <!-- ===================== MARKETPLACE ===================== -->
+    </div>
     <div class="page-section" id="section-marketplace">
       <div class="page-header">
         <div class="page-header-icon">🛒</div>
@@ -6657,9 +6696,9 @@ html, body {
           </div>
         </div>
       </div>
-    </div>
 
     <!-- ===================== DESLIGAMENTO SEGURO ===================== -->
+    </div>
     <div class="page-section" id="section-parceiros">
       <div class="page-header">
         <div class="page-header-icon">🤝</div>
@@ -6923,10 +6962,10 @@ html, body {
         </div>
       </div>
 
-    </div>
     <!-- /section-parceiros -->
 
     <!-- ===================== MÓDULO CAMALEÃO ===================== -->
+    </div>
     <div class="page-section" id="section-desligamento">
       <div class="page-header">
         <div class="page-header-icon">🛡️</div>
@@ -7016,10 +7055,10 @@ html, body {
           </div>
         </div>
       </div>
-    </div>
 
 
     <!-- ===================== CADASTRO DE PARCEIROS ===================== -->
+    </div>
     <div class="page-section" id="section-camaleao">
       <div class="page-header">
         <div class="page-header-icon">🦎</div>
@@ -7077,9 +7116,9 @@ html, body {
           <div class="form-actions"><button class="btn btn-primary" onclick="salvarRegraCamaleao()">💾 Salvar Regra</button></div>
         </div>
       </div>
-    </div>
 
     <!-- ===================== FGTS ANIVERSÁRIO ===================== -->
+    </div>
     <div class="page-section" id="section-fgts">
       <div class="page-header">
         <div class="page-header-icon">💼</div>
@@ -7144,9 +7183,9 @@ html, body {
           </div>
         </div>
       </div>
-    </div>
 
     <!-- ===================== CARTEIRA DIGITAL ===================== -->
+    </div>
     <div class="page-section" id="section-carteira-digital">
       <div class="page-header">
         <div class="page-header-icon">📲</div>
@@ -7209,9 +7248,9 @@ html, body {
           </div>
         </div>
       </div>
-    </div>
 
     <!-- ===================== EDUCAÇÃO FINANCEIRA GAMIFICADA ===================== -->
+    </div>
     <div class="page-section" id="section-gamificacao">
       <div class="page-header">
         <div class="page-header-icon">🎮</div>
@@ -7271,9 +7310,9 @@ html, body {
           </div>
         </div>
       </div>
-    </div>
 
     <!-- ===================== CONECTORES ERP ===================== -->
+    </div>
     <div class="page-section" id="section-erp">
       <div class="page-header">
         <div class="page-header-icon">🔌</div>
@@ -7354,9 +7393,9 @@ html, body {
           <button class="btn btn-primary" onclick="salvarSplit()">💾 Salvar Split</button>
         </div>
       </div>
-    </div>
 
     <!-- ===================== ANTECIPAÇÃO DE RECEBÍVEIS ===================== -->
+    </div>
     <div class="page-section" id="section-antecipacao-recebiveis">
       <div class="page-header">
         <div class="page-header-icon">🏭</div>
@@ -7429,10 +7468,10 @@ html, body {
           </div>
         </div>
       </div>
-    </div>
 
 
     <!-- ===================== PAINEL DE CONTROLE ===================== -->
+    </div>
     <div class="page-section" id="section-painel-controle">
       <div class="page-header">
         <div class="page-header-icon">🎛️</div>
@@ -7560,9 +7599,9 @@ html, body {
           </div>
         </div>
       </div>
-    </div>
 
     <!-- ===================== ONBOARDING DIGITAL ===================== -->
+    </div>
     <div class="page-section" id="section-onboarding">
       <div class="page-header">
         <div class="page-header-icon">🚀</div>
@@ -7572,12 +7611,12 @@ html, body {
         </div>
       </div>
       <div class="stats-grid mb-14" id="statsOnboarding">
-        <div class="stat-card"><div class="stat-icon">🏛️</div><div class="stat-val" id="onbRH">10</div><div class="stat-lbl">RH Onboarded</div></div>
-        <div class="stat-card"><div class="stat-icon">🏦</div><div class="stat-val" id="onbBanco">5</div><div class="stat-lbl">Bancos Credenciados</div></div>
-        <div class="stat-card"><div class="stat-icon">👤</div><div class="stat-val" id="onbFunc">–</div><div class="stat-lbl">Funcionários Cadastrados</div></div>
-        <div class="stat-card"><div class="stat-icon">⏱️</div><div class="stat-val">4 min</div><div class="stat-lbl">Tempo Médio Onboarding</div></div>
-        <div class="stat-card"><div class="stat-icon">✅</div><div class="stat-val">94%</div><div class="stat-lbl">Taxa de Conclusão</div></div>
-        <div class="stat-card"><div class="stat-icon">📱</div><div class="stat-val">100%</div><div class="stat-lbl">Auto-Cadastro Digital</div></div>
+        <div class="stat-card"><div class="stat-icon">🏛️</div><div class="stat-value" id="onbRH">10</div><div class="stat-label">RH Onboarded</div></div>
+        <div class="stat-card"><div class="stat-icon">🏦</div><div class="stat-value" id="onbBanco">5</div><div class="stat-label">Bancos Credenciados</div></div>
+        <div class="stat-card"><div class="stat-icon">👤</div><div class="stat-value" id="onbFunc">–</div><div class="stat-label">Funcionários Cadastrados</div></div>
+        <div class="stat-card"><div class="stat-icon">⏱️</div><div class="stat-value">4 min</div><div class="stat-label">Tempo Médio Onboarding</div></div>
+        <div class="stat-card"><div class="stat-icon">✅</div><div class="stat-value">94%</div><div class="stat-label">Taxa de Conclusão</div></div>
+        <div class="stat-card"><div class="stat-icon">📱</div><div class="stat-value">100%</div><div class="stat-label">Auto-Cadastro Digital</div></div>
       </div>
       <!-- Funil -->
       <div class="panel mb-14">
@@ -7717,9 +7756,9 @@ html, body {
           </div>
         </div>
       </div>
-    </div>
 
     <!-- ===================== MOTOR DE FOLHA (PAYROLL ENGINE) ===================== -->
+    </div>
     <div class="page-section" id="section-payroll">
       <div class="page-header">
         <div class="page-header-icon">💸</div>
@@ -7729,12 +7768,12 @@ html, body {
         </div>
       </div>
       <div class="stats-grid mb-14" id="statsPayroll">
-        <div class="stat-card"><div class="stat-icon">💰</div><div class="stat-val" id="payStatEscrow">R$ 0</div><div class="stat-lbl">Saldo Escrow Total</div></div>
-        <div class="stat-card"><div class="stat-icon">⚡</div><div class="stat-val" id="payStatPix">0</div><div class="stat-lbl">Pix Enviados Hoje</div></div>
-        <div class="stat-card"><div class="stat-icon">🔀</div><div class="stat-val" id="payStatSplit">0</div><div class="stat-lbl">Splits Processados</div></div>
-        <div class="stat-card"><div class="stat-icon">🏦</div><div class="stat-val" id="payStatBancos">5</div><div class="stat-lbl">Bancos Conectados</div></div>
-        <div class="stat-card"><div class="stat-icon">✅</div><div class="stat-val">99,8%</div><div class="stat-lbl">Uptime Escrow</div></div>
-        <div class="stat-card"><div class="stat-icon">⏱️</div><div class="stat-val">&lt;2s</div><div class="stat-lbl">Tempo Médio Pix</div></div>
+        <div class="stat-card"><div class="stat-icon">💰</div><div class="stat-value" id="payStatEscrow">R$ 0</div><div class="stat-label">Saldo Escrow Total</div></div>
+        <div class="stat-card"><div class="stat-icon">⚡</div><div class="stat-value" id="payStatPix">0</div><div class="stat-label">Pix Enviados Hoje</div></div>
+        <div class="stat-card"><div class="stat-icon">🔀</div><div class="stat-value" id="payStatSplit">0</div><div class="stat-label">Splits Processados</div></div>
+        <div class="stat-card"><div class="stat-icon">🏦</div><div class="stat-value" id="payStatBancos">5</div><div class="stat-label">Bancos Conectados</div></div>
+        <div class="stat-card"><div class="stat-icon">✅</div><div class="stat-value">99,8%</div><div class="stat-label">Uptime Escrow</div></div>
+        <div class="stat-card"><div class="stat-icon">⏱️</div><div class="stat-value">&lt;2s</div><div class="stat-label">Tempo Médio Pix</div></div>
       </div>
       <div class="grid-asym-1-13-mb14">
         <!-- Wallet da empresa -->
@@ -7841,10 +7880,10 @@ html, body {
           </div>
         </div>
       </div>
-    </div>
 
 
     <!-- ===================== FLUXO DE PAGAMENTO INTEGRADO ===================== -->
+    </div>
     <div class="page-section" id="section-payment-flow">
       <div class="page-header">
         <div class="page-header-icon">🔄</div>
@@ -8055,9 +8094,9 @@ html, body {
           </div>
         </div>
       </div>
-    </div>
 
     <!-- ===================== MOTOR IA PREDITIVA ===================== -->
+    </div>
     <div class="page-section" id="section-ia-preditiva">
       <div class="page-header">
         <div class="page-header-icon">🤖</div>
@@ -8310,132 +8349,7 @@ html, body {
 
     <!-- ===================== INTEGRAÇÕES BANCÁRIAS ===================== -->
 
-  </div><!-- /content -->
-</div><!-- /main -->
 
-<!-- MODALS -->
-<div class="modal-overlay" id="modalFuncionario">
-  <div class="modal">
-    <div class="modal-header">
-      <div class="modal-title">👥 Novo Funcionário</div>
-      <button class="modal-close" onclick="fecharModal('modalFuncionario')">✕</button>
-    </div>
-    <div class="modal-body">
-      <div id="alertModalFunc"></div>
-      <div class="form-grid">
-        <div class="form-group"><label>Matrícula *</label><input type="text" id="fMatricula" placeholder="MAT001"></div>
-        <div class="form-group"><label>Nome Completo *</label><input type="text" id="fNome" placeholder="Nome do funcionário"></div>
-        <div class="form-group"><label>CPF *</label><input type="text" id="fCpf" placeholder="000.000.000-00" maxlength="14" oninput="formatarCPFInput(this)"></div>
-        <div class="form-group"><label>Data de Nascimento</label><input type="date" id="fNascimento"></div>
-        <div class="form-group"><label>Convênio *</label><select id="fConvenio"></select></div>
-        <div class="form-group"><label>Cargo</label><input type="text" id="fCargo" placeholder="Ex: Analista"></div>
-        <div class="form-group"><label>Lotação/Setor</label><input type="text" id="fLotacao" placeholder="Ex: Secretaria de Finanças"></div>
-        <div class="form-group"><label>Data Admissão</label><input type="date" id="fAdmissao"></div>
-        <div class="form-group"><label>Salário Bruto (R$) *</label><input type="number" id="fBruto" placeholder="0,00" step="0.01"></div>
-        <div class="form-group"><label>Salário Líquido (R$) *</label><input type="number" id="fLiquido" placeholder="0,00" step="0.01"></div>
-      </div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-outline" onclick="fecharModal('modalFuncionario')">Cancelar</button>
-      <button class="btn btn-primary" onclick="salvarFuncionario()">💾 Salvar</button>
-    </div>
-  </div>
-</div>
-
-<div class="modal-overlay" id="modalConvenio">
-  <div class="modal">
-    <div class="modal-header">
-      <div class="modal-title">🏛️ Novo Convênio</div>
-      <button class="modal-close" onclick="fecharModal('modalConvenio')">✕</button>
-    </div>
-    <div class="modal-body">
-      <div id="alertModalConv"></div>
-      <div class="form-grid">
-        <div class="form-group"><label>Nome do Convênio *</label><input type="text" id="cNome" placeholder="Ex: Prefeitura de São Paulo"></div>
-        <div class="form-group"><label>CNPJ *</label><input type="text" id="cCnpj" placeholder="00.000.000/0001-00"></div>
-        <div class="form-group"><label>Tipo *</label>
-          <select id="cTipo">
-            <option value="PUBLICO">Público</option>
-            <option value="PRIVADO">Privado</option>
-            <option value="MILITAR">Militar</option>
-          </select>
-        </div>
-        <div class="form-group"><label>Sistema de Folha</label>
-          <select id="cSistema">
-            <option value="MANUAL">Manual</option>
-            <option value="TOTVS">TOTVS</option>
-            <option value="SAP">SAP</option>
-            <option value="SENIOR">Senior</option>
-            <option value="GOVBR">Gov.BR</option>
-          </select>
-        </div>
-        <div class="form-group"><label>% Empréstimo</label><input type="number" id="cPctEmp" value="35" step="0.1"></div>
-        <div class="form-group"><label>% Cartão</label><input type="number" id="cPctCart" value="5" step="0.1"></div>
-        <div class="form-group"><label>% Benefício</label><input type="number" id="cPctBenef" value="5" step="0.1"></div>
-        <div class="form-group"><label>Responsável</label><input type="text" id="cResponsavel" placeholder="Nome do responsável"></div>
-        <div class="form-group"><label>Telefone</label><input type="text" id="cTelefone" placeholder="(00) 0000-0000"></div>
-      </div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-outline" onclick="fecharModal('modalConvenio')">Cancelar</button>
-      <button class="btn btn-primary" onclick="salvarConvenio()">💾 Salvar</button>
-    </div>
-  </div>
-</div>
-
-<div class="modal-overlay" id="modalBanco">
-  <div class="modal">
-    <div class="modal-header">
-      <div class="modal-title">🏦 Novo Banco</div>
-      <button class="modal-close" onclick="fecharModal('modalBanco')">✕</button>
-    </div>
-    <div class="modal-body">
-      <div id="alertModalBanco"></div>
-      <div class="form-grid">
-        <div class="form-group"><label>Nome do Banco *</label><input type="text" id="bNome" placeholder="Ex: Banco do Brasil"></div>
-        <div class="form-group"><label>Código BACEN *</label><input type="text" id="bCodigo" placeholder="001"></div>
-        <div class="form-group"><label>CNPJ *</label><input type="text" id="bCnpj" placeholder="00.000.000/0001-00"></div>
-        <div class="form-group"><label>Taxa de Averbação (R$)</label><input type="number" id="bTaxa" value="15.00" step="0.01"></div>
-        <div class="form-group"><label>Contato Responsável</label><input type="text" id="bContato"></div>
-        <div class="form-group"><label>Email Operacional</label><input type="email" id="bEmail"></div>
-      </div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-outline" onclick="fecharModal('modalBanco')">Cancelar</button>
-      <button class="btn btn-primary" onclick="salvarBanco()">💾 Salvar</button>
-    </div>
-  </div>
-</div>
-
-<div class="modal-overlay" id="modalUsuario">
-  <div class="modal">
-    <div class="modal-header">
-      <div class="modal-title">👤 Novo Usuário</div>
-      <button class="modal-close" onclick="fecharModal('modalUsuario')">✕</button>
-    </div>
-    <div class="modal-body">
-      <div id="alertModalUser"></div>
-      <div class="form-grid">
-        <div class="form-group"><label>Nome *</label><input type="text" id="uNome" placeholder="Nome completo"></div>
-        <div class="form-group"><label>Email *</label><input type="email" id="uEmail"></div>
-        <div class="form-group"><label>Senha *</label><input type="password" id="uSenha" placeholder="Mín. 8 caracteres"></div>
-        <div class="form-group"><label>Perfil *</label>
-          <select id="uPerfil" onchange="toggleConvenioBanco()">
-            <option value="ADMIN">Administrador</option>
-            <option value="RH">RH</option>
-            <option value="BANCO">Banco</option>
-            <option value="FUNCIONARIO">Funcionário</option>
-          </select>
-        </div>
-        <div class="form-group" id="grpConvenio"><label>Convênio</label><select id="uConvenio"><option value="">Selecione...</option></select></div>
-        <div class="form-group" id="grpBanco"><label>Banco</label><select id="uBanco"><option value="">Selecione...</option></select></div>
-      </div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-outline" onclick="fecharModal('modalUsuario')">Cancelar</button>
-      <button class="btn btn-primary" onclick="salvarUsuario()">💾 Salvar</button>
-    </div>
-  </div>
 
     <!-- ===================== 💎 NEXT LEVEL (overview) ===================== -->
     <div class="page-section" id="section-nextlevel">
@@ -8449,12 +8363,12 @@ html, body {
 
       <!-- KPI Row -->
       <div class="stats-grid mb-16" id="statsNextLevel">
-        <div class="stat-card"><div class="stat-icon">🌐</div><div class="stat-val" id="nlOpenFinance">3</div><div class="stat-lbl">Open Finance Conectados</div></div>
-        <div class="stat-card"><div class="stat-icon">🎁</div><div class="stat-val" id="nlCashback">R$ 12,4k</div><div class="stat-lbl">Cashback Acumulado</div></div>
-        <div class="stat-card"><div class="stat-icon">🔨</div><div class="stat-val" id="nlLeiloes">7</div><div class="stat-lbl">Leilões Ativos</div></div>
-        <div class="stat-card"><div class="stat-icon">🛒</div><div class="stat-val" id="nlProdutos">42</div><div class="stat-lbl">Produtos no Marketplace</div></div>
-        <div class="stat-card"><div class="stat-icon">🤝</div><div class="stat-val" id="nlParceiros">18</div><div class="stat-lbl">Parceiros Cadastrados</div></div>
-        <div class="stat-card"><div class="stat-icon">🛡️</div><div class="stat-val" id="nlDesligamentos">23</div><div class="stat-lbl">Desligamentos Seguros</div></div>
+        <div class="stat-card"><div class="stat-icon">🌐</div><div class="stat-value" id="nlOpenFinance">3</div><div class="stat-label">Open Finance Conectados</div></div>
+        <div class="stat-card"><div class="stat-icon">🎁</div><div class="stat-value" id="nlCashback">R$ 12,4k</div><div class="stat-label">Cashback Acumulado</div></div>
+        <div class="stat-card"><div class="stat-icon">🔨</div><div class="stat-value" id="nlLeiloes">7</div><div class="stat-label">Leilões Ativos</div></div>
+        <div class="stat-card"><div class="stat-icon">🛒</div><div class="stat-value" id="nlProdutos">42</div><div class="stat-label">Produtos no Marketplace</div></div>
+        <div class="stat-card"><div class="stat-icon">🤝</div><div class="stat-value" id="nlParceiros">18</div><div class="stat-label">Parceiros Cadastrados</div></div>
+        <div class="stat-card"><div class="stat-icon">🛡️</div><div class="stat-value" id="nlDesligamentos">23</div><div class="stat-label">Desligamentos Seguros</div></div>
       </div>
 
       <!-- 6 module cards -->
@@ -8631,12 +8545,12 @@ html, body {
 
       <!-- KPI Row -->
       <div class="stats-grid mb-16" id="statsPlataforma">
-        <div class="stat-card"><div class="stat-icon">🦎</div><div class="stat-val" id="plCamaleao">12</div><div class="stat-lbl">Regras Camaleão Ativas</div></div>
-        <div class="stat-card"><div class="stat-icon">💼</div><div class="stat-val" id="plFgts">156</div><div class="stat-lbl">Contratos FGTS Ativos</div></div>
-        <div class="stat-card"><div class="stat-icon">📲</div><div class="stat-val" id="plCarteira">843</div><div class="stat-lbl">Carteiras Digitais</div></div>
-        <div class="stat-card"><div class="stat-icon">🎮</div><div class="stat-val" id="plGamificacao">2.140</div><div class="stat-lbl">Alunos na Plataforma</div></div>
-        <div class="stat-card"><div class="stat-icon">🔌</div><div class="stat-val" id="plErp">4</div><div class="stat-lbl">Conectores ERP Ativos</div></div>
-        <div class="stat-card"><div class="stat-icon">🏭</div><div class="stat-val" id="plRecebiveis">R$ 1,8M</div><div class="stat-lbl">Recebíveis Antecipados</div></div>
+        <div class="stat-card"><div class="stat-icon">🦎</div><div class="stat-value" id="plCamaleao">12</div><div class="stat-label">Regras Camaleão Ativas</div></div>
+        <div class="stat-card"><div class="stat-icon">💼</div><div class="stat-value" id="plFgts">156</div><div class="stat-label">Contratos FGTS Ativos</div></div>
+        <div class="stat-card"><div class="stat-icon">📲</div><div class="stat-value" id="plCarteira">843</div><div class="stat-label">Carteiras Digitais</div></div>
+        <div class="stat-card"><div class="stat-icon">🎮</div><div class="stat-value" id="plGamificacao">2.140</div><div class="stat-label">Alunos na Plataforma</div></div>
+        <div class="stat-card"><div class="stat-icon">🔌</div><div class="stat-value" id="plErp">4</div><div class="stat-label">Conectores ERP Ativos</div></div>
+        <div class="stat-card"><div class="stat-icon">🏭</div><div class="stat-value" id="plRecebiveis">R$ 1,8M</div><div class="stat-label">Recebíveis Antecipados</div></div>
       </div>
 
       <!-- 6 module cards -->
@@ -8815,12 +8729,12 @@ html, body {
 
       <!-- KPI Row -->
       <div class="stats-grid mb-16" id="statsControle">
-        <div class="stat-card"><div class="stat-icon">🏙️</div><div class="stat-val" id="ctMunicipios">10</div><div class="stat-lbl">Municípios Ativos</div></div>
-        <div class="stat-card"><div class="stat-icon">🏦</div><div class="stat-val" id="ctBancos">5</div><div class="stat-lbl">Bancos Parceiros</div></div>
-        <div class="stat-card"><div class="stat-icon">👥</div><div class="stat-val" id="ctFuncionarios">–</div><div class="stat-lbl">Funcionários na Base</div></div>
-        <div class="stat-card"><div class="stat-icon">📋</div><div class="stat-val" id="ctContratos">–</div><div class="stat-lbl">Contratos Ativos</div></div>
-        <div class="stat-card"><div class="stat-icon">💰</div><div class="stat-val" id="ctReceita">R$ 42,8k</div><div class="stat-lbl">Receita Total (R$)</div></div>
-        <div class="stat-card"><div class="stat-icon">📈</div><div class="stat-val" id="ctTaxaAverb">15,0%</div><div class="stat-lbl">Taxa Méd. de Averbação</div></div>
+        <div class="stat-card"><div class="stat-icon">🏙️</div><div class="stat-value" id="ctMunicipios">10</div><div class="stat-label">Municípios Ativos</div></div>
+        <div class="stat-card"><div class="stat-icon">🏦</div><div class="stat-value" id="ctBancos">5</div><div class="stat-label">Bancos Parceiros</div></div>
+        <div class="stat-card"><div class="stat-icon">👥</div><div class="stat-value" id="ctFuncionarios">–</div><div class="stat-label">Funcionários na Base</div></div>
+        <div class="stat-card"><div class="stat-icon">📋</div><div class="stat-value" id="ctContratos">–</div><div class="stat-label">Contratos Ativos</div></div>
+        <div class="stat-card"><div class="stat-icon">💰</div><div class="stat-value" id="ctReceita">R$ 42,8k</div><div class="stat-label">Receita Total (R$)</div></div>
+        <div class="stat-card"><div class="stat-icon">📈</div><div class="stat-value" id="ctTaxaAverb">15,0%</div><div class="stat-label">Taxa Méd. de Averbação</div></div>
       </div>
 
       <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:16px;margin-bottom:20px">
@@ -8938,6 +8852,133 @@ html, body {
 
       </div>
     </div>
+
+  </div><!-- /content -->
+</div><!-- /main -->
+<!-- MODALS -->
+<div class="modal-overlay" id="modalFuncionario">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">👥 Novo Funcionário</div>
+      <button class="modal-close" onclick="fecharModal('modalFuncionario')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div id="alertModalFunc"></div>
+      <div class="form-grid">
+        <div class="form-group"><label>Matrícula *</label><input type="text" id="fMatricula" placeholder="MAT001"></div>
+        <div class="form-group"><label>Nome Completo *</label><input type="text" id="fNome" placeholder="Nome do funcionário"></div>
+        <div class="form-group"><label>CPF *</label><input type="text" id="fCpf" placeholder="000.000.000-00" maxlength="14" oninput="formatarCPFInput(this)"></div>
+        <div class="form-group"><label>Data de Nascimento</label><input type="date" id="fNascimento"></div>
+        <div class="form-group"><label>Convênio *</label><select id="fConvenio"></select></div>
+        <div class="form-group"><label>Cargo</label><input type="text" id="fCargo" placeholder="Ex: Analista"></div>
+        <div class="form-group"><label>Lotação/Setor</label><input type="text" id="fLotacao" placeholder="Ex: Secretaria de Finanças"></div>
+        <div class="form-group"><label>Data Admissão</label><input type="date" id="fAdmissao"></div>
+        <div class="form-group"><label>Salário Bruto (R$) *</label><input type="number" id="fBruto" placeholder="0,00" step="0.01"></div>
+        <div class="form-group"><label>Salário Líquido (R$) *</label><input type="number" id="fLiquido" placeholder="0,00" step="0.01"></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="fecharModal('modalFuncionario')">Cancelar</button>
+      <button class="btn btn-primary" onclick="salvarFuncionario()">💾 Salvar</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modalConvenio">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">🏛️ Novo Convênio</div>
+      <button class="modal-close" onclick="fecharModal('modalConvenio')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div id="alertModalConv"></div>
+      <div class="form-grid">
+        <div class="form-group"><label>Nome do Convênio *</label><input type="text" id="cNome" placeholder="Ex: Prefeitura de São Paulo"></div>
+        <div class="form-group"><label>CNPJ *</label><input type="text" id="cCnpj" placeholder="00.000.000/0001-00"></div>
+        <div class="form-group"><label>Tipo *</label>
+          <select id="cTipo">
+            <option value="PUBLICO">Público</option>
+            <option value="PRIVADO">Privado</option>
+            <option value="MILITAR">Militar</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Sistema de Folha</label>
+          <select id="cSistema">
+            <option value="MANUAL">Manual</option>
+            <option value="TOTVS">TOTVS</option>
+            <option value="SAP">SAP</option>
+            <option value="SENIOR">Senior</option>
+            <option value="GOVBR">Gov.BR</option>
+          </select>
+        </div>
+        <div class="form-group"><label>% Empréstimo</label><input type="number" id="cPctEmp" value="35" step="0.1"></div>
+        <div class="form-group"><label>% Cartão</label><input type="number" id="cPctCart" value="5" step="0.1"></div>
+        <div class="form-group"><label>% Benefício</label><input type="number" id="cPctBenef" value="5" step="0.1"></div>
+        <div class="form-group"><label>Responsável</label><input type="text" id="cResponsavel" placeholder="Nome do responsável"></div>
+        <div class="form-group"><label>Telefone</label><input type="text" id="cTelefone" placeholder="(00) 0000-0000"></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="fecharModal('modalConvenio')">Cancelar</button>
+      <button class="btn btn-primary" onclick="salvarConvenio()">💾 Salvar</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modalBanco">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">🏦 Novo Banco</div>
+      <button class="modal-close" onclick="fecharModal('modalBanco')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div id="alertModalBanco"></div>
+      <div class="form-grid">
+        <div class="form-group"><label>Nome do Banco *</label><input type="text" id="bNome" placeholder="Ex: Banco do Brasil"></div>
+        <div class="form-group"><label>Código BACEN *</label><input type="text" id="bCodigo" placeholder="001"></div>
+        <div class="form-group"><label>CNPJ *</label><input type="text" id="bCnpj" placeholder="00.000.000/0001-00"></div>
+        <div class="form-group"><label>Taxa de Averbação (R$)</label><input type="number" id="bTaxa" value="15.00" step="0.01"></div>
+        <div class="form-group"><label>Contato Responsável</label><input type="text" id="bContato"></div>
+        <div class="form-group"><label>Email Operacional</label><input type="email" id="bEmail"></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="fecharModal('modalBanco')">Cancelar</button>
+      <button class="btn btn-primary" onclick="salvarBanco()">💾 Salvar</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modalUsuario">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">👤 Novo Usuário</div>
+      <button class="modal-close" onclick="fecharModal('modalUsuario')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div id="alertModalUser"></div>
+      <div class="form-grid">
+        <div class="form-group"><label>Nome *</label><input type="text" id="uNome" placeholder="Nome completo"></div>
+        <div class="form-group"><label>Email *</label><input type="email" id="uEmail"></div>
+        <div class="form-group"><label>Senha *</label><input type="password" id="uSenha" placeholder="Mín. 8 caracteres"></div>
+        <div class="form-group"><label>Perfil *</label>
+          <select id="uPerfil" onchange="toggleConvenioBanco()">
+            <option value="ADMIN">Administrador</option>
+            <option value="RH">RH</option>
+            <option value="BANCO">Banco</option>
+            <option value="FUNCIONARIO">Funcionário</option>
+          </select>
+        </div>
+        <div class="form-group" id="grpConvenio"><label>Convênio</label><select id="uConvenio"><option value="">Selecione...</option></select></div>
+        <div class="form-group" id="grpBanco"><label>Banco</label><select id="uBanco"><option value="">Selecione...</option></select></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="fecharModal('modalUsuario')">Cancelar</button>
+      <button class="btn btn-primary" onclick="salvarUsuario()">💾 Salvar</button>
+    </div>
+  </div>
+</div><!-- /modalUsuario -->
 
 
 <div class="modal-overlay" id="modalDetalheAverb">
@@ -9068,6 +9109,29 @@ async function apiFetch(url, options = {}) {
     return null; // timeout ou erro de rede → sempre null, nunca trava
   }
 }
+
+// ===================== MOBILE SIDEBAR =====================
+function toggleMobileSidebar() {
+  const sidebar = document.querySelector('.sidebar');
+  const overlay = document.getElementById('sidebarOverlay');
+  if (!sidebar) return;
+  if (sidebar.classList.contains('mobile-open')) { closeMobileSidebar(); } else { openMobileSidebar(); }
+}
+function openMobileSidebar() {
+  const sidebar = document.querySelector('.sidebar');
+  const overlay = document.getElementById('sidebarOverlay');
+  if (sidebar) sidebar.classList.add('mobile-open');
+  if (overlay) overlay.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+function closeMobileSidebar() {
+  const sidebar = document.querySelector('.sidebar');
+  const overlay = document.getElementById('sidebarOverlay');
+  if (sidebar) sidebar.classList.remove('mobile-open');
+  if (overlay) overlay.classList.remove('active');
+  document.body.style.overflow = '';
+}
+function isMobile() { return window.innerWidth <= 768; }
 
 function logout() {
   // Limpar TODOS os storages
@@ -9203,6 +9267,9 @@ function navTo(page) {
       if (contentEl) { contentEl.scrollTop = 0; contentEl.scrollLeft = 0; }
     });
   });
+
+  // Fechar sidebar no mobile ao navegar
+  if (isMobile()) closeMobileSidebar();
 
   loadPageData(page);
 }
@@ -9345,6 +9412,22 @@ window.addEventListener('DOMContentLoaded', async () => {
   const comp = `${hoje.getFullYear()}-${String(hoje.getMonth()+1).padStart(2,'0')}`;
   const el = document.getElementById('competenciaInicio');
   if (el) el.value = comp;
+
+  // ── Fix: Chromium misplaces sections outside .content due to HTML5 parser quirks ──
+  (function fixMisplacedSections() {
+    var content = document.querySelector('.content');
+    if (!content) return;
+    var allSections = document.querySelectorAll('.page-section');
+    var moved = 0;
+    allSections.forEach(function(sec) {
+      if (sec.parentElement !== content) {
+        content.appendChild(sec);
+        moved++;
+      }
+    });
+    if (moved > 0) console.log('[StructureFix] Moved ' + moved + ' sections back into .content');
+  })();
+  // ────────────────────────────────────────────────────────────────────────────
 
   navTo('dashboard');
 });
@@ -13919,7 +14002,7 @@ async function carregarScoreDashboard() {
   if (!r) return;
   const d = await r.json();
   const funcs = d.data || d || [];
-  const scores = funcs.map(f => calcularScoreLocal(f));
+  const scores = await Promise.all(funcs.map(f => calcularScoreLocal(f)));
   const media  = scores.length ? Math.round(scores.reduce((a,b)=>a+b,0)/scores.length) : 0;
   const alto   = scores.filter(s=>s>=700).length;
   const medio  = scores.filter(s=>s>=400&&s<700).length;
@@ -16705,16 +16788,24 @@ function applyFontScale(scale) {
 
 </script>
 <style>
-/* EMERGENCY LAYOUT FIX v4 — margin-left strategy, overrides everything */
+/* EMERGENCY LAYOUT FIX v5 — MOBILE RESPONSIVE */
 :root{--sidebar-w:256px!important;--topbar-h:64px!important}
 html,body{margin:0!important;padding:0!important;overflow:hidden!important;height:100vh!important;height:100dvh!important;width:100%!important;box-sizing:border-box!important}
-.sidebar{position:fixed!important;top:0!important;left:0!important;width:256px!important;min-width:256px!important;max-width:256px!important;height:100vh!important;height:100dvh!important;z-index:400!important;transform:none!important;-webkit-transform:none!important;visibility:visible!important;opacity:1!important;display:flex!important;flex-direction:column!important;overflow-y:auto!important;overflow-x:hidden!important;flex-shrink:0!important}
-.main{margin-left:256px!important;width:calc(100% - 256px)!important;min-width:0!important;height:100vh!important;height:100dvh!important;display:flex!important;flex-direction:column!important;overflow:hidden!important;box-sizing:border-box!important;position:relative!important}
+.sidebar{position:fixed!important;top:0!important;left:0!important;width:256px!important;min-width:256px!important;max-width:256px!important;height:100vh!important;height:100dvh!important;z-index:400!important;transform:none!important;-webkit-transform:none!important;visibility:visible!important;opacity:1!important;display:flex!important;flex-direction:column!important;overflow-y:auto!important;overflow-x:hidden!important;flex-shrink:0!important;transition:transform .3s ease!important}
+.main{margin-left:256px!important;width:calc(100% - 256px)!important;min-width:0!important;height:100vh!important;height:100dvh!important;display:flex!important;flex-direction:column!important;overflow:hidden!important;box-sizing:border-box!important;position:relative!important;transition:margin-left .3s ease,width .3s ease!important}
 .topbar{flex:0 0 64px!important;height:64px!important;min-height:64px!important;max-height:64px!important;width:100%!important;display:flex!important;align-items:center!important;justify-content:space-between!important;background:#fff!important;border-bottom:2px solid #e2e8f0!important;padding:0 20px!important;box-sizing:border-box!important;flex-shrink:0!important;overflow:hidden!important;z-index:200!important}
 .content{flex:1 1 0%!important;min-height:0!important;overflow-y:auto!important;overflow-x:hidden!important;padding:20px 24px 32px!important;box-sizing:border-box!important}
 .page-section{display:none!important}
-.page-section.active{display:block!important;margin:0!important;padding:0!important;max-width:100%!important;box-sizing:border-box!important}
-@media(max-width:9999px){:root{--sidebar-w:256px!important}.sidebar{transform:none!important;left:0!important;width:256px!important;min-width:256px!important;visibility:visible!important;display:flex!important;opacity:1!important}.main{margin-left:256px!important;width:calc(100% - 256px)!important;position:relative!important}}
+.page-section.active{display:block!important;margin:0!important;padding:16px 0 32px!important;max-width:100%!important;box-sizing:border-box!important}
+@media(max-width:768px){
+  .sidebar{transform:translateX(-100%)!important;-webkit-transform:translateX(-100%)!important;width:280px!important;min-width:280px!important;max-width:280px!important;z-index:500!important}
+  .sidebar.mobile-open{transform:translateX(0)!important;-webkit-transform:translateX(0)!important}
+  .main{margin-left:0!important;width:100%!important}
+  #hamburgerBtn{display:flex!important}
+  .topbar{padding:0 12px!important}
+  .content{padding:12px 14px 24px!important}
+}
+@media(max-width:480px){.content{padding:10px 10px 24px!important}}
 </style>
 </body>
 </html>
