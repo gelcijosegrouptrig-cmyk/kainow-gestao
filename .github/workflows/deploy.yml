@@ -1,0 +1,51 @@
+name: Deploy → Railway (averbatech.com.br)
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    name: 🚀 Deploy para produção
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout código
+        uses: actions/checkout@v4
+
+      - name: 🚂 Disparar redeploy no Railway
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+        run: |
+          echo "Disparando deploy no Railway..."
+          curl -s --request POST \
+            --url https://backboard.railway.app/graphql/v2 \
+            --header "Content-Type: application/json" \
+            --header "Authorization: Bearer $RAILWAY_TOKEN" \
+            --data '{
+              "query": "mutation { serviceInstanceRedeploy(environmentId: \"d2e87fab-104a-44e2-adef-4b42eb1588e1\", serviceId: \"ec950d13-9640-493e-b230-d6faf2fb9906\") }"
+            }' | python3 -c "
+          import sys, json
+          d = json.load(sys.stdin)
+          if d.get('data', {}).get('serviceInstanceRedeploy'):
+              print('✅ Deploy disparado com sucesso!')
+          else:
+              print('❌ Erro:', d)
+              sys.exit(1)
+          "
+
+      - name: ⏳ Aguardar deploy finalizar
+        run: |
+          echo "Aguardando build + deploy (~2 min)..."
+          sleep 120
+
+      - name: ✅ Verificar produção no ar
+        run: |
+          echo "Verificando https://averbatech.com.br..."
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" --max-time 15 https://averbatech.com.br/api/health)
+          if [ "$STATUS" = "200" ]; then
+            VERSAO=$(curl -s https://averbatech.com.br/api/health | python3 -c "import sys,json; d=json.load(sys.stdin); print(d['versao'])")
+            echo "✅ Produção OK! HTTP $STATUS | versão $VERSAO"
+          else
+            echo "⚠️  HTTP $STATUS — site pode ainda estar carregando"
+          fi
