@@ -5,3 +5,24 @@ node_modules/
 .env
 .wrangler/
 *.log
+
+# Arquivos temporários de debug/teste
+debug_*.js
+test_*.js
+print_payroll*.js
+shot_*.js
+ss_pages*.js
+screenshot_*.js
+analyze_*.py
+analyze_*.js
+deep_analysis.py
+*.py
+
+# Páginas de diagnóstico temporárias
+frontend/public/diag*.html
+frontend/public/al.html
+frontend/public/auto_login.html
+backend/public/auto_login.html
+backend/public/diag_*.html
+backend/public/layout_test*.html
+backend/public/test_*.html
