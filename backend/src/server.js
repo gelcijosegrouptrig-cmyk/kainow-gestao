@@ -105,8 +105,10 @@ app.get('/api/health', (req, res) => {
   res.json({
     status:    'online',
     sistema:   'AverbaTech - Plataforma de Consignado Inteligente',
-    versao:    '2.0.0',
+    versao:    '2.0.1',
     timestamp: new Date().toISOString(),
+    dominio:   'averbatech.com.br',
+    deploy:    'auto — GitHub → Railway',
     apis: {
       admin:  '/api/*  (JWT)',
       banco:  '/v1/*   (OAuth2 client_credentials)',
